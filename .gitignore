@@ -32,6 +32,5 @@
 *.app
 *.x
 
-# Build directories
+# Build directory
 build/
-cmake-build-debug/
