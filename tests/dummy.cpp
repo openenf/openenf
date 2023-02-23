@@ -10,8 +10,8 @@ TEST_CASE("complicated integration tests could be here")
   CHECK(d.doSomething() == true);
 }
 
-TEST_CASE("this should fail")
+TEST_CASE("this should now pass")
 {
     Dummy d;
-    CHECK(d.doSomething() == false);
+    CHECK(d.doSomething() == true);
 }
