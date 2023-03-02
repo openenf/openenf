@@ -57,7 +57,7 @@ TEST_CASE("can do lookup with start and end times and single thread") {
 
 TEST_CASE("fsFreqDbReader") {
     SUBCASE("can read metaData from a valid freqDB file") {
-        FsFreqDbReader fsFreqDbReader("/Users/chris.hodges/openenf/C++/lookupInternal/test/TestFreqDb.freqdb");
+        FsFreqDbReader fsFreqDbReader(resolvePath("tests/TestFreqDb.freqdb"));
         FreqDbMetaData freqDbMetaData = fsFreqDbReader.getMetaData();
         CHECK(freqDbMetaData.baseFrequency == 50);
         CHECK(freqDbMetaData.gridId == "XX");
@@ -65,7 +65,7 @@ TEST_CASE("fsFreqDbReader") {
         CHECK(freqDbMetaData.endDate == 1262304016); //1st Jan 2010 + 16 seconds
     }
     SUBCASE("can read all frequencies to an array") {
-        FsFreqDbReader fsFreqDbReader("/Users/chris.hodges/openenf/C++/lookupInternal/test/TestFreqDb.freqdb");
+        FsFreqDbReader fsFreqDbReader(resolvePath("tests/TestFreqDb.freqdb"));
         std::vector<int16_t> expectedResult = {-500, -499, -10, -2, -1,
                                           0, 1, 10, 20, 30,
                                           40, 50, 60, 70, 499,
