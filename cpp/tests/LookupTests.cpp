@@ -59,6 +59,7 @@ TEST_CASE("fsFreqDbReader") {
     SUBCASE("can read metaData from a valid freqDB file") {
         FsFreqDbReader fsFreqDbReader(resolvePath("tests/TestFreqDb.freqdb"));
         FreqDbMetaData freqDbMetaData = fsFreqDbReader.getMetaData();
+        CHECK(false);
         CHECK(freqDbMetaData.baseFrequency == 50);
         CHECK(freqDbMetaData.gridId == "XX");
         CHECK(freqDbMetaData.startDate == 1262304000); //1st Jan 2010
