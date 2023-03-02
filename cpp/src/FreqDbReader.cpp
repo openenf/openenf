@@ -63,21 +63,19 @@ std::vector <int16_t> FsFreqDbReader::readDbToVector() {
     const int BUFFER_SIZE = 1024;
     int16_t buffer[BUFFER_SIZE];
     int bufferCount = 0;
-    while(true) {
-        // Process the data in the buffer
-        file.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
-        for (int i = 0; i < file.gcount(); i++) {
-            returnVector[(bufferCount * BUFFER_SIZE) + i] = buffer[i];
-        }
-        bufferCount++;
-        if (file.eof()) {
-            break;
+    if(file.is_open()) {
+        while(file) {
+            file.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
+            int numCharsRead = file.gcount();
+            for (int i = 0; i < numCharsRead; i++) {
+                returnVector[(bufferCount * BUFFER_SIZE) + i] = buffer[i];
+            }
+            bufferCount++;
         }
     }
 
     // Close the file
     file.close();
-
 
     return returnVector;
 }
