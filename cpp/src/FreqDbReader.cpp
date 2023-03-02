@@ -47,7 +47,6 @@ long FsFreqDbReader::GetFileSize(std::string filename) {
 
 std::vector <int16_t> FsFreqDbReader::readDbToVector() {
     std::vector<int16_t> returnVector;
-    returnVector.resize(this->duration);
 
     std::ifstream file(this->filePath, std::ios::binary);
     if (!file.is_open()) {
@@ -62,13 +61,15 @@ std::vector <int16_t> FsFreqDbReader::readDbToVector() {
     //const int BUFFER_SIZE = std::min(1024, this->dataSizeBytes / 2);
     const int BUFFER_SIZE = 1024;
     int16_t buffer[BUFFER_SIZE];
-    int bufferCount = 0;
     if(file.is_open()) {
         while(file) {
             file.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
             int numCharsRead = file.gcount();
             for (int i = 0; i < numCharsRead; i++) {
-                returnVector[(bufferCount * BUFFER_SIZE) + i] = buffer[i];
+                returnVector.push_back(buffer[i]);
+                if (returnVector.size() == this->duration) {
+                    break;
+                }
             }
             bufferCount++;
         }

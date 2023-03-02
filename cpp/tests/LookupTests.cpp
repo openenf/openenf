@@ -4,7 +4,7 @@
 #include <sstream>
 #include "LookupTestHelpers.h"
 
-/*TEST_CASE("can do lookup passing only frequency array and maxSingleDiff parameter") {
+TEST_CASE("can do lookup passing only frequency array and maxSingleDiff parameter") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
     std::vector<int16_t> expectedFreqs = {1,8,5,7,2,8,5,8,2,3,1,2,3,4,5,8,1,9,2,4,0,0,9,9,7,2,1};
     std::vector<int16_t> freqsInDb = fsFreqDbReader.readDbToVector();
@@ -22,7 +22,7 @@
     std::vector<LookupResult> result = fsFreqDbReader.lookup(nullableFreqs, 1000);
     CHECK(result[0].position == 10);
     CHECK(result[0].score == 0);
-}*/
+}
 
 TEST_CASE("can do two consecutive lookups (checking for memory leaks)") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
