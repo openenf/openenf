@@ -46,7 +46,7 @@ jobs:
       run: cmake --build build --config ${{ matrix.configuration }}
 
     - name: Test
-      working-directory: ${{github.workspace}}/cpp
+      working-directory: ${{github.workspace}}/cpp/build
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest -C ${{ matrix.configuration }}
