@@ -5,12 +5,14 @@
 #
 # For many purposes, you may not need to change anything about this file.
 
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.24)
 
-# Set project name, version and laguages here. (change as needed)
+# Set project name, version and languages here. (change as needed)
 # Version numbers are available by including "exampleConfig.h" in
 # the source. See exampleConfig.h.in for some more details.
-project(CPP_BOILERPLATE VERSION 1.2.3.4 LANGUAGES CXX)
+project(ENF_LOOKUP VERSION 1.2.3.4 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
 
 
 # Options: Things you can set via commandline options to cmake (e.g. -DENABLE_LTO=[ON|OFF])
@@ -36,10 +38,12 @@ find_lto(CXX)
 
 # --------------------------------------------------------------------------------
 #                         Locate files (change as needed).
-# --------------------------------------------------------------------------------
+# -------------------------------------------------------------------   -------------
 set(SOURCES          # All .cpp files in src/
-    src/example.cpp
-)
+        src/ResultLeague.cpp
+        src/FreqDbMetadata.cpp
+        src/FreqDbMetadata.h
+        src/ResultLeague.h src/FreqDbReader.h src/FreqDbReader.cpp src/LookupHelpers.h src/LookupHelpers.cpp)
 set(TESTFILES        # All .cpp files in tests/
     tests/main.cpp
 )
@@ -58,7 +62,7 @@ target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(${LIBRARY_NAME} PUBLIC doctest)
 
 # Set the compile options you want (change as needed).
-target_set_warnings(${LIBRARY_NAME} ENABLE ALL AS_ERROR ALL DISABLE Annoying)
+target_set_warnings(${LIBRARY_NAME} ENABLE ALL ALL DISABLE Annoying)
 # target_compile_options(${LIBRARY_NAME} ... )  # For setting manually.
 
 # Add an executable for the file app/main.cpp.
@@ -68,6 +72,10 @@ target_link_libraries(main PRIVATE ${LIBRARY_NAME})  # Link the executable to li
 target_set_warnings(main ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
 target_enable_lto(main optimized)  # enable link-time-optimization if available for non-debug configurations
 
+# target_compile_options(main PUBLIC ${CMAKE_C_FLAGS} --target=wasm32)
+
+# target_include_directories(main PUBLIC "/Users/chris.hodges/emsdk/upstream/emscripten/cache/sysroot/include")
+
 # Set the properties you require, e.g. what C++ standard to use. Here applied to library and main (change as needed).
 set_target_properties(
     ${LIBRARY_NAME} main
@@ -76,6 +84,7 @@ set_target_properties(
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
+
 
 # Set up tests (see tests/CMakeLists.txt).
 add_subdirectory(tests)

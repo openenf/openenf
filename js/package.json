@@ -1,0 +1,40 @@
+{
+	"name": "unicorn-fun-cli",
+	"version": "0.0.0",
+	"description": "My awesome command-line tool",
+	"license": "MIT",
+	"repository": "YOUR-GITHUB-USERNAME/unicorn-fun-cli",
+	"author": {
+		"name": "YOUR NAME",
+		"email": "YOUR EMAIL",
+		"url": "YOUR WEBSITE"
+	},
+	"type": "module",
+	"bin": {
+		"unicorn-fun": "cli.js"
+	},
+	"engines": {
+		"node": ">=12"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"cli.js"
+	],
+	"keywords": [
+		"cli",
+		"cli-app",
+		"unicorn",
+		"fun"
+	],
+	"dependencies": {
+		"meow": "^9.0.0",
+		"unicorn-fun": "^0.0.0"
+	},
+	"devDependencies": {
+		"ava": "^3.15.0",
+		"execa": "^5.0.0",
+		"xo": "^0.37.0"
+	}
+}

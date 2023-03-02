@@ -35,3 +35,7 @@
 # Build directory
 build/
 cmake-build-debug/
+
+node_modules
+yarn.lock
+
