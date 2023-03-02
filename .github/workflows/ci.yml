@@ -21,6 +21,10 @@ jobs:
           - Debug
 
         include:
+          - toolchain: macos-clang
+            os: macos-latest
+            compiler: clang
+
           - toolchain: windows-msvc
             os: windows-latest
             compiler: msvc
@@ -38,7 +42,7 @@ jobs:
       run: cmake --build build --config ${{ matrix.configuration }}
 
     - name: Test
-      working-directory: ${{github.workspace}}/cpp/build
+      working-directory: ${{github.workspace}}/cpp
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest -C ${{ matrix.configuration }}
