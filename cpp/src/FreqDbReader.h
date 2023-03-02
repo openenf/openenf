@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sys/stat.h>
-#include "FreqDbMetaData.h"
+#include "FreqDbMetadata.h"
 #include "json.hpp"
 #include "LookupResult.h"
 #include "ResultLeague.h"
