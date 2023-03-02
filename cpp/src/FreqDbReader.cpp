@@ -71,7 +71,6 @@ std::vector <int16_t> FsFreqDbReader::readDbToVector() {
                     break;
                 }
             }
-            bufferCount++;
         }
     }
 
