@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #include "exampleConfig.h"
-#include "example.h"
+#include "../src/example.h"
 
 /*
  * Simple main program that demontrates how access
