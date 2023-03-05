@@ -9,7 +9,6 @@
 		"email": "YOUR EMAIL",
 		"url": "YOUR WEBSITE"
 	},
-	"type": "module",
 	"bin": {
 		"unicorn-fun": "cli.js"
 	},
@@ -30,11 +29,13 @@
 	],
 	"dependencies": {
 		"meow": "^9.0.0",
+		"node-fetch": "^2.6.9",
 		"unicorn-fun": "^0.0.0"
 	},
 	"devDependencies": {
-		"ava": "^3.15.0",
-		"execa": "^5.0.0",
+		"@types/jest": "^29.4.0",
+		"jest": "^29.4.3",
+		"ts-jest": "^29.0.5",
 		"xo": "^0.37.0"
 	}
 }

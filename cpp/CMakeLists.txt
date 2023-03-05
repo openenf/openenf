@@ -12,6 +12,11 @@ cmake_minimum_required(VERSION 3.24)
 # the source. See exampleConfig.h.in for some more details.
 project(ENF_LOOKUP VERSION 1.2.3.4 LANGUAGES CXX)
 
+#add_definitions(-std=c++11 -O3)
+#SET(CMAKE_C_COMPILER emcc)
+#SET(CMAKE_CPP_COMPILER em++)
+#message(STATUS "Setting compilation target to WASM")
+
 set(CMAKE_CXX_STANDARD 17)
 
 
@@ -21,6 +26,7 @@ option(ENABLE_WARNINGS_SETTINGS "Allow target_set_warnings to add flags and defi
 option(ENABLE_LTO "Enable link time optimization" ON)
 option(ENABLE_DOCTESTS "Include tests in the library. Setting this to OFF will remove all doctest related code.
                         Tests in tests/*.cpp will still be enabled." ON)
+option(BUILD_AS_WASM "Build as a WASM file" OFF)
 
 # Include stuff. No change needed.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
