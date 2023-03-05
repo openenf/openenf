@@ -4,8 +4,25 @@
 #include "LookupHelpers.h"
 #include <thread>
 
+#if __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 FreqDbMetaData FsFreqDbReader::getMetaData() {
-    std::ifstream infile(this->filePath);
+    FreqDbMetaData freqDbMetaData = FreqDbMetaData();
+    std::string path = this->filePath;
+#if __EMSCRIPTEN__
+    EM_ASM(
+            FS.mkdir('/temp');
+            FS.mount(NODEFS, {root : '.'}, '/temp');
+            );
+    path = std::string("/temp/") + path;
+#endif
+    std::ifstream infile(path, std::ios::in|std::ios::binary);
+    infile.ignore( std::numeric_limits<std::streamsize>::max() );
+    this->fileSizeBytes = infile.gcount();
+    infile.clear();   //  Since ignore will have set eof.
+    infile.seekg( 0, std::ios_base::beg );
     char ch;
     std::string headerString;
     int separatorCount = 0;
@@ -20,8 +37,9 @@ FreqDbMetaData FsFreqDbReader::getMetaData() {
     }
     this->dataSizeBytes = this->fileSizeBytes - headerString.length();
     headerString.erase(headerString.length() - 5);
+    //headerString = headerString.substr(0, headerString.length() - 5);
+
     nlohmann::json json_obj = nlohmann::json::parse(headerString);
-    FreqDbMetaData freqDbMetaData = FreqDbMetaData();
     freqDbMetaData.gridId = json_obj["gridId"];
     freqDbMetaData.startDate = stoi(to_string(json_obj["startDate"]));
     freqDbMetaData.endDate = freqDbMetaData.startDate + this->dataSizeBytes / 2;
@@ -29,26 +47,36 @@ FreqDbMetaData FsFreqDbReader::getMetaData() {
 
     this->duration = freqDbMetaData.endDate - freqDbMetaData.startDate;
     this->gridId = freqDbMetaData.gridId;
+
+    const int BUFFER_SIZE = 1024;
+    int16_t buffer[BUFFER_SIZE];
+    if(infile.is_open()) {
+        while(infile) {
+            infile.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
+            int numCharsRead = infile.gcount();
+            for (int i = 0; i < numCharsRead; i++) {
+                this->bigArray.push_back(buffer[i]);
+                if (this->bigArray.size() == this->duration) {
+                    break;
+                }
+            }
+        }
+    }
+
     infile.close();
     return freqDbMetaData;
 }
 
 FsFreqDbReader::FsFreqDbReader(std::string filePath) {
     this->filePath = filePath;
-    this->fileSizeBytes = this->GetFileSize(filePath);
-    this->getMetaData();
-}
-
-long FsFreqDbReader::GetFileSize(std::string filename) {
-    struct stat stat_buf;
-    int rc = stat(filename.c_str(), &stat_buf);
-    return rc == 0 ? stat_buf.st_size : -1;
+    this->freqDbMetaData = this->getMetaData();
+    this->baseFrequency = this->freqDbMetaData.baseFrequency;
+    std::cout << this->freqDbMetaData.gridId << std::endl;
 }
 
 std::vector <int16_t> FsFreqDbReader::readDbToVector() {
-    std::vector<int16_t> returnVector;
-
-    std::ifstream file(this->filePath, std::ios::binary);
+    return this->bigArray;
+    /*std::ifstream file(this->filePath, std::ios::binary);
     if (!file.is_open()) {
         throw std::ios_base::failure("Failed to open file");
     }
@@ -59,6 +87,7 @@ std::vector <int16_t> FsFreqDbReader::readDbToVector() {
 
     // Read the data into a buffer
     //const int BUFFER_SIZE = std::min(1024, this->dataSizeBytes / 2);
+    std::vector<int16_t> returnVector;
     const int BUFFER_SIZE = 1024;
     int16_t buffer[BUFFER_SIZE];
     if(file.is_open()) {
@@ -77,6 +106,18 @@ std::vector <int16_t> FsFreqDbReader::readDbToVector() {
     // Close the file
     file.close();
 
+    return returnVector;*/
+}
+
+std::vector<int> FsFreqDbReader::readDbToIntVector() {
+    //std::vector<int16_t> int16Vector = this->readDbToVector();
+    std::vector<int> returnVector;
+    /*for (int i = 0; i < int16Vector.size(); i++) {
+        returnVector.push_back(int16Vector[i]);
+    }*/
+    returnVector.push_back(1);
+    returnVector.push_back(2);
+    returnVector.push_back(3);
     return returnVector;
 }
 
@@ -172,3 +213,24 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, in
     return this->lookupInternal(freqs, maxSingleDiff, 0, this->duration, std::ref(resultArray));
 }
 
+#if __EMSCRIPTEN__
+#include <emscripten/bind.h>
+
+using namespace emscripten;
+
+EMSCRIPTEN_BINDINGS(FsFreqDbReader) {
+    register_vector<int>("vector<int>");
+    register_vector<int16_t>("vector<int16_t>");
+    class_<FreqDbMetaData>("FreqDbMetaData")
+        .property("gridId", &FreqDbMetaData::gridId)
+        .property("startDate", &FreqDbMetaData::startDate)
+        .property("endDate", &FreqDbMetaData::endDate)
+        .property("baseFrequency", &FreqDbMetaData::baseFrequency);
+    class_<FsFreqDbReader>("FsFreqDbReader")
+        .constructor<std::string>()
+        .property("freqDbMetaData", &FsFreqDbReader::freqDbMetaData)
+        .property("baseFrequency", &FsFreqDbReader::baseFrequency)
+        .function("readDbToIntVector", &FsFreqDbReader::readDbToIntVector)
+        .function("readDbToVector", &FsFreqDbReader::readDbToVector);
+}
+#endif

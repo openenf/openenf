@@ -14,6 +14,12 @@
 class FsFreqDbReader
 {
 public:
+
+    FreqDbMetaData freqDbMetaData;
+
+    ///Base frequency of the grid, either 50 or 60hz
+    int baseFrequency;
+
     /// Pass a filePath to a .freqdb format file
     FsFreqDbReader(std::string filePath);
 
@@ -21,7 +27,9 @@ public:
     FreqDbMetaData getMetaData();
 
     /// Read the entire contents of the database to a vector. This could take a while and take a lot of memory.
-    std::vector <int16_t> readDbToVector();
+    std::vector<int16_t> readDbToVector();
+
+    std::vector<int> readDbToIntVector();
 
     std::vector<LookupResult> lookup(std::vector<int16_t*> freqs, int maxSingleDiff);
     std::vector<LookupResult> lookup(std::vector<int16_t*> vector1, int maxSingleDiff, int startTime, int endTime);
@@ -30,10 +38,10 @@ public:
 private:
     std::string filePath;
     long fileSizeBytes;
-    long GetFileSize(std::string filename);
     int dataSizeBytes;
     std::string gridId;
     int duration;
+    std::vector<int16_t> bigArray;
 
     void threadSafeLookup(int startTime, int endTime, std::vector<int16_t *> freqs, int maxSingleDiff, std::vector<int16_t> largeArray, ResultLeague &resultArray);
     std::vector<LookupResult> lookupInternal(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague);
