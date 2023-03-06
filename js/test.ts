@@ -2,6 +2,22 @@
 import * as Wasm from './hello2.js';
 
 describe('fsFreqDbReader', () => {
+	it('can do lookup passing only frequency array and maxSingleDiff parameter', async () => {
+		const wasm:any = Wasm;
+		const factory = await wasm.default();
+		const freqDbReader = new factory.FsFreqDbReader("Test123FreqDb.freqdb");
+		const expectedFrequencies = [1,8,5,7,2,8,5,8,2,3,1,2,3,4,5,8,1,9,2,4,0,0,9,9,7,2,1];
+		const vector = freqDbReader.readDbToVector();
+		const actualFrequencies = [];
+		for(let i = 0; i < vector.size(); i++) {
+			actualFrequencies[i] = vector.get(i);
+		}
+		expect(expectedFrequencies).toStrictEqual(actualFrequencies);
+		const lookupVector = new factory.vectorInt16_tPointer();
+		lookupVector.set(0,1);
+		//const result = freqDbReader.lookup([1,2,3,4,5], 1000);
+		console.log('factory', factory);
+	})
 	it('can read metaData from a valid freqDB file',  async () => {
 		const wasm:any = Wasm;
 		const factory = await wasm.default();

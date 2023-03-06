@@ -70,55 +70,10 @@ FreqDbMetaData FsFreqDbReader::getMetaData() {
 FsFreqDbReader::FsFreqDbReader(std::string filePath) {
     this->filePath = filePath;
     this->freqDbMetaData = this->getMetaData();
-    this->baseFrequency = this->freqDbMetaData.baseFrequency;
-    std::cout << this->freqDbMetaData.gridId << std::endl;
 }
 
 std::vector <int16_t> FsFreqDbReader::readDbToVector() {
     return this->bigArray;
-    /*std::ifstream file(this->filePath, std::ios::binary);
-    if (!file.is_open()) {
-        throw std::ios_base::failure("Failed to open file");
-    }
-
-    // Skip the first N bytes
-    const int NUM_BYTES_TO_SKIP = this->fileSizeBytes - this->dataSizeBytes;  // Change this to the number of bytes to skip
-    file.seekg(NUM_BYTES_TO_SKIP, std::ios::beg);
-
-    // Read the data into a buffer
-    //const int BUFFER_SIZE = std::min(1024, this->dataSizeBytes / 2);
-    std::vector<int16_t> returnVector;
-    const int BUFFER_SIZE = 1024;
-    int16_t buffer[BUFFER_SIZE];
-    if(file.is_open()) {
-        while(file) {
-            file.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
-            int numCharsRead = file.gcount();
-            for (int i = 0; i < numCharsRead; i++) {
-                returnVector.push_back(buffer[i]);
-                if (returnVector.size() == this->duration) {
-                    break;
-                }
-            }
-        }
-    }
-
-    // Close the file
-    file.close();
-
-    return returnVector;*/
-}
-
-std::vector<int> FsFreqDbReader::readDbToIntVector() {
-    //std::vector<int16_t> int16Vector = this->readDbToVector();
-    std::vector<int> returnVector;
-    /*for (int i = 0; i < int16Vector.size(); i++) {
-        returnVector.push_back(int16Vector[i]);
-    }*/
-    returnVector.push_back(1);
-    returnVector.push_back(2);
-    returnVector.push_back(3);
-    return returnVector;
 }
 
 std::vector<LookupResult> FsFreqDbReader::resultLeagueToLookupResults(ResultLeague& resultArray) {
@@ -155,6 +110,9 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, in
     return FsFreqDbReader::resultLeagueToLookupResults(resultLeague);
 }
 
+std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
+    return FsFreqDbReader::lookup(LookupHelpers::nonPointerToPointerVector(freqs), maxSingleDiff, startTime, endTime, numThreads);
+}
 
 void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<int16_t *> freqs, int maxSingleDiff,
                                       std::vector<int16_t> largeArray, ResultLeague &resultArray) {
@@ -219,18 +177,26 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, in
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(FsFreqDbReader) {
-    register_vector<int>("vector<int>");
-    register_vector<int16_t>("vector<int16_t>");
+    register_vector<int16_t>("vectorInt16_t");
+    register_vector<int16_t*>("vectorInt16_tPointer");
+    register_vector<int>("vectorInt");
+    register_vector<LookupResult>("vectorLookupResult");
     class_<FreqDbMetaData>("FreqDbMetaData")
         .property("gridId", &FreqDbMetaData::gridId)
         .property("startDate", &FreqDbMetaData::startDate)
         .property("endDate", &FreqDbMetaData::endDate)
         .property("baseFrequency", &FreqDbMetaData::baseFrequency);
+    class_<LookupResult>("LookupResult")
+        .property("position", &LookupResult::position)
+        .property("score", &LookupResult::score);
+    class_<ResultLeague>("ResultLeague")
+         .constructor<unsigned int>()
+        .property("results", &ResultLeague::results)
+        .function("add", &ResultLeague::add);
     class_<FsFreqDbReader>("FsFreqDbReader")
         .constructor<std::string>()
         .property("freqDbMetaData", &FsFreqDbReader::freqDbMetaData)
-        .property("baseFrequency", &FsFreqDbReader::baseFrequency)
-        .function("readDbToIntVector", &FsFreqDbReader::readDbToIntVector)
-        .function("readDbToVector", &FsFreqDbReader::readDbToVector);
+        .function("readDbToVector", &FsFreqDbReader::readDbToVector)
+        .function("lookup", select_overload<std::vector<LookupResult>(std::vector<int16_t*>,int)>(&FsFreqDbReader::lookup), allow_raw_pointers());
 }
 #endif

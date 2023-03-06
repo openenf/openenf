@@ -49,7 +49,7 @@ set(SOURCES          # All .cpp files in src/
         src/ResultLeague.cpp
         src/FreqDbMetadata.cpp
         src/FreqDbMetadata.h
-        src/ResultLeague.h src/FreqDbReader.h src/FreqDbReader.cpp src/LookupHelpers.h src/LookupHelpers.cpp)
+        src/ResultLeague.h src/FreqDbReader.h src/FreqDbReader.cpp src/LookupHelpers.h src/LookupHelpers.cpp src/LookupResult.cpp)
 set(TESTFILES        # All .cpp files in tests/
     tests/main.cpp
 )

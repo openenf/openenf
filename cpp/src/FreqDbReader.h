@@ -17,9 +17,6 @@ public:
 
     FreqDbMetaData freqDbMetaData;
 
-    ///Base frequency of the grid, either 50 or 60hz
-    int baseFrequency;
-
     /// Pass a filePath to a .freqdb format file
     FsFreqDbReader(std::string filePath);
 
@@ -29,11 +26,10 @@ public:
     /// Read the entire contents of the database to a vector. This could take a while and take a lot of memory.
     std::vector<int16_t> readDbToVector();
 
-    std::vector<int> readDbToIntVector();
-
     std::vector<LookupResult> lookup(std::vector<int16_t*> freqs, int maxSingleDiff);
     std::vector<LookupResult> lookup(std::vector<int16_t*> vector1, int maxSingleDiff, int startTime, int endTime);
     std::vector<LookupResult> lookup(std::vector<int16_t *> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads);
+    std::vector<LookupResult> lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads);
 
 private:
     std::string filePath;
