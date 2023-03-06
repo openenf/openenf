@@ -62,7 +62,6 @@ TEST_CASE("can do lookupInternal with start and end times") {
 TEST_CASE("can do lookup with start and end times and single thread") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
     FreqDbMetaData metaData = fsFreqDbReader.getMetaData();
-    int startDate = metaData.startDate;
     std::vector<int16_t*> nullableFreqs = createNullableArray<int16_t>({1, 2, 3, 4, 5});
     std::vector<LookupResult> result = fsFreqDbReader.lookup(nullableFreqs, 1000, 10, 14, 1);
     CHECK(result.size() == 5);
@@ -70,6 +69,18 @@ TEST_CASE("can do lookup with start and end times and single thread") {
     CHECK(result[0].score == 0);
     CHECK(result[1].position == 11);
     CHECK(result[1].score == 7);
+}
+
+TEST_CASE("can do non-pointer lookup where -32768 represents a null value") {
+    FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
+    FreqDbMetaData metaData = fsFreqDbReader.getMetaData();
+    std::vector<int16_t> freqs = {1, 2, -32768, 4, 5};
+    std::vector<LookupResult> result = fsFreqDbReader.lookup(freqs, 1000, 10, 14, 1);
+    CHECK(result.size() == 5);
+    CHECK(result[0].position == 10);
+    CHECK(result[0].score == 0);
+    CHECK(result[1].position == 11);
+    CHECK(result[1].score == 6); //This is one less than the previous score because the third value in the freqs array (-32768) represents null
 }
 
 TEST_CASE("fsFreqDbReader") {

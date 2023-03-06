@@ -1166,7 +1166,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  31776: () => { FS.mkdir('/temp'); FS.mount(NODEFS, {root : '.'}, '/temp'); }
+  31576: () => { FS.mkdir('/temp'); FS.mount(NODEFS, {root : '.'}, '/temp'); }
 };
 
 
