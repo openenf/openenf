@@ -9,14 +9,11 @@
 		"email": "YOUR EMAIL",
 		"url": "YOUR WEBSITE"
 	},
-	"bin": {
-		"unicorn-fun": "cli.js"
-	},
 	"engines": {
 		"node": ">=12"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "jest --forceExit"
 	},
 	"files": [
 		"cli.js"
@@ -29,8 +26,7 @@
 	],
 	"dependencies": {
 		"meow": "^9.0.0",
-		"node-fetch": "^2.6.9",
-		"unicorn-fun": "^0.0.0"
+		"node-fetch": "^2.6.9"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.4.0",
