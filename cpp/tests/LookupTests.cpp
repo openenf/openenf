@@ -61,7 +61,6 @@ TEST_CASE("can do lookupInternal with start and end times") {
 
 TEST_CASE("can do lookup with start and end times and single thread") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
-    FreqDbMetaData metaData = fsFreqDbReader.readDataFromBinaryFile();
     std::vector<int16_t*> nullableFreqs = createNullableArray<int16_t>({1, 2, 3, 4, 5});
     std::vector<LookupResult> result = fsFreqDbReader.lookup(nullableFreqs, 1000, 10, 14, 1);
     CHECK(result.size() == 5);
@@ -73,7 +72,6 @@ TEST_CASE("can do lookup with start and end times and single thread") {
 
 TEST_CASE("can do non-pointer lookup where -32768 represents a null value") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/Test123FreqDb.freqdb"));
-    FreqDbMetaData metaData = fsFreqDbReader.readDataFromBinaryFile();
     std::vector<int16_t> freqs = {1, 2, -32768, 4, 5};
     std::vector<LookupResult> result = fsFreqDbReader.lookup(freqs, 1000, 10, 14, 1);
     CHECK(result.size() == 5);
@@ -86,7 +84,7 @@ TEST_CASE("can do non-pointer lookup where -32768 represents a null value") {
 TEST_CASE("fsFreqDbReader") {
     SUBCASE("can read metaData from a valid freqDB file") {
         FsFreqDbReader fsFreqDbReader(resolvePath("tests/TestFreqDb.freqdb"));
-        FreqDbMetaData freqDbMetaData = fsFreqDbReader.readDataFromBinaryFile();
+        FreqDbMetaData freqDbMetaData = fsFreqDbReader.freqDbMetaData;
         CHECK(freqDbMetaData.baseFrequency == 50);
         CHECK(freqDbMetaData.gridId == "XX");
         CHECK(freqDbMetaData.startDate == 1262304000); //1st Jan 2010
