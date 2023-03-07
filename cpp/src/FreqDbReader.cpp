@@ -8,7 +8,7 @@
 #include <emscripten.h>
 #endif
 
-FreqDbMetaData FsFreqDbReader::getMetaData() {
+FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     FreqDbMetaData freqDbMetaData = FreqDbMetaData();
     std::string path = this->filePath;
 #if __EMSCRIPTEN__
@@ -69,7 +69,7 @@ FreqDbMetaData FsFreqDbReader::getMetaData() {
 
 FsFreqDbReader::FsFreqDbReader(std::string filePath) {
     this->filePath = filePath;
-    this->freqDbMetaData = this->getMetaData();
+    this->freqDbMetaData = this->readDataFromBinaryFile();
 }
 
 std::vector <int16_t> FsFreqDbReader::readDbToVector() {
