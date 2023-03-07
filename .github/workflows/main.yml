@@ -18,6 +18,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-	working-directory: ${{github.workspace}}/js
+        working-directory: ${{github.workspace}}/js
       - run: npm test
-	working-directory: ${{github.workspace}}/js
+        working-directory: ${{github.workspace}}/js
