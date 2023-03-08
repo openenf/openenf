@@ -13,11 +13,12 @@ describe('fsFreqDbReader', () => {
 			}
 			expect(expectedFrequencies).toStrictEqual(actualFrequencies);
 			const lookupVector = new Module.vectorInt16_t();
-			lookupVector.set(0,1);
-			lookupVector.set(0,2);
-			lookupVector.set(0,-32768);
-			lookupVector.set(0,4);
-			lookupVector.set(0,5);
+			lookupVector.push_back(1);
+			lookupVector.push_back(2);
+			lookupVector.push_back(-32768);
+			lookupVector.push_back(4);
+			lookupVector.push_back(5);
+			console.log("lookupVector.size()", lookupVector.size());
 			const maxSingleDifference = 1000;
 			const startTime = 10;
 			const endTime = 14;
