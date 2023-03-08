@@ -18,4 +18,7 @@ namespace LookupHelpers
     /// https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#embind-raw-pointers
     /// so this helper exists to convert a standard vector to a nullable one with -32768 standing in for a null pointer
     std::vector<int16_t*> nonPointerToPointerVector(std::vector<int16_t> freqs);
+
+    /// The inverse of nonPointerToPointerVector
+    std::vector<int16_t> pointerToNonPointerVector(std::vector<int16_t*> freqs);
 }

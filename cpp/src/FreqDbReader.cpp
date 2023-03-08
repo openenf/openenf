@@ -46,17 +46,17 @@ FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     freqDbMetaData.baseFrequency = stoi(to_string(json_obj["baseFrequency"]));
 
     this->duration = freqDbMetaData.endDate - freqDbMetaData.startDate;
-    this->gridId = freqDbMetaData.gridId;
+    int durationInBytes = this->duration * 2;
 
     const int BUFFER_SIZE = 1024;
     int16_t buffer[BUFFER_SIZE];
     if(infile.is_open()) {
         while(infile) {
             infile.read((char*)buffer, BUFFER_SIZE * sizeof(int16_t));
-            int numCharsRead = infile.gcount();
+            int numCharsRead = infile.gcount() / 2;
             for (int i = 0; i < numCharsRead; i++) {
                 this->bigArray.push_back(buffer[i]);
-                if (this->bigArray.size() == this->duration) {
+                if (this->bigArray.size() == durationInBytes) {
                     break;
                 }
             }
@@ -87,20 +87,20 @@ std::vector<LookupResult> FsFreqDbReader::resultLeagueToLookupResults(ResultLeag
     return results;
 }
 
-std::vector<LookupResult> FsFreqDbReader::lookupInternal(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague) {
+std::vector<LookupResult> FsFreqDbReader::lookupInternal(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague) {
     std::vector<int16_t> largeArray = this->readDbToVector();
     this->threadSafeLookup(startTime, endTime, freqs, maxSingleDiff, largeArray, resultLeague);
     return FsFreqDbReader::resultLeagueToLookupResults(resultLeague);
 }
 
-std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
+std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
     int freqsSize = freqs.size();
     std::vector<std::vector<int>> threadBounds = LookupHelpers::getArrayThreadBounds(endTime - startTime, numThreads, freqsSize);
     std::vector<std::thread> threads;
     ResultLeague resultLeague = ResultLeague(100);
     std::vector<int16_t> largeArray = this->readDbToVector();
     for(int i = 0; i < threadBounds.size(); i++) {
-        std::vector<int16_t*> clone(freqsSize);
+        std::vector<int16_t> clone(freqsSize);
         copy(freqs.begin(), freqs.end(),clone.begin());
         threads.emplace_back(&FsFreqDbReader::threadSafeLookup, this, threadBounds[i][0] + startTime, threadBounds[i][1] + startTime, clone, maxSingleDiff, largeArray, std::ref(resultLeague));
     }
@@ -111,25 +111,23 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, in
     return result;
 }
 
-std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
-    std::vector<int16_t*> pointerVector = LookupHelpers::nonPointerToPointerVector(freqs);
-    return FsFreqDbReader::lookup(pointerVector, maxSingleDiff, startTime, endTime, numThreads);
+std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
+    return FsFreqDbReader::lookup(LookupHelpers::pointerToNonPointerVector(freqs), maxSingleDiff, startTime, endTime, numThreads);
 }
 
-void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<int16_t *> freqs, int maxSingleDiff,
+void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<int16_t> freqs, int maxSingleDiff,
                                       std::vector<int16_t> largeArray, ResultLeague &resultArray) {
     int i = startTime;
     int resultPosition = startTime -1;
-    std::vector<int16_t*> scores;
-    std::vector<int16_t*> compareArray;
+    std::vector<int16_t> scores;
+    std::vector<int16_t> compareArray;
     int largeArraySize = largeArray.size();
     int freqsSize = freqs.size();
     int lastIndexToRead = std::min(largeArraySize, (endTime + freqsSize));
     while(true) {
-        int16_t* ptr = new int16_t(0);
-        scores.insert(scores.end(), ptr);
+        scores.insert(scores.end(), 0);
         if (freqs.size() > 0) {
-            int16_t* firstElement = freqs.front();
+            int16_t firstElement = freqs.front();
             compareArray.insert(compareArray.end(), firstElement);
             freqs.erase(freqs.begin());
         }
@@ -140,23 +138,23 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
         int16_t newValue = largeArray[i];
         i++;
         for(int j = 0; j < compareArraySize; j++) {
-            if (scores[j] != nullptr) {
-                int16_t* compareValue = compareArray[compareArraySize - 1 - j];
-                if (compareValue != NULL) {
-                    int16_t newDiff = abs(*compareValue - newValue);
+            if (scores[j] != -32768) {
+                int16_t compareValue = compareArray[compareArraySize - 1 - j];
+                if (compareValue != -32768) {
+                    int16_t newDiff = abs(compareValue - newValue);
                     if (newDiff > maxSingleDiff) {
-                        scores[j] = NULL;
+                        scores[j] = -32768;
                     } else {
-                        *scores[j] += newDiff;
+                        scores[j] += newDiff;
                     }
                 }
             }
         }
         if(scores.size() >= freqsSize) {
             resultPosition++;
-            int16_t* front = scores.front();
-            if (front != NULL) {
-                resultArray.add(*front, resultPosition);
+            int16_t front = scores.front();
+            if (front != -32768) {
+                resultArray.add(front, resultPosition);
             }
             scores.erase(scores.begin());
         }
@@ -165,12 +163,12 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
 
 std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t *> vector1, int maxSingleDiff, int startTime, int endTime) {
     ResultLeague resultArray = ResultLeague(100);
-    return this->lookupInternal(vector1, maxSingleDiff, startTime, endTime, std::ref(resultArray));
+    return this->lookupInternal(LookupHelpers::pointerToNonPointerVector(vector1), maxSingleDiff, startTime, endTime, std::ref(resultArray));
 }
 
 std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff) {
     ResultLeague resultArray = ResultLeague(100);
-    return this->lookupInternal(freqs, maxSingleDiff, 0, this->duration, std::ref(resultArray));
+    return this->lookupInternal(LookupHelpers::pointerToNonPointerVector(freqs), maxSingleDiff, 0, this->duration, std::ref(resultArray));
 }
 
 #if __EMSCRIPTEN__

@@ -32,13 +32,12 @@ private:
     std::string filePath;
     long fileSizeBytes;
     int dataSizeBytes;
-    std::string gridId;
     int duration;
     std::vector<int16_t> bigArray;
     FreqDbMetaData readDataFromBinaryFile();
 
-    void threadSafeLookup(int startTime, int endTime, std::vector<int16_t *> freqs, int maxSingleDiff, std::vector<int16_t> largeArray, ResultLeague &resultArray);
-    std::vector<LookupResult> lookupInternal(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague);
+    void threadSafeLookup(int startTime, int endTime, std::vector<int16_t> freqs, int maxSingleDiff, std::vector<int16_t> largeArray, ResultLeague &resultArray);
+    std::vector<LookupResult> lookupInternal(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague);
     std::vector<LookupResult> resultLeagueToLookupResults(ResultLeague& resultArray);
 
 };

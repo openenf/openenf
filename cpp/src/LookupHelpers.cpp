@@ -35,6 +35,18 @@ namespace LookupHelpers {
         return nullableVector;
     }
 
+    std::vector<int16_t> pointerToNonPointerVector(std::vector<int16_t*> freqs) {
+        std::vector<int16_t> vector;
+        for(int i = 0; i < freqs.size(); i++) {
+            if (freqs[i] == nullptr) {
+                vector.push_back(-32768);
+            } else {
+                vector.push_back(*freqs[i]);
+            }
+        }
+        return vector;
+    }
+
     std::vector<short*> normaliseFreqs(std::vector<double*> freqs, int baseFrequency) {
         std::vector<short *> results = std::vector<short *>();
         results.reserve(freqs.size());
@@ -131,6 +143,21 @@ TEST_CASE("non-pointer to pointer vector works") {
     CHECK(result[2] == nullptr);
     CHECK(*result[3] == 4);
     CHECK(*result[4] == 5);
+}
+
+TEST_CASE("pointer to non-pointer vector works") {
+    std::vector<int16_t*> freqs;
+    freqs.push_back(new short(1));
+    freqs.push_back(new short(2));
+    freqs.push_back(nullptr);
+    freqs.push_back(new short(4));
+    freqs.push_back(new short(5));
+    std::vector<int16_t> result = LookupHelpers::pointerToNonPointerVector(freqs);
+    CHECK(result[0] == 1);
+    CHECK(result[1] == 2);
+    CHECK(result[2] == -32768);
+    CHECK(result[3] == 4);
+    CHECK(result[4] == 5);
 }
 
 #endif
