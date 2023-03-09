@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: mymindstorm/setup-emsdk@v12
+        working-directory: ${{github.workspace}}/cpp/build
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
