@@ -64,6 +64,12 @@ FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     }
 
     infile.close();
+#if __EMSCRIPTEN__
+    EM_ASM(
+            FS.unmount('/temp');
+            FS.rmdir('/temp');
+            );
+#endif
     return freqDbMetaData;
 }
 
