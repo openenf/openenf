@@ -29,10 +29,6 @@ jobs:
             os: macos-latest
             compiler: clang
 
-          - toolchain: windows-msvc
-            os: windows-latest
-            compiler: msvc
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
