@@ -21,6 +21,6 @@ jobs:
         working-directory: ${{github.workspace}}/js
       - name: Build wasm
         working-directory: ${{github.workspace}}/cpp/build
-        run: emcc -pthread ../src/FreqDbMetaData.cpp ../src/FreqDbReader.cpp ../src/ResultLeague.cpp ../src/LookupResult.cpp ../src/LookupHelpers.cpp -fwasm-exceptions -sASSERTIONS -s WASM=1 -s -I../include -o ../../js/freqDbReader.wasm.js --bind -s WASM_ASYNC_COMPILATION=0 -s EXIT_RUNTIME=1 -s PTHREAD_POOL_SIZE=8  -lnodefs.js
+        run: emcc -v
       - run: npm test
         working-directory: ${{github.workspace}}/js
