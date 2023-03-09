@@ -1119,7 +1119,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 var wasmBinaryFile;
-  wasmBinaryFile = 'hello2.wasm';
+  wasmBinaryFile = 'freqDbReader.wasm.wasm';
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }
@@ -1261,7 +1261,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  34852: () => { FS.mkdir('/temp'); FS.mount(NODEFS, {root : '.'}, '/temp'); }
+  33476: () => { FS.mkdir('/temp'); FS.mount(NODEFS, {root : '.'}, '/temp'); }
 };
 
 
@@ -4097,7 +4097,7 @@ var ASM_CONSTS = {
         // Allow HTML module to configure the location where the 'worker.js' file will be loaded from,
         // via Module.locateFile() function. If not specified, then the default URL 'worker.js' relative
         // to the main html file is loaded.
-        var pthreadMainJs = locateFile('hello2.worker.js');
+        var pthreadMainJs = locateFile('freqDbReader.wasm.worker.js');
         PThread.unusedWorkers.push(new Worker(pthreadMainJs));
       },getNewWorker:function() {
         if (PThread.unusedWorkers.length == 0) {
