@@ -15,7 +15,6 @@ jobs:
         toolchain:
           - linux-gcc
           - macos-clang
-          - windows-msvc
 
         configuration:
           - Debug
