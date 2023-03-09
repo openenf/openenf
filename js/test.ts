@@ -1,5 +1,5 @@
 // @ts-ignore
-import {default as Module} from './hello2.js';
+import {default as Module} from './freqDbReader.wasm.js';
 
 describe('fsFreqDbReader', () => {
 	it('can do lookup passing only frequency array and maxSingleDiff parameter', resolve => {
