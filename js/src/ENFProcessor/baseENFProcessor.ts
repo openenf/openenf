@@ -11,6 +11,8 @@ import {RefineComponent} from "../refine/refineComponent";
 import {PreScanComponent} from "../preScan/preScanComponent";
 import {AnalyzeComponent} from "../analyze/analyzeComponent";
 import {ReduceComponent} from "../reduce/reduceComponent";
+import {NoMatch} from "./noMatch";
+import {FullAnalysisErrorHandler} from "./fullAnalysisErrorHandler";
 
 export class BaseENFProcessor implements ENFProcessor {
 
@@ -44,14 +46,37 @@ export class BaseENFProcessor implements ENFProcessor {
         this.refineComponent = refineComponent
     }
 
+    closeOutENFAnalysis(enfAnalysis:ENFAnalysis):ENFAnalysis {
+        enfAnalysis.analysisEndTime = new Date();
+        enfAnalysis.preScanImplementationId = this.preScanComponent.implementationId;
+        enfAnalysis.analyseImplementationId = this.analyzeComponent.implementationId;
+        enfAnalysis.reduceImplementationId = this.reduceComponent.implementationId;
+        enfAnalysis.lookupImplementationId = this.lookupComponent.implementationId;
+        enfAnalysis.refineImplementationId = this.refineComponent.implementationId;
+        return enfAnalysis;
+    }
+
     async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date): Promise<ENFAnalysis> {
         const enfAnalysis = new ENFAnalysis(resourceUri);
+        const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
-        enfAnalysis.analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult);
-        enfAnalysis.frequencies = await this.reduce(enfAnalysis.analysisResult);
-        enfAnalysis.lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to);
+        const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult).catch(function(e) {errorHandler.handleError(e)})
+        enfAnalysis.analysisResult = analysisResult || null;
+        if (!enfAnalysis.analysisResult) {
+            return this.closeOutENFAnalysis(enfAnalysis);
+        }
+        const frequencies = await this.reduce(enfAnalysis.analysisResult).catch(function(e) {errorHandler.handleError(e)})
+        enfAnalysis.frequencies = frequencies || null;
+        if (!enfAnalysis.frequencies) {
+            return this.closeOutENFAnalysis(enfAnalysis)
+        }
+        const lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
+        enfAnalysis.lookupResults = lookupResults || null;
+        if (!enfAnalysis.lookupResults) {
+            return this.closeOutENFAnalysis(enfAnalysis)
+        }
         enfAnalysis.ENFAnalysisResults = await this.refine(enfAnalysis.lookupResults)
-        return enfAnalysis;
+        return this.closeOutENFAnalysis(enfAnalysis);
     }
 
     analysisProgressEvent: ENFEventBase<number> = new ENFEventBase<number>();

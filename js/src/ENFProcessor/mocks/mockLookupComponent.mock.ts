@@ -5,10 +5,10 @@ import {LookupResult} from "../../model/lookupResult";
 export class MockLookupComponent implements LookupComponent {
 
     private readonly onLookup: any;
-    private readonly result: any;
+    private readonly result: LookupResult[];
     constructor(onLookup?:(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date) => void, result?:LookupResult[]) {
         this.onLookup = onLookup;
-        this.result = result;
+        this.result = result || [];
     }
 
     readonly implementationId: string = "MockLookupComponent";
