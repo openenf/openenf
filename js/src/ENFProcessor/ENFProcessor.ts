@@ -85,7 +85,7 @@ export interface ENFProcessor {
      the approximate progress of the analysis phase
      @eventProperty
      */
-    readonly onAnalyzeProgressEvent: ENFEventBase<[AnalysisWindowResult | number]>
+    readonly onAnalyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>
 
     /**
      Fired when the analysis phase is completed

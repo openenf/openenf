@@ -11,7 +11,7 @@ export class MockAnalyzeComponent implements AnalyzeComponent {
         this.result = result || [];
     }
 
-    analyzeProgressEvent: ENFEventBase<[(number | AnalysisWindowResult)]> = new ENFEventBase<[(number | AnalysisWindowResult)]>();
+    analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>();
 
     readonly implementationId: string = "MockAnalyzeComponent";
 
