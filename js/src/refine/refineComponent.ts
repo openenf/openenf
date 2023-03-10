@@ -1,5 +1,5 @@
 import {LookupResult} from "../model/lookupResult";
-import {ENFComponent} from "../analyzer/ENFComponent";
+import {ENFComponent} from "../ENFProcessor/ENFComponent";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
 
 /**

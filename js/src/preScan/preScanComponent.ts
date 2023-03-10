@@ -1,6 +1,6 @@
-import {ENFComponent} from "../analyzer/ENFComponent";
+import {ENFComponent} from "../ENFProcessor/ENFComponent";
 import {PreScanResult} from "../model/preScanResult";
-import {ENFEventBase} from "../analyzer/events/ENFEventBase";
+import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {PreScanUpdate} from "../model/preScanUpdate";
 
 /**

@@ -1,6 +1,6 @@
 import {LookupResult} from "../model/lookupResult";
-import {ENFEventBase} from "../analyzer/events/ENFEventBase";
-import {ENFComponent} from "../analyzer/ENFComponent";
+import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
+import {ENFComponent} from "../ENFProcessor/ENFComponent";
 
 /**
  * Provides a lookup function for an analyzer
@@ -9,7 +9,7 @@ export interface LookupComponent extends ENFComponent {
     lookupProgressEvent: ENFEventBase<number>;
 
     /**
-     * 
+     *
      * @param freqs
      * @param gridIds
      * @param from - the optional date to search from (inclusive)
