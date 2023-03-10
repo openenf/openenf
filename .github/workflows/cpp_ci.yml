@@ -14,7 +14,6 @@ jobs:
       matrix:
         toolchain:
           - linux-gcc
-          - macos-clang
 
         configuration:
           - Debug
@@ -23,10 +22,6 @@ jobs:
           - toolchain: linux-gcc
             os: ubuntu-latest
             compiler: gcc
-
-          - toolchain: macos-clang
-            os: macos-latest
-            compiler: clang
 
     steps:
     - name: Checkout Code
