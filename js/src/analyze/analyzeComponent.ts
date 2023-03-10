@@ -8,7 +8,7 @@ import {AnalysisWindowResult} from "../model/analysisWindowResult";
  * Provides analyze function for an {@link ENFProcessor}
  */
 export interface AnalyzeComponent extends ENFComponent {
-    analyzeProgressEvent: ENFEventBase<[(number | AnalysisWindowResult)]>;
+    analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>;
     analyze(resourceUri: string, preScanResult?: PreScanResult): Promise<AnalysisWindowResult[]>
 }
 

@@ -11,7 +11,6 @@ import {RefineComponent} from "../refine/refineComponent";
 import {PreScanComponent} from "../preScan/preScanComponent";
 import {AnalyzeComponent} from "../analyze/analyzeComponent";
 import {ReduceComponent} from "../reduce/reduceComponent";
-import {NoMatch} from "./noMatch";
 import {FullAnalysisErrorHandler} from "./fullAnalysisErrorHandler";
 
 export class BaseENFProcessor implements ENFProcessor {
@@ -38,11 +37,26 @@ export class BaseENFProcessor implements ENFProcessor {
                 refineComponent: RefineComponent) {
         this.preScanComponent = preScanComponent
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent
+        this.onPreScanProgressEvent.addHandler(data => {
+            if (data != undefined) {
+                this.analysisProgressEvent.trigger(data[1] / 3)
+            }
+        })
         this.analyzeComponent = analyzeComponent
         this.analyzeComponent.analyzeProgressEvent = this.onAnalyzeProgressEvent
+        this.onAnalyzeProgressEvent.addHandler(data => {
+            if (data != undefined) {
+                this.analysisProgressEvent.trigger((1/3) + (data[1] / 3));
+            }
+        })
         this.reduceComponent = reduceComponent
         this.lookupComponent = lookupComponent
         this.lookupComponent.lookupProgressEvent = this.lookupProgressEvent
+        this.lookupProgressEvent.addHandler(progress => {
+            if (progress !== undefined) {
+                this.analysisProgressEvent.trigger((2/3) + (progress / 3));
+            }
+        })
         this.refineComponent = refineComponent
     }
 
@@ -53,6 +67,7 @@ export class BaseENFProcessor implements ENFProcessor {
         enfAnalysis.reduceImplementationId = this.reduceComponent.implementationId;
         enfAnalysis.lookupImplementationId = this.lookupComponent.implementationId;
         enfAnalysis.refineImplementationId = this.refineComponent.implementationId;
+        this.fullAnalysisCompleteEvent.trigger(enfAnalysis);
         return enfAnalysis;
     }
 
@@ -97,7 +112,7 @@ export class BaseENFProcessor implements ENFProcessor {
         this.onAnalyzeCompleteEvent.trigger(result);
         return result;
     }
-    onAnalyzeProgressEvent: ENFEventBase<[number | AnalysisWindowResult]> = new ENFEventBase<[(number | AnalysisWindowResult)]>();
+    onAnalyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>();
     onAnalyzeCompleteEvent: ENFEventBase<AnalysisWindowResult[]> = new ENFEventBase<AnalysisWindowResult[]>()
 
     /*Reduce*/
