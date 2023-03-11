@@ -73,6 +73,9 @@ export class BaseENFProcessor implements ENFProcessor {
 
     async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date): Promise<ENFAnalysis> {
         const enfAnalysis = new ENFAnalysis(resourceUri);
+        enfAnalysis.start = from || null;
+        enfAnalysis.end = to || null;
+        enfAnalysis.gridIds = gridIds;
         const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
         const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult).catch(function(e) {errorHandler.handleError(e)})
