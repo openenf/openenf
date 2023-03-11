@@ -6,7 +6,7 @@ import {PreScanResult} from "./preScanResult";
 import * as crypto from "crypto";
 
 /**
- * Represents an occurence of ENF Analysis for a specific media file
+ * Represents an occurrence of ENF Analysis for a specific media file
  *
  * A single media resource could be analysed several times. The `ENFAnalysis` object represents one analysis event.
  */
@@ -64,11 +64,6 @@ export class ENFAnalysis {
      * Optional array of frequencies expected to be returned from the frequency analysis stage. Used with synthetic testing files.
      */
     public expectedFrequencies: (number|null)[] | null = null;
-
-    /**
-     * If it can be determined the base frequency of the mains hum present in the audio signal will be added here. This is added after the prescan is complete
-     */
-    public baseFrequency: 50 | 60 | null = null;
 
     /**
      * Optional user-defined notes pertaining to the analysis
