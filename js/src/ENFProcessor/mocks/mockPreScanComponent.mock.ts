@@ -8,7 +8,20 @@ export class MockPreScanComponent implements PreScanComponent {
 
     constructor(onPreScan?:(resourceUri:string) => void, result?: PreScanResult) {
         this.onPreScan = onPreScan;
-        this.result = result || ({h50:0,h100:0,h200:0,h60:0,h120:0,h240:0});
+        const defaultPreScanResult:PreScanResult = {
+            baseFrequency: undefined,
+            duration: undefined,
+            durationSamples: undefined,
+            h100: undefined,
+            h120: undefined,
+            h200: undefined,
+            h240: undefined,
+            h50: undefined,
+            h60: undefined,
+            numChannels: undefined,
+            sampleRate: undefined
+        };
+        this.result = result || defaultPreScanResult;
     }
 
     result: PreScanResult;
