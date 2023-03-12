@@ -195,7 +195,6 @@ describe('BaseAnalyzer', () => {
         expect(result.lookupImplementationId).toBe(new MockLookupComponent().implementationId);
         expect(result.refineImplementationId).toBe(new MockRefineComponent().implementationId);
         expect(result.uri).toBe("TEST_URL");
-        console.log('result', result);
     })
     it('Can handle NoMatch error at analyze stage', async () => {
         const analyzeComponentThrowsError = new MockAnalyzeComponent(() => {
