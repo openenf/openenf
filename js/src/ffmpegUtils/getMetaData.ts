@@ -1,5 +1,10 @@
 import * as ffmpeg from "fluent-ffmpeg";
 import {AudioFileMetadata} from "./audioFileMetadata";
+
+/**
+ * Uses {@link ffmpeg.ffprobe} to extract metadata from the audio file before analysis begins.
+ * @param path
+ */
 export const getMetaData = async (path:string):Promise<AudioFileMetadata> => {
     return new Promise<AudioFileMetadata>((resolve,reject) => {
         ffmpeg.ffprobe(path, function(err, metadata) {

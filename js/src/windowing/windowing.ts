@@ -128,5 +128,8 @@ const nuttall = create_window_function("nuttall");
 const blackman_harris = create_window_function("blackman_harris");
 const blackman_nuttall = create_window_function("blackman_nuttall");
 const flat_top = create_window_function("flat_top");
+
+/**
+ * Adapted from {@link https://github.com/scijs/window-function}. Various windowing functions. At the time of writing (March 2023) we're only using Hann.
+ */
 export { hann, hamming, cosine, lanczos, gaussian, tukey, blackman, exact_blackman, kaiser, nuttall, blackman_harris, blackman_nuttall, flat_top, };
-//# sourceMappingURL=windowing.js.map
