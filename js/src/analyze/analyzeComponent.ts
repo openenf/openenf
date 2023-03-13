@@ -9,6 +9,6 @@ import {AnalysisWindowResult} from "../model/analysisWindowResult";
  */
 export interface AnalyzeComponent extends ENFComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>;
-    analyze(resourceUri: string, preScanResult?: PreScanResult): Promise<AnalysisWindowResult[]>
+    analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]>
 }
 

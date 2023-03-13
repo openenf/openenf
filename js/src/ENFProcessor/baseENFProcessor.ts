@@ -71,14 +71,14 @@ export class BaseENFProcessor implements ENFProcessor {
         return enfAnalysis;
     }
 
-    async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date): Promise<ENFAnalysis> {
+    async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?:50|60): Promise<ENFAnalysis> {
         const enfAnalysis = new ENFAnalysis(resourceUri);
         enfAnalysis.start = from || null;
         enfAnalysis.end = to || null;
         enfAnalysis.gridIds = gridIds;
         const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
-        const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult).catch(function(e) {errorHandler.handleError(e)})
+        const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult, expectedFrequency).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.analysisResult = analysisResult || null;
         if (!enfAnalysis.analysisResult) {
             return this.closeOutENFAnalysis(enfAnalysis);
@@ -110,8 +110,8 @@ export class BaseENFProcessor implements ENFProcessor {
     onPreScanCompleteEvent: ENFEventBase<PreScanResult> = new ENFEventBase<PreScanResult>();
 
     /*Analyze*/
-    async analyze(resourceUri: string, preScanResult?: PreScanResult): Promise<AnalysisWindowResult[]> {
-        const result = await this.analyzeComponent.analyze(resourceUri, preScanResult);
+    async analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency:50|60|undefined): Promise<AnalysisWindowResult[]> {
+        const result = await this.analyzeComponent.analyze(resourceUri, preScanResult, expectedFrequency);
         this.onAnalyzeCompleteEvent.trigger(result);
         return result;
     }
