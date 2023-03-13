@@ -2,6 +2,11 @@ import {hann} from "../windowing/windowing";
 import {GoertzelFilterStore} from "../goertzel/GoertzelFilterStore";
 import {BufferedAudioProcessor} from "../audioProcessor/bufferedAudioProcessor";
 
+/**
+ * This processor uses a regular (non-adaptive) Goertzel filter to determine the signal strengths at 50, 100, 200, 60, 120 and 240hz
+ * It combines a {@link BufferedAudioProcessor} and a {@link GoertzelFilterStore} to calculate the harmonics for each audio of window
+ * of the size defined in the GoertzelFilterStore.
+ */
 export class PreScanProcessor {
     private context: GoertzelFilterStore;
     private bufferedProcessor: BufferedAudioProcessor<number>;
@@ -20,9 +25,17 @@ export class PreScanProcessor {
             })
         })
     }
+
+    /**
+     * @param input a window of audio of a known size
+     */
     process(input: ArrayLike<number>) {
         this.bufferedProcessor.addChunk(Array.from(input))
     }
+
+    /**
+     * Called after all the audio windows have been processed to return an aggregated result.
+     */
     getResult():{[id:number]:number;} {
         this.bufferedProcessor.flush()
         return this.harmonicStrengths;
