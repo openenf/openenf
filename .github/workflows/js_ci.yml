@@ -1,7 +1,6 @@
 name: JS CI
 on:
-  - push
-  - pull_request
+  pull_request:
 jobs:
   test:
     name: Node.js ${{ matrix.node-version }}
@@ -14,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: mymindstorm/setup-emsdk@v12
+      - uses: FedericoCarboni/setup-ffmpeg@v2
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
