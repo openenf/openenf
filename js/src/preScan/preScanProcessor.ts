@@ -1,6 +1,6 @@
 import {hann} from "../windowing/windowing";
 import {GoertzelFilterStore} from "../goertzel/GoertzelFilterStore";
-import {BufferedAudioProcessor} from "../audioProcessor/bufferedAudioProcessor";
+import {BufferedAudioProcessor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
 
 /**
  * This processor uses a regular (non-adaptive) Goertzel filter to determine the signal strengths at 50, 100, 200, 60, 120 and 240hz
