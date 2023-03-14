@@ -20,7 +20,7 @@ const buildCommand = (path:string, onComplete:() => void) => {
         .format('f32be')
         .audioCodec('pcm_f32be')
         .on('start', function(commandLine) {
-            console.log('Spawned Ffmpeg with command: ' + commandLine);
+            //console.log('Spawned Ffmpeg with command: ' + commandLine);
         })
         .on('stderr', function(stderrLine) {
             //console.error('Stderr output: ' + stderrLine);

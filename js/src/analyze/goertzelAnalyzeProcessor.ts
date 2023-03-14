@@ -4,7 +4,7 @@ import {BufferedAudioProcessor, OverlapFactor} from "../bufferedAudioProcessor/b
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {getDataForWindow} from "../goertzel/GoertzelAnalyze";
 
-export class AnalyzeProcessor {
+export class GoertzelAnalyzeProcessor {
     private context: GoertzelFilterStore;
     private bufferedProcessor: BufferedAudioProcessor<number>;
     private cursor = 0;

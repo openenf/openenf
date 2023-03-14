@@ -22,7 +22,6 @@ describe('ffmpegPreScanComponent', () => {
         const goertzelContext = new GoertzelFilterCache();
         const preScanComponent = new FfmpegPreScanComponent(goertzelContext);
         const result = await preScanComponent.preScan(absPath);
-        console.log('result', result);
         expect(result.duration).toBe(10);
         expect(result.durationSamples).toBe(441000);
         expect(result.numChannels).toBe(2);

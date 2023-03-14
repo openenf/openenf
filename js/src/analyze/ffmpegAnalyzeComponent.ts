@@ -2,7 +2,7 @@ import {PreScanResult} from "../model/preScanResult";
 import {AnalyzeComponent} from "./analyzeComponent";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
-import {AnalyzeProcessor} from "./analyzeProcessor";
+import {GoertzelAnalyzeProcessor} from "./goertzelAnalyzeProcessor";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {streamAudioFile} from "../ffmpegUtils/streamAudioFile";
 import {OverlapFactor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
@@ -16,7 +16,7 @@ export class FfmpegAnalyzeComponent implements AnalyzeComponent {
     async analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]> {
         const goertzelStore = this.goertzelFilterCache.getStore(preScanResult.sampleRate, preScanResult.sampleRate);
         const frequencies = validatePreScanResult(preScanResult, expectedFrequency);
-        const analyzeProcessor = new AnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor);
+        const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor);
         await streamAudioFile(resourceUri, preScanResult.numChannels || 1, (chunk) => {
             analyzeProcessor.process(chunk);
         })
