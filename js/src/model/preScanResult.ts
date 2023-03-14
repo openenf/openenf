@@ -6,37 +6,32 @@ export interface PreScanResult {
     /**
      * The strength of fundamental at 50hz
      */
-    h50:number | undefined;
+    h50:number;
 
     /**
      * The strength of the first harmonic at 50hz
      */
-    h100:number | undefined;
+    h100:number;
 
     /**
      * The strength of the third harmonic at 50hz
      */
-    h200:number | undefined;
+    h200:number;
 
     /**
      * The strength of the fundamental at 60hz
      */
-    h60:number | undefined;
+    h60:number;
 
     /**
      * The strength of the first harmonic at 60hz
      */
-    h120:number | undefined;
+    h120:number;
 
     /**
      * The strength of the third harmonic at 60hz
      */
-    h240:number | undefined;
-
-    /**
-     * If it can be determined the base frequency of the mains hum present in the audio signal will be added here. This is added after the prescan is complete
-     */
-    baseFrequency: 50 | 60 | undefined;
+    h240:number;
 
     /**
      * The duration of the audio in seconds. Ih almost all cases this will be populated but could be null if the resource can't be read
@@ -46,39 +41,16 @@ export interface PreScanResult {
     /**
      * The sample rate of the audio. Usually 44.1Khz or 48Khz.
      */
-    sampleRate: number | undefined;
+    sampleRate: number;
 
     /**
      * The total number of samples.
      */
-    durationSamples: number | undefined;
+    durationSamples: number;
 
     /**
      * The number of channels. Usually 1 (mono) or 2 (stereo)
      */
-    numChannels: number | undefined;
-
-    /*get50Strength(): number {
-        return this.h50 + this.h100 + this.h200
-    }
-
-    get60Strength(): number {
-        return this.h60 + this.h120 + this.h240
-    }
-
-    getRecommendedHarmonic(): number {
-        const harmonicStrengths = {
-            h50: this.h50,
-            h100: this.h100,
-            h200: this.h200,
-            h60: this.h60,
-            h120: this.h120,
-            h240: this.h240,
-        };
-        const key = Object.keys(harmonicStrengths).reduce((prev, current) => {
-            return harmonicStrengths[prev] > harmonicStrengths[current] ? prev : current
-        })
-        return parseInt(key)
-    }*/
+    numChannels: number;
 }
 
