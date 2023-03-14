@@ -22,8 +22,10 @@ export interface ENFProcessor {
      * an optional date to start searching from
      * @param to
      * an optional date at which to stop searching
+     * @param expectedFrequency
+     * an optional integer of either 50 or 60 defining the expected frequency of the mains hum on the recording
      */
-    performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date): Promise<ENFAnalysis>
+    performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?: 50|60): Promise<ENFAnalysis>
 
     /**
      Fired when any stage of the analysis progresses. The number returned by the event is between 0 and 1 and represents the
@@ -71,14 +73,15 @@ export interface ENFProcessor {
      * @param resourceUri
      * A URI pointing towards an audiovisual source.
      * @param preScanResult
-     * An optional preScanResult object from the previous step. Implementations of analyze should be able to execute
-     * without a {@link PreScanResult} but including one should allow the implementation to:
+     * A preScanResult object from the previous step. A preScanResult allows the analysis step to:
      * - decide if an analysis should run at all
      * - decide which frequencies to scan for
+     * @param expectedFrequency optional, the expected mains frequency, if passed by the user. You'd use this if you know
+     * that the audio was recorded in, for example, Central Europe, so the expected frequency would be 50HZ
      *
      * @throws {NoMatch} if the {@link PreScanResult} indicates a full analysis should not take place
      */
-    analyze(resourceUri: string, preScanResult?: PreScanResult): Promise<AnalysisWindowResult[]>
+    analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency: 50|60|undefined): Promise<AnalysisWindowResult[]>
 
     /**
      Fired when a window of audio has been analyzed. The number in the second argument is between 0 and 1 and represents
