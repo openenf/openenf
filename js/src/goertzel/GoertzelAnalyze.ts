@@ -1,12 +1,13 @@
 import {FrequencyRequestCache} from "./FrequencyRequestCache";
+import {GoertzelHarmonicResult} from "./GoertzelHarmonicResult";
 
-const detectPeakAround = (goertzelRequestCache:FrequencyRequestCache, target:number):any => {
+const detectPeakAround = (goertzelRequestCache:FrequencyRequestCache, target:number):{hz:number,amp:number} => {
     const min = target - 1.5;
     const max = target + 1.5;
     let currentMinHz = min;
     let currentMaxHz = max;
     let amp = 0;
-    let hz;
+    let hz = -1;
     let i = 0;
     while (i < 1000) { //Artificial hard limit here. We should quit well before i = 1000 but this is just a stopgap in case something goes wrong
         const currentAvgHz = (currentMinHz + currentMaxHz) / 2;
@@ -43,9 +44,15 @@ const detectDeviationAround = (goertzelRequestCache:FrequencyRequestCache, peak:
     return getStandardDeviation(freqs)
 }
 
-export const getDataForWindow = (freq:number, requestCache:FrequencyRequestCache):any => {
-    const result = detectPeakAround(requestCache, freq);
-    result.deviation = detectDeviationAround(requestCache, result.hz);
-    result.confidence = result.deviation / result.amp;
-    return result;
+/**
+ * Returns a {@link GoertzelHarmonicResult} at the specified frequency for the audio contained in the {@link FrequencyRequestCache}
+ * @param freq The target frequency to analyse, e.g. 50Hz, 120Hz, etc. This function will return the peak frequency within +-0.5HZ of the target
+ * @param requestCache The frequency request cache for the audio window you want to analyse
+ */
+export const getDataForWindow = (freq:number, requestCache:FrequencyRequestCache):GoertzelHarmonicResult => {
+    const {amp,hz} = detectPeakAround(requestCache, freq);
+    const deviation = detectDeviationAround(requestCache, hz);
+    const confidence = deviation / amp;
+    return {amp,hz,standardDev: deviation,confidence,target:freq};
 }
+

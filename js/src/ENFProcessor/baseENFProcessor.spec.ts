@@ -29,17 +29,16 @@ describe('BaseAnalyzer', () => {
     })
     it('Sends data to analysis component when fullAnalysisInvoked', async () => {
         const preScanResult:PreScanResult = {
-            baseFrequency: undefined,
             duration: undefined,
-            durationSamples: undefined,
-            h100: undefined,
-            h120: undefined,
-            h200: undefined,
-            h240: undefined,
-            h50: undefined,
-            h60: undefined,
-            numChannels: undefined,
-            sampleRate: undefined
+            durationSamples: 0,
+            h100: 0,
+            h120: 0,
+            h200: 0,
+            h240: 0,
+            h50: 0,
+            h60: 0,
+            numChannels: 0,
+            sampleRate: 0
         }
         let eventFired = false;
         const baseAnalyzer = new BaseENFProcessor(
@@ -240,17 +239,16 @@ describe('BaseAnalyzer', () => {
     })
     it('Attaches correct stage results during performFullAnalysis()', async () => {
         const preScanResult:PreScanResult = {
-            baseFrequency: undefined,
             duration: undefined,
-            durationSamples: undefined,
-            h100: undefined,
-            h120: undefined,
-            h200: undefined,
-            h240: undefined,
-            h50: undefined,
-            h60: undefined,
-            numChannels: undefined,
-            sampleRate: undefined
+            durationSamples: 0,
+            h100: 0,
+            h120: 0,
+            h200: 0,
+            h240: 0,
+            h50: 0,
+            h60: 0,
+            numChannels: 0,
+            sampleRate: 0
         }
         const analyzeResult:AnalysisWindowResult[] = [];
         const reduceResult:number[] = [];
