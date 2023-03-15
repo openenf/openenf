@@ -32,6 +32,7 @@
 	"devDependencies": {
 		"@types/fluent-ffmpeg": "^2.1.21",
 		"@types/jest": "^29.4.0",
+		"compute-kurtosis": "^1.0.0",
 		"jest": "^29.4.3",
 		"ts-jest": "^29.0.5",
 		"xo": "^0.37.0"
