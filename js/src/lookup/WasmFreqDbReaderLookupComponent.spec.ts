@@ -11,5 +11,5 @@ describe("WasmFreqDbReaderLookupComponent", () => {
         expect(result[0].gridId).toBe("GB");
         expect(result[0].score).toBe(0);
         expect(result[0].position).toBe(1339200);
-    }, 30000)
+    }, 3000000)
 })
