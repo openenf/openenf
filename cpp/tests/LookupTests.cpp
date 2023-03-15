@@ -33,9 +33,30 @@ TEST_CASE("can do single thread lookup on large file") {
 TEST_CASE("can do 8 thread lookup on large file") {
     FsFreqDbReader fsFreqDbReader(resolvePath("tests/GB_50_Jan2014.freqdb"));
     std::vector<int16_t> lookupFreqs = {-7,-6,-2,-2,1,2,5,1,1,3,4,4,5,5,6,4,2,1,-4,-5,-9,-11,-14,-13,-15,-15,-19,-25,-26,-31,-35,-38,-39,-39,-38,-40,-40,-38,-37,-38,-38,-40,-41,-41,-44,-46,-46,-44,-47,-46,-48,-49,-48,-48,-48,-46,-45,-47,-47,-49,-49,-50,-50,-52,-53,-51,-53,-51,-49,-46,-46,-44,-44,-42,-39,-40,-39,-37,-39,-36,-36,-37,-36,-37,-36,-37,-37,-36,-33,-31,-29,-29,-28,-26,-25,-23,-23,-22,-22,-21};
-    std::vector<LookupResult> result = fsFreqDbReader.lookup(lookupFreqs, 2, 0, 2678400, 8);
+    std::vector<LookupResult> result = fsFreqDbReader.lookup(lookupFreqs, 15, 0, 2678400, 8);
     CHECK(result[0].position == 1339200);
     CHECK(result[0].score == 0);
+    CHECK(result.size() == 53);
+    for(int i = 0; i < result.size(); i++) {
+        std::cout << "Position: " << result[i].position << " Score: " <<result[i].score  << std::endl;
+    }
+}
+
+TEST_CASE("can do comprehensive lookup around the range provided.") {
+    FsFreqDbReader fsFreqDbReader(resolvePath("tests/GB_50_Jan2014.freqdb"));
+    std::vector<int16_t> lookupFreqs = {-7,-6,-2,-2,1,2,5,1,1,3,4,4,5,5,6,4,2,1,-4,-5,-9,-11,-14,-13,-15,-15,-19,-25,-26,-31,-35,-38,-39,-39,-38,-40,-40,-38,-37,-38,-38,-40,-41,-41,-44,-46,-46,-44,-47,-46,-48,-49,-48,-48,-48,-46,-45,-47,-47,-49,-49,-50,-50,-52,-53,-51,-53,-51,-49,-46,-46,-44,-44,-42,-39,-40,-39,-37,-39,-36,-36,-37,-36,-37,-36,-37,-37,-36,-33,-31,-29,-29,-28,-26,-25,-23,-23,-22,-22,-21};
+    std::vector<LookupResult> result = fsFreqDbReader.comprehensiveLookup(lookupFreqs, 1339200, 2, 2);
+    CHECK(result.size() == 5);
+    CHECK(result[0].position == 1339198);
+    CHECK(result[0].score == 247);
+    CHECK(result[1].position == 1339199);
+    CHECK(result[1].score == 152);
+    CHECK(result[2].position == 1339200);
+    CHECK(result[2].score == 0);
+    CHECK(result[3].position == 1339201);
+    CHECK(result[3].score == 155);
+    CHECK(result[4].position == 1339202);
+    CHECK(result[4].score == 253);
 }
 
 TEST_CASE("can do lookup passing only frequency array and maxSingleDiff parameter") {

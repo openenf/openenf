@@ -12,10 +12,10 @@ namespace LookupHelpers {
             result.reserve(2);
             int chunkRemainder = 0;
             if (i == numThreads - 1) {
-                chunkRemainder = remainder;
+                chunkRemainder = remainder + 1;
             }
             int start = i * startInterval;
-            int end = std::min(arrayLength, ((i+1) * startInterval) - 1 + freqLength + chunkRemainder);
+            int end = std::min(arrayLength, ((i+1) * startInterval) - 1 + chunkRemainder);
             result.push_back(start);
             result.push_back(end);
             results.push_back(result);
@@ -116,10 +116,10 @@ TEST_CASE("get array thread bounds works") {
     std::vector<std::vector<int>> result = LookupHelpers::getArrayThreadBounds(arrayLength, numThreads, freqLength);
     CHECK(result.size() == numThreads);
     CHECK(result[0][0] == 0);
-    CHECK(result[0][1] == 9);
+    CHECK(result[0][1] == 4);
 
     CHECK(result[1][0] == 5);
-    CHECK(result[1][1] == 14);
+    CHECK(result[1][1] == 9);
 
     CHECK(result[2][0] == 10);
     CHECK(result[2][1] == 17);
