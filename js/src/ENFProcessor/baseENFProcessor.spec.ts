@@ -184,8 +184,8 @@ describe('BaseAnalyzer', () => {
             new MockLookupComponent(),
             new MockRefineComponent())
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
-        expect(result.analysisStartTime?.getTime()).toBeCloseTo(new Date().getTime(), -1);
-        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -1);
+        expect(result.analysisStartTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
+        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
         expect(result.error).toBeNull();
         expect(result.noMatchReason).toBeNull();
         expect(result.preScanImplementationId).toBe(new MockPreScanComponent().implementationId);

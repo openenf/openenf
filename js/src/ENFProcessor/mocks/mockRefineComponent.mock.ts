@@ -12,7 +12,7 @@ export class MockRefineComponent implements RefineComponent {
         this.result = result;
     }
 
-    refine(lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]> {
+    refine(lookupFrequencies: (number|null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]> {
         if (this.onRefine) {
             this.onRefine(lookupResults)
         }

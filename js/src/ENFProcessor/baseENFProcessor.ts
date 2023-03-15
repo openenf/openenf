@@ -93,7 +93,7 @@ export class BaseENFProcessor implements ENFProcessor {
         if (!enfAnalysis.lookupResults) {
             return this.closeOutENFAnalysis(enfAnalysis)
         }
-        enfAnalysis.ENFAnalysisResults = await this.refine(enfAnalysis.lookupResults)
+        enfAnalysis.ENFAnalysisResults = await this.refine(enfAnalysis.frequencies, enfAnalysis.lookupResults)
         return this.closeOutENFAnalysis(enfAnalysis);
     }
 
@@ -136,8 +136,8 @@ export class BaseENFProcessor implements ENFProcessor {
     onLookupCompleteEvent: ENFEventBase<LookupResult[]> = new ENFEventBase<LookupResult[]>()
 
     /*Refine*/
-    async refine(lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]> {
-        const result = await this.refineComponent.refine(lookupResults);
+    async refine(lookupFrequencies:(number|null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]> {
+        const result = await this.refineComponent.refine(lookupFrequencies, lookupResults);
         this.onRefineCompleteEvent.trigger(result);
         return result;
     }

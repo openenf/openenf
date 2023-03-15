@@ -170,7 +170,7 @@ export interface ENFProcessor {
      * - retrieve all the results around each peak to determine the kurtosis (peakiness) of the result
      * - convert the timestamp offsets into dates for each result
      */
-    refine(lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]>
+    refine(lookupFrequencies:(number|null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]>
 
     /**
      Fired when the refine phase is completed
