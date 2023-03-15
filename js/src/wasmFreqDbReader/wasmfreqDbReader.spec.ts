@@ -1,6 +1,6 @@
 // @ts-ignore
-import {default as Module} from '../src/lookup/freqDbReader.wasm.js';
-import {arrayToVectorInt16_t, vectorToArray} from "../src/lookup/FreqDbWasmHelpers";
+import {default as Module} from './freqDbReader.wasm.js';
+import {arrayToVectorInt16_t, vectorToArray} from "./FreqDbWasmHelpers";
 
 describe('fsFreqDbReader', () => {
     const path = "../src/lookup/freqDbReader.wasm.js"
