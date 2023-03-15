@@ -212,13 +212,14 @@ EMSCRIPTEN_BINDINGS(FsFreqDbReader) {
         .property("position", &LookupResult::position)
         .property("score", &LookupResult::score);
     class_<ResultLeague>("ResultLeague")
-         .constructor<unsigned int>()
+        .constructor<unsigned int>()
         .property("results", &ResultLeague::results)
         .function("add", &ResultLeague::add);
     class_<FsFreqDbReader>("FsFreqDbReader")
         .constructor<std::string>()
         .property("freqDbMetaData", &FsFreqDbReader::freqDbMetaData)
         .function("readDbToVector", &FsFreqDbReader::readDbToVector)
+        .function("comprehensiveLookup", &FsFreqDbReader::comprehensiveLookup)
         .function("lookup", select_overload<std::vector<LookupResult>(std::vector<int16_t>,int,int,int,int)>(&FsFreqDbReader::lookup), allow_raw_pointers());
 }
 #endif
