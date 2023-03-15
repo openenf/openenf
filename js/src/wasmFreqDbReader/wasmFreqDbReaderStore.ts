@@ -1,4 +1,6 @@
 import {arrayToVectorInt16_t} from "./FreqDbWasmHelpers";
+import fs from 'fs';
+import * as path from "path";
 
 export class WasmFreqDbReaderStore {
     private storeLocations: { [gridId: string]: string };
@@ -7,7 +9,11 @@ export class WasmFreqDbReaderStore {
     private wasmModulePath: string;
     private wasmModuleLoaded: Boolean = false;
     constructor(wasmModulePath:string, storeLocations?:{[gridId:string]:string;}) {
-        this.wasmModulePath = wasmModulePath;
+        const absolutePath = path.resolve(wasmModulePath);
+        if (!fs.existsSync(absolutePath)) {
+            throw new Error(`File '${absolutePath}' not found`);
+        }
+        this.wasmModulePath = absolutePath;
         this.storeLocations = storeLocations || {};
     }
 
