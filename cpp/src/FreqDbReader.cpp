@@ -95,7 +95,7 @@ std::vector<LookupResult> FsFreqDbReader::resultLeagueToLookupResults(ResultLeag
 
 std::vector<LookupResult> FsFreqDbReader::lookupInternal(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, ResultLeague& resultLeague) {
     std::vector<int16_t> largeArray = this->readDbToVector();
-    this->threadSafeLookup(startTime, endTime, freqs, maxSingleDiff, largeArray, resultLeague);
+    this->threadSafeLookup(startTime, endTime, freqs, maxSingleDiff, largeArray, [&resultLeague](int score, int position){resultLeague.add(score, position);});
     return FsFreqDbReader::resultLeagueToLookupResults(resultLeague);
 }
 
@@ -108,7 +108,7 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int
     for(int i = 0; i < threadBounds.size(); i++) {
         std::vector<int16_t> clone(freqsSize);
         copy(freqs.begin(), freqs.end(),clone.begin());
-        threads.emplace_back(&FsFreqDbReader::threadSafeLookup, this, threadBounds[i][0] + startTime, threadBounds[i][1] + startTime, clone, maxSingleDiff, largeArray, std::ref(resultLeague));
+        threads.emplace_back(&FsFreqDbReader::threadSafeLookup, this, threadBounds[i][0] + startTime, threadBounds[i][1] + startTime, clone, maxSingleDiff, largeArray, [&resultLeague](int score, int position){resultLeague.add(score, position);});
     }
     for (std::thread& t : threads) {
         t.join();
@@ -122,7 +122,7 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, in
 }
 
 void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<int16_t> freqs, int maxSingleDiff,
-                                      std::vector<int16_t> largeArray, ResultLeague &resultArray) {
+                                      std::vector<int16_t> largeArray, std::function<void(int,int)> onNewResult ) {
     int i = startTime;
     int resultPosition = startTime -1;
     std::vector<int16_t> scores;
@@ -160,7 +160,7 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
             resultPosition++;
             int16_t front = scores.front();
             if (front != -32768) {
-                resultArray.add(front, resultPosition);
+                onNewResult(front, resultPosition);
             }
             scores.erase(scores.begin());
         }
@@ -175,6 +175,21 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t *> vector1,
 std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff) {
     ResultLeague resultArray = ResultLeague(100);
     return this->lookupInternal(LookupHelpers::pointerToNonPointerVector(freqs), maxSingleDiff, 0, this->duration, std::ref(resultArray));
+}
+
+std::vector<LookupResult> FsFreqDbReader::comprehensiveLookup(std::vector<int16_t> freqs, int aroundTs, int diffBefore, int diffAfter) {
+    int startTime = aroundTs - diffBefore;
+    int endTime = aroundTs + diffAfter;
+    int totalResults = endTime - startTime;
+    int maxSingleDiff = 10000;
+    std::vector<int16_t> largeArray = this->readDbToVector();
+    std::vector<LookupResult> results;
+    this->threadSafeLookup(startTime,endTime,freqs,maxSingleDiff,largeArray,[&results](int score, int position){
+        LookupResult lookupResult;
+        lookupResult.position = position;
+        lookupResult.score = score;
+        results.push_back(lookupResult); });
+    return results;
 }
 
 #if __EMSCRIPTEN__
@@ -197,13 +212,14 @@ EMSCRIPTEN_BINDINGS(FsFreqDbReader) {
         .property("position", &LookupResult::position)
         .property("score", &LookupResult::score);
     class_<ResultLeague>("ResultLeague")
-         .constructor<unsigned int>()
+        .constructor<unsigned int>()
         .property("results", &ResultLeague::results)
         .function("add", &ResultLeague::add);
     class_<FsFreqDbReader>("FsFreqDbReader")
         .constructor<std::string>()
         .property("freqDbMetaData", &FsFreqDbReader::freqDbMetaData)
         .function("readDbToVector", &FsFreqDbReader::readDbToVector)
+        .function("comprehensiveLookup", &FsFreqDbReader::comprehensiveLookup)
         .function("lookup", select_overload<std::vector<LookupResult>(std::vector<int16_t>,int,int,int,int)>(&FsFreqDbReader::lookup), allow_raw_pointers());
 }
 #endif
