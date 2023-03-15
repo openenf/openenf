@@ -970,13 +970,13 @@ var tempDouble;
 var tempI64;
 
 var ASM_CONSTS = {
- 33476: () => {
+ 34132: () => {
   FS.mkdir("/temp");
   FS.mount(NODEFS, {
    root: "."
   }, "/temp");
  },
- 33536: () => {
+ 34192: () => {
   FS.unmount("/temp");
   FS.rmdir("/temp");
  }
