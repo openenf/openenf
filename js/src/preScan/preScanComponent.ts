@@ -1,5 +1,5 @@
 import {ENFComponent} from "../ENFProcessor/ENFComponent";
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {PreScanUpdate} from "../model/preScanUpdate";
 
@@ -8,5 +8,5 @@ import {PreScanUpdate} from "../model/preScanUpdate";
  */
 export interface PreScanComponent extends ENFComponent {
     preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>;
-    preScan(resourceUri: string): Promise<PreScanResult>
+    preScan(resourceUri: string): Promise<PreScanResultLike>
 }

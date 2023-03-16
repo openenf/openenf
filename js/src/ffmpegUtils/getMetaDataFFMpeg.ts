@@ -1,5 +1,5 @@
 import * as ffmpeg from "fluent-ffmpeg";
-import {AudioFileMetadata} from "./audioFileMetadata";
+import {AudioFileMetadata} from "../preScan/audioFileMetadata";
 import {NoMatch} from "../ENFProcessor/noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
 
@@ -7,7 +7,7 @@ import {NoMatchReason} from "../model/noMatchReason";
  * Uses {@link ffmpeg.ffprobe} to extract metadata from the audio file before analysis begins.
  * @param path
  */
-export const getMetaData = async (path:string):Promise<AudioFileMetadata> => {
+export const getMetaDataFFMpeg = async (path:string):Promise<AudioFileMetadata> => {
     return new Promise<AudioFileMetadata>((resolve,reject) => {
         ffmpeg.ffprobe(path, function(err, metadata) {
             if (err) {

@@ -1,7 +1,7 @@
 /**
  * The result of a pre-scan operation. Describes overall strengths of the first 3 harmonics at 50hz and 60hz for a piece of audio.
  */
-export interface PreScanResult {
+export interface PreScanResultLike {
 
     /**
      * The strength of fundamental at 50hz
@@ -53,4 +53,5 @@ export interface PreScanResult {
      */
     numChannels: number;
 }
+
 

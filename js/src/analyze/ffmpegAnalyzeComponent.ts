@@ -1,4 +1,4 @@
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {AnalyzeComponent} from "./analyzeComponent";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
@@ -12,8 +12,13 @@ export class FfmpegAnalyzeComponent implements AnalyzeComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>();
     readonly implementationId: string = "FfmpegAnalyzeComponent.0.0.1"
     private overlapFactor: OverlapFactor;
+    private goertzelFilterCache: GoertzelFilterCache;
+    constructor(goertzelFilterCache: GoertzelFilterCache, overlapFactor:OverlapFactor) {
+        this.goertzelFilterCache = goertzelFilterCache;
+        this.overlapFactor = overlapFactor;
+    }
 
-    async analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]> {
+    async analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]> {
         const goertzelStore = this.goertzelFilterCache.getStore(preScanResult.sampleRate, preScanResult.sampleRate);
         const frequencies = validatePreScanResult(preScanResult, expectedFrequency);
         const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor);
@@ -22,11 +27,5 @@ export class FfmpegAnalyzeComponent implements AnalyzeComponent {
         })
         const result = analyzeProcessor.getResult();
         return result;
-    }
-
-    private goertzelFilterCache: GoertzelFilterCache;
-    constructor(goertzelFilterCache: GoertzelFilterCache, overlapFactor:OverlapFactor) {
-        this.goertzelFilterCache = goertzelFilterCache;
-        this.overlapFactor = overlapFactor;
     }
 }
