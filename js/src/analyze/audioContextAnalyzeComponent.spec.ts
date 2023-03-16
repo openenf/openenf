@@ -1,12 +1,13 @@
 import {FfmpegAnalyzeComponent} from "./ffmpegAnalyzeComponent";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {PreScanResultLike} from "../model/preScanResultLike";
+import {AudioContextAnalyzeComponent} from "./audioContextAnalyzeComponent";
 
 describe('ffmpegAnalyzeComponent', () => {
     it('can extract frequency data from synthesized saw wave', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new FfmpegAnalyzeComponent(goertzelFilterCache,1);
+        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache,1);
         const preScanResult:PreScanResultLike = {
             duration: 10,
             durationSamples: 441000,
@@ -26,7 +27,7 @@ describe('ffmpegAnalyzeComponent', () => {
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new FfmpegAnalyzeComponent(goertzelFilterCache,1);
+        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache,1);
         const preScanResult:PreScanResultLike = {
             duration: 99,
             durationSamples: 4365900,

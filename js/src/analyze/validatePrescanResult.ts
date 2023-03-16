@@ -1,4 +1,4 @@
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {NoMatch} from "../ENFProcessor/noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
 
@@ -16,7 +16,7 @@ import {NoMatchReason} from "../model/noMatchReason";
  * @todo return more than one value from the validation. At the time of writing (March 2023) implementations of AnalyzeComponent
  *   only analyze one harmonic but it's likely we'll get more accurate results if we analyze multiple harmonics and combine the results
  */
-export const validatePreScanResult = (preScanResult:PreScanResult, expectedFrequency?:50|60):number[] => {
+export const validatePreScanResult = (preScanResult:PreScanResultLike, expectedFrequency?:50|60):number[] => {
     const minimumRelativeStrength = 5;
     const fifties = [preScanResult.h50, preScanResult.h100, preScanResult.h200];
     const sixties = [preScanResult.h60, preScanResult.h120, preScanResult.h240];

@@ -6,13 +6,15 @@ import {GoertzelReduceComponent} from "../reduce/goertzelReduceComponent";
 import {WasmFreqDbReaderLookupComponent} from "../lookup/wasmFreqDbReaderLookupComponent";
 import {WasmFreqDbReaderStore} from "../wasmFreqDbReader/wasmFreqDbReaderStore";
 import {WasmFreqDbReaderRefineComponent} from "../refine/wasmFreqDbReaderRefineComponent";
+import {AudioContextPreScanComponent} from "../preScan/audioContextPreScanComponent";
+import {AudioContextAnalyzeComponent} from "../analyze/audioContextAnalyzeComponent";
 
 describe("BaseENFProcessor", () => {
 
     const overlapFactor = 1;
     const goertzelFilterCache = new GoertzelFilterCache();
-    const preScanComponent = new FfmpegPreScanComponent(goertzelFilterCache);
-    const analyzeComponent = new FfmpegAnalyzeComponent(goertzelFilterCache, overlapFactor);
+    const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
+    const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
     const reduceComponent = new GoertzelReduceComponent(overlapFactor);
     const dbPath = "test/testFreqDbs/GB_50_Jan2014.freqdb";
     const wasmPath = "src/wasmFreqDbReader/freqDbReader.wasm.js"
