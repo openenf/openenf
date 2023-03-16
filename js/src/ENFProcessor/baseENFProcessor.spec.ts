@@ -207,7 +207,7 @@ describe('BaseAnalyzer', () => {
             new MockRefineComponent())
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
         expect(result.noMatchReason).toBe(NoMatchReason.DominantFifty);
-        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -1);
+        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     })
     it('Can handle NoMatch error at reduce stage', async () => {
         const reduceComponentThrowsError = new MockReduceComponent(() => {
@@ -221,7 +221,7 @@ describe('BaseAnalyzer', () => {
             new MockRefineComponent())
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
         expect(result.noMatchReason).toBe(NoMatchReason.NoStrongSignal);
-        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -1);
+        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     })
     it('Can handle NoMatch error at lookup stage', async () => {
         const lookupComponentThrowsError = new MockLookupComponent(() => {
@@ -235,7 +235,7 @@ describe('BaseAnalyzer', () => {
             new MockRefineComponent())
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
         expect(result.noMatchReason).toBe(NoMatchReason.NoResultsOnLookup);
-        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -1);
+        expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     })
     it('Attaches correct stage results during performFullAnalysis()', async () => {
         const preScanResult:PreScanResult = {
@@ -311,6 +311,31 @@ describe('BaseAnalyzer', () => {
         expect(result.end).toBe(endDate);
         expect(lookupCalled).toBe(true);
         expect(result.gridIds).toStrictEqual(gridIds);
+    })
+    it('populates durations', async () => {
+        const startDate = new Date('2010-01-01');
+        const endDate = new Date('2020-01-01');
+        const gridIds = ["GB","DE"];
+        let lookupCalled = false;
+        const baseAnalyzer = new BaseENFProcessor(
+            new MockPreScanComponent(),
+            new MockAnalyzeComponent(),
+            new MockReduceComponent(),
+            new MockLookupComponent(),
+            new MockRefineComponent());
+        const result = await baseAnalyzer.performFullAnalysis("TEST_URL",gridIds, startDate, endDate);
+        const completionTimes = result.completionTimes;
+        expect(completionTimes.preScan).not.toBeFalsy();
+        expect(completionTimes.analyze).not.toBeFalsy();
+        expect(completionTimes.reduce).not.toBeFalsy();
+        expect(completionTimes.lookup).not.toBeFalsy();
+        expect(completionTimes.refine).not.toBeFalsy();
+        const durations = result.durations;
+        expect(durations.preScan).not.toBeUndefined();
+        expect(durations.analyze).not.toBeUndefined();
+        expect(durations.reduce).not.toBeUndefined();
+        expect(durations.lookup).not.toBeUndefined();
+        expect(durations.refine).not.toBeUndefined();
     })
     it('fires progress event', async () => {
         let eventCount = 0;

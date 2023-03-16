@@ -4,6 +4,8 @@ import {LookupResult} from "./lookupResult";
 import {ENFAnalysisResult} from "./ENFAnalysisResult";
 import {PreScanResult} from "./preScanResult";
 import * as crypto from "crypto";
+import {CompletionTimes} from "./CompletionTimes";
+import {StageDurations} from "./StageDurations";
 
 /**
  * Represents an occurrence of ENF Analysis for a specific media file
@@ -11,11 +13,13 @@ import * as crypto from "crypto";
  * A single media resource could be analysed several times. The `ENFAnalysis` object represents one analysis event.
  */
 export class ENFAnalysis {
+    durations: StageDurations
 
     constructor(uri: string, id?: string) {
         this.id = id || crypto.randomUUID();
         this.uri = uri;
         this.analysisStartTime = new Date();
+        this.durations = new StageDurations(this.analysisStartTime, this.completionTimes);
     }
 
     /**
@@ -166,4 +170,7 @@ export class ENFAnalysis {
      * "WithKurtosis1.1"
      */
     public refineImplementationId: string | null = null;
+
+    public completionTimes: CompletionTimes = new CompletionTimes()
 }
+

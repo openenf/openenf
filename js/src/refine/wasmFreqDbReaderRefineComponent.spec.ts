@@ -10,7 +10,8 @@ describe("WasmFreqDbReaderRefineComponent", () => {
             {score: 155, position: 1339201, gridId: 'GB'},
             {score: 247, position: 1339198, gridId: 'GB'},
             {score: 253, position: 1339202, gridId: 'GB'},
-            {score: 339, position: 1339197, gridId: 'GB'}
+            {score: 339, position: 1339197, gridId: 'GB'},
+            {score: 391, position: 1239197, gridId: 'GB'}
         ];
         const dbPath = "test/testFreqDbs/GB_50_Jan2014.freqdb";
         const wasmPath = "src/wasmFreqDbReader/freqDbReader.wasm.js"
@@ -25,6 +26,13 @@ describe("WasmFreqDbReaderRefineComponent", () => {
                 normalisedScore: 0,
                 score: 0,
                 time: new Date("2014-01-16T12:00:00.000Z")
+            },
+            {
+                gridId: "GB",
+                kurtosis: -1.4222159661636022,
+                normalisedScore: 3.91,
+                score: 391,
+                time: new Date("2014-01-15T08:13:17.000Z"),
             }
         ])
     })
