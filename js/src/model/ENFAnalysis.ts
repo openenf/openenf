@@ -2,7 +2,7 @@ import {NoMatchReason} from "./noMatchReason";
 import {AnalysisWindowResult} from "./analysisWindowResult";
 import {LookupResult} from "./lookupResult";
 import {ENFAnalysisResult} from "./ENFAnalysisResult";
-import {PreScanResult} from "./preScanResult";
+import {PreScanResultLike} from "./preScanResultLike";
 import * as crypto from "crypto";
 import {CompletionTimes} from "./CompletionTimes";
 import {StageDurations} from "./StageDurations";
@@ -80,7 +80,7 @@ export class ENFAnalysis {
     /**
      * The result of the Pre-scan will be populated here when complete.
      */
-    public preScanResult: PreScanResult | null = null;
+    public preScanResult: PreScanResultLike | null = null;
 
     /**
      * A string identifying the preScan implementation used in this analysis

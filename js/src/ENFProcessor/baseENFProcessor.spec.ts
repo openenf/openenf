@@ -8,7 +8,7 @@ import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {LookupResult} from "../model/lookupResult";
 import {NoMatch} from "./noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
 import {ENFAnalysis} from "../model/ENFAnalysis";
 
@@ -28,7 +28,7 @@ describe('BaseAnalyzer', () => {
         expect(urlReceived).toBe("TEST_URL");
     })
     it('Sends data to analysis component when fullAnalysisInvoked', async () => {
-        const preScanResult:PreScanResult = {
+        const preScanResult:PreScanResultLike = {
             duration: undefined,
             durationSamples: 0,
             h100: 0,
@@ -238,7 +238,7 @@ describe('BaseAnalyzer', () => {
         expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     })
     it('Attaches correct stage results during performFullAnalysis()', async () => {
-        const preScanResult:PreScanResult = {
+        const preScanResult:PreScanResultLike = {
             duration: undefined,
             durationSamples: 0,
             h100: 0,

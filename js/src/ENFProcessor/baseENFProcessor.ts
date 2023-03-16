@@ -3,7 +3,7 @@ import {LookupResult} from "../model/lookupResult";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {ENFAnalysis} from "../model/ENFAnalysis";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {PreScanUpdate} from "../model/preScanUpdate";
 import {ENFEventBase} from "./events/ENFEventBase";
 import {LookupComponent} from "../lookup/lookupComponent";
@@ -108,16 +108,16 @@ export class BaseENFProcessor implements ENFProcessor {
     fullAnalysisCompleteEvent: ENFEventBase<ENFAnalysis> = new ENFEventBase<ENFAnalysis>();
 
     /*PreScan*/
-    async preScan(resourceUri: string): Promise<PreScanResult> {
+    async preScan(resourceUri: string): Promise<PreScanResultLike> {
         const result = await this.preScanComponent.preScan(resourceUri)
         this.onPreScanCompleteEvent.trigger(result);
         return result;
     }
     onPreScanProgressEvent: ENFEventBase<[PreScanUpdate, number]> = new ENFEventBase<[PreScanUpdate, number]>();
-    onPreScanCompleteEvent: ENFEventBase<PreScanResult> = new ENFEventBase<PreScanResult>();
+    onPreScanCompleteEvent: ENFEventBase<PreScanResultLike> = new ENFEventBase<PreScanResultLike>();
 
     /*Analyze*/
-    async analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency:50|60|undefined): Promise<AnalysisWindowResult[]> {
+    async analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency:50|60|undefined): Promise<AnalysisWindowResult[]> {
         const result = await this.analyzeComponent.analyze(resourceUri, preScanResult, expectedFrequency);
         this.onAnalyzeCompleteEvent.trigger(result);
         return result;

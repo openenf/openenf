@@ -1,5 +1,5 @@
 import {ENFComponent} from "../ENFProcessor/ENFComponent";
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {PreScanUpdate} from "../model/preScanUpdate";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
@@ -9,6 +9,6 @@ import {AnalysisWindowResult} from "../model/analysisWindowResult";
  */
 export interface AnalyzeComponent extends ENFComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>;
-    analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]>
+    analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]>
 }
 

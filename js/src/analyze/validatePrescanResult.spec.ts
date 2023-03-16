@@ -1,9 +1,9 @@
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {validatePreScanResult} from "./validatePrescanResult";
 
 describe('validatePreScanResult', () => {
     it('result with a single sin wave at 50 to return result [50]', () => {
-        const preScanResult:PreScanResult = {
+        const preScanResult:PreScanResultLike = {
             duration: 1,
             durationSamples: 44100,
             h100: 0,

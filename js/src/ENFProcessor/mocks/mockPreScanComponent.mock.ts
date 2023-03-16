@@ -1,14 +1,14 @@
 import {ENFEventBase} from "../events/ENFEventBase";
 import {PreScanUpdate} from "../../model/preScanUpdate";
-import {PreScanResult} from "../../model/preScanResult";
+import {PreScanResultLike} from "../../model/preScanResultLike";
 import {PreScanComponent} from "../../preScan/preScanComponent";
 
 export class MockPreScanComponent implements PreScanComponent {
     private readonly onPreScan: any;
 
-    constructor(onPreScan?:(resourceUri:string) => void, result?: PreScanResult) {
+    constructor(onPreScan?:(resourceUri:string) => void, result?: PreScanResultLike) {
         this.onPreScan = onPreScan;
-        const defaultPreScanResult:PreScanResult = {
+        const defaultPreScanResult:PreScanResultLike = {
             duration: undefined,
             durationSamples: 0,
             h100: 0,
@@ -23,12 +23,12 @@ export class MockPreScanComponent implements PreScanComponent {
         this.result = result || defaultPreScanResult;
     }
 
-    result: PreScanResult;
+    result: PreScanResultLike;
 
     readonly implementationId: string = "MockPreScanComponent";
     preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]> = new ENFEventBase<[PreScanUpdate, number]>();
 
-    preScan(resourceUri: string): Promise<PreScanResult> {
+    preScan(resourceUri: string): Promise<PreScanResultLike> {
         if (this.onPreScan) {
             this.onPreScan(resourceUri)
         }

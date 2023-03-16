@@ -1,5 +1,5 @@
 import {ENFAnalysis} from "../model/ENFAnalysis";
-import {PreScanResult} from "../model/preScanResult";
+import {PreScanResultLike} from "../model/preScanResultLike";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {LookupResult} from "../model/lookupResult";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
@@ -43,12 +43,12 @@ export interface ENFProcessor {
     /**
      * Performs a pre-scan of the supplied resource. A pre-scan should analyze the resource as quickly as possible
      * and return frequency strengths at the fundamental and first 2 harmonics at both 50 and 60HZ
-     * (so 50Hz, 100Hz, 200Hz and 60Hz, 120Hz and 180Hz). The {@link PreScanResult} can then be passed to the
+     * (so 50Hz, 100Hz, 200Hz and 60Hz, 120Hz and 180Hz). The {@link PreScanResultLike} can then be passed to the
      * {@link analyze} function to determine if a full analysis should take place and at what frequency(s)
      * @param resourceUri
      * A URI pointing towards an audiovisual source.
      */
-    preScan(resourceUri: string): Promise<PreScanResult>
+    preScan(resourceUri: string): Promise<PreScanResultLike>
 
     /**
      * Fired when a new window of audio has been pre-scanned. The number in the second argument is between 0 and 1 and
@@ -61,7 +61,7 @@ export interface ENFProcessor {
      * Fired when a pre-scan has completed
      * @eventProperty
      */
-    readonly onPreScanCompleteEvent: ENFEventBase<PreScanResult>
+    readonly onPreScanCompleteEvent: ENFEventBase<PreScanResultLike>
 
     /**
      * Extracts mains-hum frequencies from the supplied resource. The returned {@link AnalysisWindowResult}[]
@@ -79,9 +79,9 @@ export interface ENFProcessor {
      * @param expectedFrequency optional, the expected mains frequency, if passed by the user. You'd use this if you know
      * that the audio was recorded in, for example, Central Europe, so the expected frequency would be 50HZ
      *
-     * @throws {NoMatch} if the {@link PreScanResult} indicates a full analysis should not take place
+     * @throws {NoMatch} if the {@link PreScanResultLike} indicates a full analysis should not take place
      */
-    analyze(resourceUri: string, preScanResult: PreScanResult, expectedFrequency: 50|60|undefined): Promise<AnalysisWindowResult[]>
+    analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency: 50|60|undefined): Promise<AnalysisWindowResult[]>
 
     /**
      Fired when a window of audio has been analyzed. The number in the second argument is between 0 and 1 and represents

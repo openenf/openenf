@@ -6,9 +6,11 @@ import {NoMatchReason} from "../model/noMatchReason";
  */
 export class NoMatch extends Error {
     public noMatchReason: NoMatchReason;
+    private cause: any;
 
-    constructor(noMatchReason: NoMatchReason) {
+    constructor(noMatchReason: NoMatchReason, cause?: any) {
         super();
-        this.noMatchReason = noMatchReason
+        this.cause = cause;
+        this.noMatchReason = noMatchReason;
     }
 }
