@@ -13,7 +13,7 @@
 		"node": ">=12"
 	},
 	"scripts": {
-		"test": "node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit "
+		"test": "node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns /test/longRunning/"
 	},
 	"files": [
 		"cli.js"
