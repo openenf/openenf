@@ -12,6 +12,7 @@ import {PreScanComponent} from "../preScan/preScanComponent";
 import {AnalyzeComponent} from "../analyze/analyzeComponent";
 import {ReduceComponent} from "../reduce/reduceComponent";
 import {FullAnalysisErrorHandler} from "./fullAnalysisErrorHandler";
+import {StageDurations} from "../model/StageDurations";
 
 export class BaseENFProcessor implements ENFProcessor {
 
@@ -68,6 +69,7 @@ export class BaseENFProcessor implements ENFProcessor {
         enfAnalysis.lookupImplementationId = this.lookupComponent.implementationId;
         enfAnalysis.refineImplementationId = this.refineComponent.implementationId;
         this.fullAnalysisCompleteEvent.trigger(enfAnalysis);
+        enfAnalysis.durations = new StageDurations(enfAnalysis.analysisStartTime, enfAnalysis.completionTimes);
         return enfAnalysis;
     }
 
@@ -78,22 +80,27 @@ export class BaseENFProcessor implements ENFProcessor {
         enfAnalysis.gridIds = gridIds;
         const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
+        enfAnalysis.completionTimes.preScan = new Date();
         const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult, expectedFrequency).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.analysisResult = analysisResult || null;
+        enfAnalysis.completionTimes.analyze = new Date();
         if (!enfAnalysis.analysisResult) {
             return this.closeOutENFAnalysis(enfAnalysis);
         }
         const frequencies = await this.reduce(enfAnalysis.analysisResult).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.frequencies = frequencies || null;
+        enfAnalysis.completionTimes.reduce = new Date();
         if (!enfAnalysis.frequencies) {
             return this.closeOutENFAnalysis(enfAnalysis)
         }
         const lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.lookupResults = lookupResults || null;
+        enfAnalysis.completionTimes.lookup = new Date();
         if (!enfAnalysis.lookupResults) {
             return this.closeOutENFAnalysis(enfAnalysis)
         }
         enfAnalysis.ENFAnalysisResults = await this.refine(enfAnalysis.frequencies, enfAnalysis.lookupResults)
+        enfAnalysis.completionTimes.refine = new Date();
         return this.closeOutENFAnalysis(enfAnalysis);
     }
 

@@ -59,14 +59,12 @@ export class WasmFreqDbReaderRefineComponent implements RefineComponent {
         const nonNullDuration = lookupFrequencies.filter(x => x !== null).length;
         const resultClusters = clusterResults(lookupResults);
         const peaks = resultClusters.map(x => {return {position:x[0].position, gridId:x[0].gridId, score:x[0].score}}).slice(0,50);
-        console.log('peaks', peaks);
         await this.readerStore.ready();
         const lookupVector = this.readerStore.arrayToVector(lookupFrequencies);
         const results:ENFAnalysisResult[] = [];
         for (const r of peaks) {
             const reader = await this.readerStore.getReader(r.gridId);
             const startDate = new Date(reader.freqDbMetaData.startDate * 1000);
-            console.log('startDate', startDate);
             const position = r.position;
             const vector = reader.comprehensiveLookup(lookupVector, position, 12, 12);
             const comprehensiveResults = vectorToArray(vector, ["score", "position"]);
@@ -74,12 +72,12 @@ export class WasmFreqDbReaderRefineComponent implements RefineComponent {
             const result:ENFAnalysisResult = {
                 gridId: r.gridId,
                 kurtosis,
-                normalisedScore: r.score / nonNullDuration,
+                normalisedScore: r.score / (nonNullDuration * 1.0),
                 score: r.score,
                 time: convertPositionToGridDate(r.position, startDate)
             }
             results.push(result);
         }
-        return Promise.resolve(results);
+        return Promise.resolve(results.sort((a,b) => a.score - b.score));
     }
 }

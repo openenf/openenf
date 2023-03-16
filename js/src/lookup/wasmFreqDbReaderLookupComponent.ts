@@ -3,6 +3,7 @@ import {LookupResult} from "../model/lookupResult";
 import {LookupComponent} from "./lookupComponent";
 import {arrayToVectorInt16_t, vectorToArray} from "../wasmFreqDbReader/FreqDbWasmHelpers";
 import {WasmFreqDbReaderStore} from "../wasmFreqDbReader/wasmFreqDbReaderStore";
+import {getFrequencyBase} from "./getFrequencyBase";
 
 export class WasmFreqDbReaderLookupComponent implements LookupComponent {
     private readerStore: WasmFreqDbReaderStore;
@@ -17,17 +18,21 @@ export class WasmFreqDbReaderLookupComponent implements LookupComponent {
 
     async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
         let lookupResults:LookupResult[] = [];
+        const frequencyBase = getFrequencyBase(freqs);
+        const normalisedFreqs = freqs.map(x => x === null ? null : parseFloat(((x - frequencyBase) * 100).toFixed(3)));
         await this.readerStore.ready();
-        const lookupVector = this.readerStore.arrayToVector(freqs);
+        const lookupVector = this.readerStore.arrayToVector(normalisedFreqs);
         for (const gridId of gridIds) {
             const reader = await this.readerStore.getReader(gridId);
             const metaData = reader.freqDbMetaData;
-            const resultVector = reader.lookup(lookupVector, 1000, 0, metaData.endDate - metaData.startDate, 8);
-            const results = vectorToArray(resultVector, ["score", "position"]);
-            results.forEach(r => {
-                r.gridId = gridId;
-            })
-            lookupResults = [...lookupResults, ...results]
+            if (metaData.baseFrequency == frequencyBase) {
+                const resultVector = reader.lookup(lookupVector, 1000, 0, metaData.endDate - metaData.startDate, 8);
+                const results = vectorToArray(resultVector, ["score", "position"]);
+                results.forEach(r => {
+                    r.gridId = gridId;
+                })
+                lookupResults = [...lookupResults, ...results]
+            }
         }
         return lookupResults;
     }
