@@ -1,3 +1,16 @@
+export const waitForWasmRuntime = (module:any):Promise<void> => {
+    return new Promise<void>(resolve => {
+        if (module.default && module.default.FsFreqDbReader) {
+            resolve();
+        }
+        setInterval(() => {
+            if (module.default && module.default.FsFreqDbReader) {
+                resolve();
+            }
+        }, 10)
+    });
+}
+
 export const arrayToVectorInt16_t = (Module: any, a:(number|null)[]) =>{
     const lookupVector = new Module.vectorInt16_t();
     a.forEach(v => {

@@ -3,6 +3,7 @@
 #include "ResultLeague.h"
 #include "LookupHelpers.h"
 #include <thread>
+#include <filesystem>
 
 #if __EMSCRIPTEN__
 #include <emscripten.h>
@@ -11,13 +12,7 @@
 FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     FreqDbMetaData freqDbMetaData = FreqDbMetaData();
     std::string path = this->filePath;
-#if __EMSCRIPTEN__
-    EM_ASM(
-            FS.mkdir('/temp');
-            FS.mount(NODEFS, {root : '.'}, '/temp');
-            );
-    path = std::string("/temp/") + path;
-#endif
+    std::string dirPath = "/";
     std::ifstream infile(path, std::ios::in|std::ios::binary);
     infile.ignore( std::numeric_limits<std::streamsize>::max() );
     this->fileSizeBytes = infile.gcount();
@@ -37,7 +32,6 @@ FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     }
     this->dataSizeBytes = this->fileSizeBytes - headerString.length();
     headerString.erase(headerString.length() - 5);
-    //headerString = headerString.substr(0, headerString.length() - 5);
 
     nlohmann::json json_obj = nlohmann::json::parse(headerString);
     freqDbMetaData.gridId = json_obj["gridId"];
@@ -64,12 +58,6 @@ FreqDbMetaData FsFreqDbReader::readDataFromBinaryFile() {
     }
 
     infile.close();
-#if __EMSCRIPTEN__
-    EM_ASM(
-            FS.unmount('/temp');
-            FS.rmdir('/temp');
-            );
-#endif
     return freqDbMetaData;
 }
 

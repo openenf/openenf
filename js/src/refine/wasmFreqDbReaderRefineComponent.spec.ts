@@ -14,7 +14,7 @@ describe("WasmFreqDbReaderRefineComponent", () => {
             {score: 391, position: 1239197, gridId: 'GB'}
         ];
         const dbPath = "test/testFreqDbs/GB_50_Jan2014.freqdb";
-        const wasmPath = "src/wasmFreqDbReader/freqDbReader.wasm.js"
+        const wasmPath = "src/wasmFreqDbReader/fsFreqDbReader.wasm.js"
         const freqDbReaderStore = new WasmFreqDbReaderStore(wasmPath);
         freqDbReaderStore.addPath("GB", dbPath);
         const refineComponent = new WasmFreqDbReaderRefineComponent(freqDbReaderStore);

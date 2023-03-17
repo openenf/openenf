@@ -60,14 +60,12 @@ export class WasmFreqDbReaderRefineComponent implements RefineComponent {
         const resultClusters = clusterResults(lookupResults);
         const peaks = resultClusters.map(x => {return {position:x[0].position, gridId:x[0].gridId, score:x[0].score}}).slice(0,50);
         await this.readerStore.ready();
-        const lookupVector = this.readerStore.arrayToVector(lookupFrequencies);
         const results:ENFAnalysisResult[] = [];
         for (const r of peaks) {
             const reader = await this.readerStore.getReader(r.gridId);
             const startDate = new Date(reader.freqDbMetaData.startDate * 1000);
             const position = r.position;
-            const vector = reader.comprehensiveLookup(lookupVector, position, 12, 12);
-            const comprehensiveResults = vectorToArray(vector, ["score", "position"]);
+            const comprehensiveResults = reader.comprehensiveLookup(lookupFrequencies, position, 12, 12);
             const kurtosis = this.kurtosisFunction(comprehensiveResults.map(x => x.score));
             const result:ENFAnalysisResult = {
                 gridId: r.gridId,

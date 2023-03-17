@@ -21,13 +21,11 @@ export class WasmFreqDbReaderLookupComponent implements LookupComponent {
         const frequencyBase = getFrequencyBase(freqs);
         const normalisedFreqs = freqs.map(x => x === null ? null : parseFloat(((x - frequencyBase) * 100).toFixed(3)));
         await this.readerStore.ready();
-        const lookupVector = this.readerStore.arrayToVector(normalisedFreqs);
         for (const gridId of gridIds) {
             const reader = await this.readerStore.getReader(gridId);
             const metaData = reader.freqDbMetaData;
             if (metaData.baseFrequency == frequencyBase) {
-                const resultVector = reader.lookup(lookupVector, 1000, 0, metaData.endDate - metaData.startDate, 8);
-                const results = vectorToArray(resultVector, ["score", "position"]);
+                const results:any[] = reader.lookup(normalisedFreqs, 1000, 0, metaData.endDate - metaData.startDate);
                 results.forEach(r => {
                     r.gridId = gridId;
                 })

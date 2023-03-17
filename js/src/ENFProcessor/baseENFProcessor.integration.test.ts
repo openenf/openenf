@@ -8,6 +8,7 @@ import {WasmFreqDbReaderStore} from "../wasmFreqDbReader/wasmFreqDbReaderStore";
 import {WasmFreqDbReaderRefineComponent} from "../refine/wasmFreqDbReaderRefineComponent";
 import {AudioContextPreScanComponent} from "../preScan/audioContextPreScanComponent";
 import {AudioContextAnalyzeComponent} from "../analyze/audioContextAnalyzeComponent";
+import path from "path";
 
 describe("BaseENFProcessor", () => {
 
@@ -17,8 +18,8 @@ describe("BaseENFProcessor", () => {
     const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
     const reduceComponent = new GoertzelReduceComponent(overlapFactor);
     const dbPath = "test/testFreqDbs/GB_50_Jan2014.freqdb";
-    const wasmPath = "src/wasmFreqDbReader/freqDbReader.wasm.js"
-    const freqDbReaderStore = new WasmFreqDbReaderStore(wasmPath);
+    const modulePath = path.resolve("src/wasmFreqDbReader/fsFreqDbReader.wasm.js");
+    const freqDbReaderStore = new WasmFreqDbReaderStore(modulePath);
     const lookupComponent = new WasmFreqDbReaderLookupComponent(freqDbReaderStore);
     const refineComponent = new WasmFreqDbReaderRefineComponent(freqDbReaderStore);
     const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);

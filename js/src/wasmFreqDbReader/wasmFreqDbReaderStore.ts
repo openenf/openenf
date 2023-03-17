@@ -1,10 +1,11 @@
-import {arrayToVectorInt16_t} from "./FreqDbWasmHelpers";
+import {arrayToVectorInt16_t, waitForWasmRuntime} from "./FreqDbWasmHelpers";
 import fs from 'fs';
 import * as path from "path";
+import {FsFreqDbReader} from "./fsFreqDbReader";
 
 export class WasmFreqDbReaderStore {
-    private storeLocations: { [gridId: string]: string };
-    private readers:{[gridId:string]:any}= {};
+    private readonly storeLocations: { [gridId: string]: string };
+    private readers:{[gridId:string]:FsFreqDbReader}= {};
     private module: any;
     private wasmModulePath: string;
     private wasmModuleLoaded: Boolean = false;
@@ -25,7 +26,7 @@ export class WasmFreqDbReaderStore {
         await this.loadWasmModule();
     }
 
-    async getReader(gridId:string):Promise<any> {
+    async getReader(gridId:string):Promise<FsFreqDbReader> {
         if (this.readers[gridId]) {
             return this.readers[gridId];
         }
@@ -36,24 +37,13 @@ export class WasmFreqDbReaderStore {
             throw new Error(`Don't know file path for grid ID ${gridId}. If you know the path you can supply it in the constructor or run addPath() before calling this function.`)
         }
         const dbPath = this.storeLocations[gridId]
-        const freqDbReader = new this.module.default.FsFreqDbReader(dbPath);
+        const freqDbReader = new FsFreqDbReader(this.module, dbPath);
         this.readers[gridId] = freqDbReader;
         return freqDbReader;
     }
 
     private async loadWasmModule():Promise<void> {
-        return new Promise(async resolve => {
-            this.module = await import(this.wasmModulePath);
-            setInterval(() => {
-                if (this.module.default && this.module.default.FsFreqDbReader) {
-                    this.wasmModuleLoaded = true;
-                    resolve();
-                }
-            },10)
-        })
-    }
-
-    arrayToVector(freqs: (number | null)[]) {
-        return arrayToVectorInt16_t(this.module.default, freqs);
+        this.module = await import(this.wasmModulePath);
+        await waitForWasmRuntime(this.module);
     }
 }
