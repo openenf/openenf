@@ -1,0 +1,32 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=697b3938_002Dbbcd_002D41b7_002Da6d4_002D994aa5a06bc3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanPingENFLookupServerOnDefaultPort" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ENFLookupServerTests.CanPingENFLookupServerOnDefaultPort&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a91caad9_002Dd8aa_002D4985_002Db6ec_002Df78ef68cbd2a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CanPingENFLookupServerOnDefaultPort #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ENFLookupServerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanReadFileWithMillionsOfEntries&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoSingleThreadLookupOnLargeFile&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.LookupHelpersTests.GetArrayThreadBoundsWorksForMultipleThreads&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.LookupHelpersTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.AddsSingleResultToUnderlyingArray&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.AddsSecondResultAfterTheFirstIfItIsLarger&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.AddsSecondResultBeforeTheFirstIfItIsEqual&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.AddsSecondResultBeforeTheFirstIfItIsLess&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.DoesNotAddThirdResultIfGreater&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.DoesNotAddThirdResultIfEqual&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.ReplacesSecondResultIfNewResultLessThanSecond&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.AddSecondResultAtTopIfLessThanFirst&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ResultLeagueTests.CanAddResultInMiddle&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoEightThreadLookupOnLargeFile&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanReadMetaDataFromValidFreqDbFile&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoComprehensiveLookupAroundSpecifiedRange&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e54cf3c6_002D9334_002D45a2_002Da04b_002Db9f409f2d9dc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.ENFLookupServerTests.CanPingENFLookupServerOnDefaultPort&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

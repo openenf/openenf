@@ -13,7 +13,8 @@
 		"node": ">=12"
 	},
 	"scripts": {
-		"test": "node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns /test/longRunning/"
+		"test": "node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns /test/longRunning/",
+		"longRunningTest": "node --max-old-space-size=32768 --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testMatch \"**/longRunning/?(*.)+(spec|test).[jt]s?(x)\""
 	},
 	"files": [
 		"cli.js"

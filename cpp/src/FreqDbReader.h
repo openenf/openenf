@@ -25,8 +25,8 @@ public:
 
     std::vector<LookupResult> lookup(std::vector<int16_t*> freqs, int maxSingleDiff);
     std::vector<LookupResult> lookup(std::vector<int16_t*> vector1, int maxSingleDiff, int startTime, int endTime);
-    std::vector<LookupResult> lookup(std::vector<int16_t *> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads);
-    std::vector<LookupResult> lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads);
+    std::vector<LookupResult> lookup(std::vector<int16_t *> freqs, int maxSingleDiff, int startTime, int endTime, unsigned int numThreads);
+    std::vector<LookupResult> lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, unsigned int numThreads);
 
     /// Get match scores for every time around the aroundTs timestamp, i.e. all scores in the range (aroundTs - diffBefore -> aroundTs + diffAfter).
     /// This is used to refine the results retrieved from a standard lookup.

@@ -87,7 +87,7 @@ std::vector<LookupResult> FsFreqDbReader::lookupInternal(std::vector<int16_t> fr
     return FsFreqDbReader::resultLeagueToLookupResults(resultLeague);
 }
 
-std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
+std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int maxSingleDiff, int startTime, int endTime, unsigned int numThreads) {
     int freqsSize = freqs.size();
     std::vector<std::vector<int>> threadBounds = LookupHelpers::getArrayThreadBounds(endTime - startTime, numThreads, freqsSize);
     std::vector<std::thread> threads;
@@ -105,7 +105,7 @@ std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t> freqs, int
     return result;
 }
 
-std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, int numThreads) {
+std::vector<LookupResult> FsFreqDbReader::lookup(std::vector<int16_t*> freqs, int maxSingleDiff, int startTime, int endTime, unsigned int numThreads) {
     return FsFreqDbReader::lookup(LookupHelpers::pointerToNonPointerVector(freqs), maxSingleDiff, startTime, endTime, numThreads);
 }
 
@@ -113,7 +113,7 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
                                       std::vector<int16_t> largeArray, std::function<void(int,int)> onNewResult ) {
     int i = startTime;
     int resultPosition = startTime -1;
-    std::vector<int16_t> scores;
+    std::vector<uint16_t> scores;
     std::vector<int16_t> compareArray;
     int largeArraySize = largeArray.size();
     int freqsSize = freqs.size();
@@ -132,12 +132,12 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
         int16_t newValue = largeArray[i];
         i++;
         for(int j = 0; j < compareArraySize; j++) {
-            if (scores[j] != -32768) {
+            if (scores[j] != 65535) {
                 int16_t compareValue = compareArray[compareArraySize - 1 - j];
-                if (compareValue != -32768) {
+                if (compareValue != 65535) {
                     int16_t newDiff = abs(compareValue - newValue);
                     if (newDiff > maxSingleDiff) {
-                        scores[j] = -32768;
+                        scores[j] = 65535;
                     } else {
                         scores[j] += newDiff;
                     }
@@ -147,7 +147,7 @@ void FsFreqDbReader::threadSafeLookup(int startTime, int endTime, std::vector<in
         if(scores.size() >= freqsSize) {
             resultPosition++;
             int16_t front = scores.front();
-            if (front != -32768) {
+            if (front != 65535) {
                 onNewResult(front, resultPosition);
             }
             scores.erase(scores.begin());

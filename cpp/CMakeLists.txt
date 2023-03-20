@@ -75,7 +75,7 @@ target_set_warnings(${LIBRARY_NAME} ENABLE ALL ALL DISABLE Annoying)
 # If you add more executables, copy these lines accordingly.
 add_executable(main app/main.cpp)   # Name of exec. and location of file.
 target_link_libraries(main PRIVATE ${LIBRARY_NAME})  # Link the executable to library (if it uses it).
-target_set_warnings(main ENABLE ALL AS_ERROR ALL DISABLE Annoying) # Set warnings (if needed).
+target_set_warnings(main ENABLE ALL ALL DISABLE Annoying) # Set warnings (if needed).
 target_enable_lto(main optimized)  # enable link-time-optimization if available for non-debug configurations
 
 # target_compile_options(main PUBLIC ${CMAKE_C_FLAGS} --target=wasm32)
