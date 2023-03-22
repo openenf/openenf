@@ -466,7 +466,6 @@ function assert(condition, text) {
 var UTF8Decoder = typeof TextDecoder != "undefined" ? new TextDecoder("utf8") : undefined;
 
 function UTF8ArrayToString(heapOrArray, idx, maxBytesToRead) {
- idx >>>= 0;
  var endIdx = idx + maxBytesToRead;
  var endPtr = idx;
  while (heapOrArray[endPtr] && !(endPtr >= endIdx)) ++endPtr;
@@ -503,12 +502,10 @@ function UTF8ArrayToString(heapOrArray, idx, maxBytesToRead) {
 }
 
 function UTF8ToString(ptr, maxBytesToRead) {
- ptr >>>= 0;
  return ptr ? UTF8ArrayToString(GROWABLE_HEAP_U8(), ptr, maxBytesToRead) : "";
 }
 
 function stringToUTF8Array(str, heap, outIdx, maxBytesToWrite) {
- outIdx >>>= 0;
  if (!(maxBytesToWrite > 0)) return 0;
  var startIdx = outIdx;
  var endIdx = outIdx + maxBytesToWrite - 1;
@@ -520,26 +517,26 @@ function stringToUTF8Array(str, heap, outIdx, maxBytesToWrite) {
   }
   if (u <= 127) {
    if (outIdx >= endIdx) break;
-   heap[outIdx++ >>> 0] = u;
+   heap[outIdx++] = u;
   } else if (u <= 2047) {
    if (outIdx + 1 >= endIdx) break;
-   heap[outIdx++ >>> 0] = 192 | u >> 6;
-   heap[outIdx++ >>> 0] = 128 | u & 63;
+   heap[outIdx++] = 192 | u >> 6;
+   heap[outIdx++] = 128 | u & 63;
   } else if (u <= 65535) {
    if (outIdx + 2 >= endIdx) break;
-   heap[outIdx++ >>> 0] = 224 | u >> 12;
-   heap[outIdx++ >>> 0] = 128 | u >> 6 & 63;
-   heap[outIdx++ >>> 0] = 128 | u & 63;
+   heap[outIdx++] = 224 | u >> 12;
+   heap[outIdx++] = 128 | u >> 6 & 63;
+   heap[outIdx++] = 128 | u & 63;
   } else {
    if (outIdx + 3 >= endIdx) break;
    if (u > 1114111) warnOnce("Invalid Unicode code point 0x" + u.toString(16) + " encountered when serializing a JS string to a UTF-8 string in wasm memory! (Valid unicode code points should be in range 0-0x10FFFF).");
-   heap[outIdx++ >>> 0] = 240 | u >> 18;
-   heap[outIdx++ >>> 0] = 128 | u >> 12 & 63;
-   heap[outIdx++ >>> 0] = 128 | u >> 6 & 63;
-   heap[outIdx++ >>> 0] = 128 | u & 63;
+   heap[outIdx++] = 240 | u >> 18;
+   heap[outIdx++] = 128 | u >> 12 & 63;
+   heap[outIdx++] = 128 | u >> 6 & 63;
+   heap[outIdx++] = 128 | u & 63;
   }
  }
- heap[outIdx >>> 0] = 0;
+ heap[outIdx] = 0;
  return outIdx - startIdx;
 }
 
@@ -588,7 +585,7 @@ var TOTAL_STACK = 5242880;
 
 if (Module["TOTAL_STACK"]) assert(TOTAL_STACK === Module["TOTAL_STACK"], "the stack size can no longer be determined at runtime");
 
-var INITIAL_MEMORY = Module["INITIAL_MEMORY"] || 4294967296;
+var INITIAL_MEMORY = Module["INITIAL_MEMORY"] || 16777216;
 
 legacyModuleProp("INITIAL_MEMORY", "INITIAL_MEMORY");
 
@@ -605,7 +602,7 @@ if (ENVIRONMENT_IS_PTHREAD) {
  } else {
   wasmMemory = new WebAssembly.Memory({
    "initial": INITIAL_MEMORY / 65536,
-   "maximum": 4294967296 / 65536,
+   "maximum": 2147483648 / 65536,
    "shared": true
   });
   if (!(wasmMemory.buffer instanceof SharedArrayBuffer)) {
@@ -633,20 +630,20 @@ var wasmTable;
 function writeStackCookie() {
  var max = _emscripten_stack_get_end();
  assert((max & 3) == 0);
- GROWABLE_HEAP_U32()[max >>> 2] = 34821223;
- GROWABLE_HEAP_U32()[max + 4 >>> 2] = 2310721022;
- GROWABLE_HEAP_U32()[0 >>> 0] = 1668509029;
+ GROWABLE_HEAP_U32()[max >> 2] = 34821223;
+ GROWABLE_HEAP_U32()[max + 4 >> 2] = 2310721022;
+ GROWABLE_HEAP_U32()[0] = 1668509029;
 }
 
 function checkStackCookie() {
  if (ABORT) return;
  var max = _emscripten_stack_get_end();
- var cookie1 = GROWABLE_HEAP_U32()[max >>> 2];
- var cookie2 = GROWABLE_HEAP_U32()[max + 4 >>> 2];
+ var cookie1 = GROWABLE_HEAP_U32()[max >> 2];
+ var cookie2 = GROWABLE_HEAP_U32()[max + 4 >> 2];
  if (cookie1 != 34821223 || cookie2 != 2310721022) {
   abort("Stack overflow! Stack cookie has been overwritten at 0x" + max.toString(16) + ", expected hex dwords 0x89BACDFE and 0x2135467, but received 0x" + cookie2.toString(16) + " 0x" + cookie1.toString(16));
  }
- if (GROWABLE_HEAP_U32()[0 >>> 0] !== 1668509029) abort("Runtime error: The application has corrupted its heap memory area (address zero)!");
+ if (GROWABLE_HEAP_U32()[0] !== 1668509029) abort("Runtime error: The application has corrupted its heap memory area (address zero)!");
 }
 
 (function() {
@@ -862,7 +859,7 @@ function createExportWrapper(name, fixedasm) {
 
 var wasmBinaryFile;
 
-wasmBinaryFile = "fsFreqDbReader.wasm.wasm";
+wasmBinaryFile = "freqDbReader.wasm.wasm";
 
 if (!isDataURI(wasmBinaryFile)) {
  wasmBinaryFile = locateFile(wasmBinaryFile);
@@ -972,7 +969,18 @@ var tempDouble;
 
 var tempI64;
 
-var ASM_CONSTS = {};
+var ASM_CONSTS = {
+ 34132: () => {
+  FS.mkdir("/temp");
+  FS.mount(NODEFS, {
+   root: "."
+  }, "/temp");
+ },
+ 34192: () => {
+  FS.unmount("/temp");
+  FS.rmdir("/temp");
+ }
+};
 
 function ExitStatus(status) {
  this.name = "ExitStatus";
@@ -1414,7 +1422,6 @@ var MEMFS = {
   return new Uint8Array(node.contents);
  },
  expandFileStorage: function(node, newCapacity) {
-  newCapacity >>>= 0;
   var prevCapacity = node.contents ? node.contents.length : 0;
   if (prevCapacity >= newCapacity) return;
   var CAPACITY_DOUBLING_MAX = 1024 * 1024;
@@ -1425,7 +1432,6 @@ var MEMFS = {
   if (node.usedBytes > 0) node.contents.set(oldContents.subarray(0, node.usedBytes), 0);
  },
  resizeFileStorage: function(node, newSize) {
-  newSize >>>= 0;
   if (node.usedBytes == newSize) return;
   if (newSize == 0) {
    node.contents = null;
@@ -1623,8 +1629,7 @@ var MEMFS = {
     if (!ptr) {
      throw new FS.ErrnoError(48);
     }
-    ptr >>>= 0;
-    GROWABLE_HEAP_I8().set(contents, ptr >>> 0);
+    GROWABLE_HEAP_I8().set(contents, ptr);
    }
    return {
     ptr: ptr,
@@ -1941,238 +1946,6 @@ var NODEFS = {
    NODEFS.stream_ops.write(stream, buffer, 0, length, offset, false);
    return 0;
   }
- }
-};
-
-var NODERAWFS = {
- lookup: function(parent, name) {
-  assert(parent);
-  assert(parent.path);
-  return FS.lookupPath(parent.path + "/" + name).node;
- },
- lookupPath: function(path, opts) {
-  opts = opts || {};
-  if (opts.parent) {
-   path = nodePath.dirname(path);
-  }
-  var st = fs.lstatSync(path);
-  var mode = NODEFS.getMode(path);
-  return {
-   path: path,
-   node: {
-    id: st.ino,
-    mode: mode,
-    node_ops: NODERAWFS,
-    path: path
-   }
-  };
- },
- createStandardStreams: function() {
-  FS.streams[0] = FS.createStream({
-   nfd: 0,
-   position: 0,
-   path: "",
-   flags: 0,
-   tty: true,
-   seekable: false
-  }, 0, 0);
-  for (var i = 1; i < 3; i++) {
-   FS.streams[i] = FS.createStream({
-    nfd: i,
-    position: 0,
-    path: "",
-    flags: 577,
-    tty: true,
-    seekable: false
-   }, i, i);
-  }
- },
- cwd: function() {
-  return process.cwd();
- },
- chdir: function() {
-  process.chdir.apply(void 0, arguments);
- },
- mknod: function(path, mode) {
-  if (FS.isDir(path)) {
-   fs.mkdirSync(path, mode);
-  } else {
-   fs.writeFileSync(path, "", {
-    mode: mode
-   });
-  }
- },
- mkdir: function() {
-  fs.mkdirSync.apply(void 0, arguments);
- },
- symlink: function() {
-  fs.symlinkSync.apply(void 0, arguments);
- },
- rename: function() {
-  fs.renameSync.apply(void 0, arguments);
- },
- rmdir: function() {
-  fs.rmdirSync.apply(void 0, arguments);
- },
- readdir: function() {
-  return [ ".", ".." ].concat(fs.readdirSync.apply(void 0, arguments));
- },
- unlink: function() {
-  fs.unlinkSync.apply(void 0, arguments);
- },
- readlink: function() {
-  return fs.readlinkSync.apply(void 0, arguments);
- },
- stat: function() {
-  return fs.statSync.apply(void 0, arguments);
- },
- lstat: function() {
-  return fs.lstatSync.apply(void 0, arguments);
- },
- chmod: function() {
-  fs.chmodSync.apply(void 0, arguments);
- },
- fchmod: function() {
-  fs.fchmodSync.apply(void 0, arguments);
- },
- chown: function() {
-  fs.chownSync.apply(void 0, arguments);
- },
- fchown: function() {
-  fs.fchownSync.apply(void 0, arguments);
- },
- truncate: function() {
-  fs.truncateSync.apply(void 0, arguments);
- },
- ftruncate: function(fd, len) {
-  if (len < 0) {
-   throw new FS.ErrnoError(28);
-  }
-  fs.ftruncateSync.apply(void 0, arguments);
- },
- utime: function(path, atime, mtime) {
-  fs.utimesSync(path, atime / 1e3, mtime / 1e3);
- },
- open: function(path, flags, mode, suggestFD) {
-  if (typeof flags == "string") {
-   flags = VFS.modeStringToFlags(flags);
-  }
-  var pathTruncated = path.split("/").map(function(s) {
-   return s.substr(0, 255);
-  }).join("/");
-  var nfd = fs.openSync(pathTruncated, NODEFS.flagsForNode(flags), mode);
-  var st = fs.fstatSync(nfd);
-  if (flags & 65536 && !st.isDirectory()) {
-   fs.closeSync(nfd);
-   throw new FS.ErrnoError(ERRNO_CODES.ENOTDIR);
-  }
-  var newMode = NODEFS.getMode(pathTruncated);
-  var fd = suggestFD != null ? suggestFD : FS.nextfd(nfd);
-  var node = {
-   id: st.ino,
-   mode: newMode,
-   node_ops: NODERAWFS,
-   path: path
-  };
-  var stream = FS.createStream({
-   nfd: nfd,
-   position: 0,
-   path: path,
-   flags: flags,
-   node: node,
-   seekable: true
-  }, fd, fd);
-  FS.streams[fd] = stream;
-  return stream;
- },
- createStream: function(stream, fd_start, fd_end) {
-  var rtn = VFS.createStream(stream, fd_start, fd_end);
-  if (typeof rtn.shared.refcnt == "undefined") {
-   rtn.shared.refcnt = 1;
-  } else {
-   rtn.shared.refcnt++;
-  }
-  return rtn;
- },
- closeStream: function(fd) {
-  if (FS.streams[fd]) {
-   FS.streams[fd].shared.refcnt--;
-  }
-  VFS.closeStream(fd);
- },
- close: function(stream) {
-  FS.closeStream(stream.fd);
-  if (!stream.stream_ops && stream.shared.refcnt === 0) {
-   fs.closeSync(stream.nfd);
-  }
- },
- llseek: function(stream, offset, whence) {
-  if (stream.stream_ops) {
-   return VFS.llseek(stream, offset, whence);
-  }
-  var position = offset;
-  if (whence === 1) {
-   position += stream.position;
-  } else if (whence === 2) {
-   position += fs.fstatSync(stream.nfd).size;
-  } else if (whence !== 0) {
-   throw new FS.ErrnoError(28);
-  }
-  if (position < 0) {
-   throw new FS.ErrnoError(28);
-  }
-  stream.position = position;
-  return position;
- },
- read: function(stream, buffer, offset, length, position) {
-  if (stream.stream_ops) {
-   return VFS.read(stream, buffer, offset, length, position);
-  }
-  var seeking = typeof position != "undefined";
-  if (!seeking && stream.seekable) position = stream.position;
-  var bytesRead = fs.readSync(stream.nfd, Buffer.from(buffer.buffer), offset, length, position);
-  if (!seeking) stream.position += bytesRead;
-  return bytesRead;
- },
- write: function(stream, buffer, offset, length, position) {
-  if (stream.stream_ops) {
-   return VFS.write(stream, buffer, offset, length, position);
-  }
-  if (stream.flags & +"1024") {
-   FS.llseek(stream, 0, +"2");
-  }
-  var seeking = typeof position != "undefined";
-  if (!seeking && stream.seekable) position = stream.position;
-  var bytesWritten = fs.writeSync(stream.nfd, Buffer.from(buffer.buffer), offset, length, position);
-  if (!seeking) stream.position += bytesWritten;
-  return bytesWritten;
- },
- allocate: function() {
-  throw new FS.ErrnoError(138);
- },
- mmap: function(stream, length, position, prot, flags) {
-  if (stream.stream_ops) {
-   return VFS.mmap(stream, length, position, prot, flags);
-  }
-  var ptr = mmapAlloc(length);
-  FS.read(stream, GROWABLE_HEAP_I8(), ptr, length, position);
-  return {
-   ptr: ptr,
-   allocated: true
-  };
- },
- msync: function(stream, buffer, offset, length, mmapFlags) {
-  if (stream.stream_ops) {
-   return VFS.msync(stream, buffer, offset, length, mmapFlags);
-  }
-  FS.write(stream, buffer, 0, length, offset);
-  return 0;
- },
- munmap: function() {
-  return 0;
- },
- ioctl: function() {
-  throw new FS.ErrnoError(59);
  }
 };
 
@@ -3167,7 +2940,6 @@ var FS = {
   return stream.position;
  },
  read: (stream, buffer, offset, length, position) => {
-  offset >>>= 0;
   if (length < 0 || position < 0) {
    throw new FS.ErrnoError(28);
   }
@@ -3194,7 +2966,6 @@ var FS = {
   return bytesRead;
  },
  write: (stream, buffer, offset, length, position, canOwn) => {
-  offset >>>= 0;
   if (length < 0 || position < 0) {
    throw new FS.ErrnoError(28);
   }
@@ -3254,7 +3025,6 @@ var FS = {
   return stream.stream_ops.mmap(stream, length, position, prot, flags);
  },
  msync: (stream, buffer, offset, length, mmapFlags) => {
-  offset >>>= 0;
   if (!stream.stream_ops.msync) {
    return 0;
   }
@@ -3931,31 +3701,31 @@ var SYSCALLS = {
    }
    throw e;
   }
-  GROWABLE_HEAP_I32()[buf >>> 2] = stat.dev;
-  GROWABLE_HEAP_I32()[buf + 8 >>> 2] = stat.ino;
-  GROWABLE_HEAP_I32()[buf + 12 >>> 2] = stat.mode;
-  GROWABLE_HEAP_U32()[buf + 16 >>> 2] = stat.nlink;
-  GROWABLE_HEAP_I32()[buf + 20 >>> 2] = stat.uid;
-  GROWABLE_HEAP_I32()[buf + 24 >>> 2] = stat.gid;
-  GROWABLE_HEAP_I32()[buf + 28 >>> 2] = stat.rdev;
+  GROWABLE_HEAP_I32()[buf >> 2] = stat.dev;
+  GROWABLE_HEAP_I32()[buf + 8 >> 2] = stat.ino;
+  GROWABLE_HEAP_I32()[buf + 12 >> 2] = stat.mode;
+  GROWABLE_HEAP_U32()[buf + 16 >> 2] = stat.nlink;
+  GROWABLE_HEAP_I32()[buf + 20 >> 2] = stat.uid;
+  GROWABLE_HEAP_I32()[buf + 24 >> 2] = stat.gid;
+  GROWABLE_HEAP_I32()[buf + 28 >> 2] = stat.rdev;
   tempI64 = [ stat.size >>> 0, (tempDouble = stat.size, +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[buf + 40 >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 44 >>> 2] = tempI64[1];
-  GROWABLE_HEAP_I32()[buf + 48 >>> 2] = 4096;
-  GROWABLE_HEAP_I32()[buf + 52 >>> 2] = stat.blocks;
+  GROWABLE_HEAP_I32()[buf + 40 >> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 44 >> 2] = tempI64[1];
+  GROWABLE_HEAP_I32()[buf + 48 >> 2] = 4096;
+  GROWABLE_HEAP_I32()[buf + 52 >> 2] = stat.blocks;
   tempI64 = [ Math.floor(stat.atime.getTime() / 1e3) >>> 0, (tempDouble = Math.floor(stat.atime.getTime() / 1e3), 
   +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[buf + 56 >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 60 >>> 2] = tempI64[1];
-  GROWABLE_HEAP_U32()[buf + 64 >>> 2] = 0;
+  GROWABLE_HEAP_I32()[buf + 56 >> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 60 >> 2] = tempI64[1];
+  GROWABLE_HEAP_U32()[buf + 64 >> 2] = 0;
   tempI64 = [ Math.floor(stat.mtime.getTime() / 1e3) >>> 0, (tempDouble = Math.floor(stat.mtime.getTime() / 1e3), 
   +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[buf + 72 >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 76 >>> 2] = tempI64[1];
-  GROWABLE_HEAP_U32()[buf + 80 >>> 2] = 0;
+  GROWABLE_HEAP_I32()[buf + 72 >> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 76 >> 2] = tempI64[1];
+  GROWABLE_HEAP_U32()[buf + 80 >> 2] = 0;
   tempI64 = [ Math.floor(stat.ctime.getTime() / 1e3) >>> 0, (tempDouble = Math.floor(stat.ctime.getTime() / 1e3), 
   +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[buf + 88 >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 92 >>> 2] = tempI64[1];
-  GROWABLE_HEAP_U32()[buf + 96 >>> 2] = 0;
+  GROWABLE_HEAP_I32()[buf + 88 >> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 92 >> 2] = tempI64[1];
+  GROWABLE_HEAP_U32()[buf + 96 >> 2] = 0;
   tempI64 = [ stat.ino >>> 0, (tempDouble = stat.ino, +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[buf + 104 >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 108 >>> 2] = tempI64[1];
+  GROWABLE_HEAP_I32()[buf + 104 >> 2] = tempI64[0], GROWABLE_HEAP_I32()[buf + 108 >> 2] = tempI64[1];
   return 0;
  },
  doMsync: function(addr, stream, len, flags, offset) {
@@ -3965,7 +3735,6 @@ var SYSCALLS = {
   if (flags & 2) {
    return 0;
   }
-  addr >>>= 0;
   var buffer = GROWABLE_HEAP_U8().slice(addr, addr + len);
   FS.msync(stream, buffer, offset, len, flags);
  },
@@ -3973,7 +3742,7 @@ var SYSCALLS = {
  get: function() {
   assert(SYSCALLS.varargs != undefined);
   SYSCALLS.varargs += 4;
-  var ret = GROWABLE_HEAP_I32()[SYSCALLS.varargs - 4 >>> 2];
+  var ret = GROWABLE_HEAP_I32()[SYSCALLS.varargs - 4 >> 2];
   return ret;
  },
  getStr: function(ptr) {
@@ -4042,7 +3811,7 @@ var PThread = {
   }
  },
  initMainThread: function() {
-  var pthreadPoolSize = 16;
+  var pthreadPoolSize = 8;
   while (pthreadPoolSize--) {
    PThread.allocateUnusedWorker();
   }
@@ -4157,7 +3926,7 @@ var PThread = {
   });
  },
  allocateUnusedWorker: function() {
-  var pthreadMainJs = locateFile("fsFreqDbReader.wasm.worker.js");
+  var pthreadMainJs = locateFile("freqDbReader.wasm.worker.js");
   PThread.unusedWorkers.push(new Worker(pthreadMainJs));
  },
  getNewWorker: function() {
@@ -4200,8 +3969,8 @@ function demangleAll(text) {
 
 function establishStackSpace() {
  var pthread_ptr = _pthread_self();
- var stackTop = GROWABLE_HEAP_I32()[pthread_ptr + 44 >>> 2];
- var stackSize = GROWABLE_HEAP_I32()[pthread_ptr + 48 >>> 2];
+ var stackTop = GROWABLE_HEAP_I32()[pthread_ptr + 44 >> 2];
+ var stackSize = GROWABLE_HEAP_I32()[pthread_ptr + 48 >> 2];
  var stackMax = stackTop - stackSize;
  assert(stackTop != 0);
  assert(stackMax != 0);
@@ -4226,28 +3995,28 @@ function getValue(ptr, type = "i8") {
  if (type.endsWith("*")) type = "*";
  switch (type) {
  case "i1":
-  return GROWABLE_HEAP_I8()[ptr >>> 0];
+  return GROWABLE_HEAP_I8()[ptr >> 0];
 
  case "i8":
-  return GROWABLE_HEAP_I8()[ptr >>> 0];
+  return GROWABLE_HEAP_I8()[ptr >> 0];
 
  case "i16":
-  return GROWABLE_HEAP_I16()[ptr >>> 1];
+  return GROWABLE_HEAP_I16()[ptr >> 1];
 
  case "i32":
-  return GROWABLE_HEAP_I32()[ptr >>> 2];
+  return GROWABLE_HEAP_I32()[ptr >> 2];
 
  case "i64":
-  return GROWABLE_HEAP_I32()[ptr >>> 2];
+  return GROWABLE_HEAP_I32()[ptr >> 2];
 
  case "float":
-  return GROWABLE_HEAP_F32()[ptr >>> 2];
+  return GROWABLE_HEAP_F32()[ptr >> 2];
 
  case "double":
-  return GROWABLE_HEAP_F64()[ptr >>> 3];
+  return GROWABLE_HEAP_F64()[ptr >> 3];
 
  case "*":
-  return GROWABLE_HEAP_U32()[ptr >>> 2];
+  return GROWABLE_HEAP_U32()[ptr >> 2];
 
  default:
   abort("invalid type for getValue: " + type);
@@ -4302,36 +4071,36 @@ function setValue(ptr, value, type = "i8") {
  if (type.endsWith("*")) type = "*";
  switch (type) {
  case "i1":
-  GROWABLE_HEAP_I8()[ptr >>> 0] = value;
+  GROWABLE_HEAP_I8()[ptr >> 0] = value;
   break;
 
  case "i8":
-  GROWABLE_HEAP_I8()[ptr >>> 0] = value;
+  GROWABLE_HEAP_I8()[ptr >> 0] = value;
   break;
 
  case "i16":
-  GROWABLE_HEAP_I16()[ptr >>> 1] = value;
+  GROWABLE_HEAP_I16()[ptr >> 1] = value;
   break;
 
  case "i32":
-  GROWABLE_HEAP_I32()[ptr >>> 2] = value;
+  GROWABLE_HEAP_I32()[ptr >> 2] = value;
   break;
 
  case "i64":
   tempI64 = [ value >>> 0, (tempDouble = value, +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[ptr >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[ptr + 4 >>> 2] = tempI64[1];
+  GROWABLE_HEAP_I32()[ptr >> 2] = tempI64[0], GROWABLE_HEAP_I32()[ptr + 4 >> 2] = tempI64[1];
   break;
 
  case "float":
-  GROWABLE_HEAP_F32()[ptr >>> 2] = value;
+  GROWABLE_HEAP_F32()[ptr >> 2] = value;
   break;
 
  case "double":
-  GROWABLE_HEAP_F64()[ptr >>> 3] = value;
+  GROWABLE_HEAP_F64()[ptr >> 3] = value;
   break;
 
  case "*":
-  GROWABLE_HEAP_U32()[ptr >>> 2] = value;
+  GROWABLE_HEAP_U32()[ptr >> 2] = value;
   break;
 
  default:
@@ -4356,7 +4125,7 @@ function warnOnce(text) {
 
 function writeArrayToMemory(array, buffer) {
  assert(array.length >= 0, "writeArrayToMemory array must have a length (should be an array or typed array)");
- GROWABLE_HEAP_I8().set(array, buffer >>> 0);
+ GROWABLE_HEAP_I8().set(array, buffer);
 }
 
 function ___assert_fail(condition, filename, line, func) {
@@ -4406,7 +4175,7 @@ function ___pthread_create_js(pthread_ptr, attr, startRoutine, arg) {
 }
 
 function setErrNo(value) {
- GROWABLE_HEAP_I32()[___errno_location() >>> 2] = value;
+ GROWABLE_HEAP_I32()[___errno_location() >> 2] = value;
  return value;
 }
 
@@ -4445,7 +4214,7 @@ function ___syscall_fcntl64(fd, cmd, varargs) {
    {
     var arg = SYSCALLS.get();
     var offset = 0;
-    GROWABLE_HEAP_I16()[arg + offset >>> 1] = 2;
+    GROWABLE_HEAP_I16()[arg + offset >> 1] = 2;
     return 0;
    }
 
@@ -4500,7 +4269,7 @@ function ___syscall_ioctl(fd, op, varargs) {
    {
     if (!stream.tty) return -59;
     var argp = SYSCALLS.get();
-    GROWABLE_HEAP_I32()[argp >>> 2] = 0;
+    GROWABLE_HEAP_I32()[argp >> 2] = 0;
     return 0;
    }
 
@@ -4585,8 +4354,8 @@ var embind_charCodes = undefined;
 function readLatin1String(ptr) {
  var ret = "";
  var c = ptr;
- while (GROWABLE_HEAP_U8()[c >>> 0]) {
-  ret += embind_charCodes[GROWABLE_HEAP_U8()[c++ >>> 0]];
+ while (GROWABLE_HEAP_U8()[c]) {
+  ret += embind_charCodes[GROWABLE_HEAP_U8()[c++]];
  }
  return ret;
 }
@@ -4736,7 +4505,7 @@ function __embind_register_bool(rawType, name, size, trueValue, falseValue) {
    } else {
     throw new TypeError("Unknown boolean type size: " + name);
    }
-   return this["fromWireType"](heap[pointer >>> shift]);
+   return this["fromWireType"](heap[pointer >> shift]);
   },
   destructorFunction: null
  });
@@ -5211,7 +4980,7 @@ function nonConstNoSmartPtrRawPointerToWireType(destructors, handle) {
 }
 
 function simpleReadValueFromPointer(pointer) {
- return this["fromWireType"](GROWABLE_HEAP_I32()[pointer >>> 2]);
+ return this["fromWireType"](GROWABLE_HEAP_I32()[pointer >> 2]);
 }
 
 function RegisteredPointer_getPointee(ptr) {
@@ -5413,7 +5182,7 @@ function __embind_register_class(rawType, rawPointerType, rawConstPointerType, b
 function heap32VectorToArray(count, firstElement) {
  var array = [];
  for (var i = 0; i < count; i++) {
-  array.push(GROWABLE_HEAP_U32()[firstElement + i * 4 >>> 2]);
+  array.push(GROWABLE_HEAP_U32()[firstElement + i * 4 >> 2]);
  }
  return array;
 }
@@ -5737,12 +5506,12 @@ function floatReadValueFromPointer(name, shift) {
  switch (shift) {
  case 2:
   return function(pointer) {
-   return this["fromWireType"](GROWABLE_HEAP_F32()[pointer >>> 2]);
+   return this["fromWireType"](GROWABLE_HEAP_F32()[pointer >> 2]);
   };
 
  case 3:
   return function(pointer) {
-   return this["fromWireType"](GROWABLE_HEAP_F64()[pointer >>> 3]);
+   return this["fromWireType"](GROWABLE_HEAP_F64()[pointer >> 3]);
   };
 
  default:
@@ -5774,23 +5543,23 @@ function integerReadValueFromPointer(name, shift, signed) {
  switch (shift) {
  case 0:
   return signed ? function readS8FromPointer(pointer) {
-   return GROWABLE_HEAP_I8()[pointer >>> 0];
+   return GROWABLE_HEAP_I8()[pointer];
   } : function readU8FromPointer(pointer) {
-   return GROWABLE_HEAP_U8()[pointer >>> 0];
+   return GROWABLE_HEAP_U8()[pointer];
   };
 
  case 1:
   return signed ? function readS16FromPointer(pointer) {
-   return GROWABLE_HEAP_I16()[pointer >>> 1];
+   return GROWABLE_HEAP_I16()[pointer >> 1];
   } : function readU16FromPointer(pointer) {
-   return GROWABLE_HEAP_U16()[pointer >>> 1];
+   return GROWABLE_HEAP_U16()[pointer >> 1];
   };
 
  case 2:
   return signed ? function readS32FromPointer(pointer) {
-   return GROWABLE_HEAP_I32()[pointer >>> 2];
+   return GROWABLE_HEAP_I32()[pointer >> 2];
   } : function readU32FromPointer(pointer) {
-   return GROWABLE_HEAP_U32()[pointer >>> 2];
+   return GROWABLE_HEAP_U32()[pointer >> 2];
   };
 
  default:
@@ -5846,8 +5615,8 @@ function __embind_register_memory_view(rawType, dataTypeIndex, name) {
  function decodeMemoryView(handle) {
   handle = handle >> 2;
   var heap = GROWABLE_HEAP_U32();
-  var size = heap[handle >>> 0];
-  var data = heap[handle + 1 >>> 0];
+  var size = heap[handle];
+  var data = heap[handle + 1];
   return new TA(buffer, data, size);
  }
  name = readLatin1String(name);
@@ -5867,14 +5636,14 @@ function __embind_register_std_string(rawType, name) {
  registerType(rawType, {
   name: name,
   "fromWireType": function(value) {
-   var length = GROWABLE_HEAP_U32()[value >>> 2];
+   var length = GROWABLE_HEAP_U32()[value >> 2];
    var payload = value + 4;
    var str;
    if (stdStringIsUTF8) {
     var decodeStartPtr = payload;
     for (var i = 0; i <= length; ++i) {
      var currentBytePtr = payload + i;
-     if (i == length || GROWABLE_HEAP_U8()[currentBytePtr >>> 0] == 0) {
+     if (i == length || GROWABLE_HEAP_U8()[currentBytePtr] == 0) {
       var maxRead = currentBytePtr - decodeStartPtr;
       var stringSegment = UTF8ToString(decodeStartPtr, maxRead);
       if (str === undefined) {
@@ -5889,7 +5658,7 @@ function __embind_register_std_string(rawType, name) {
    } else {
     var a = new Array(length);
     for (var i = 0; i < length; ++i) {
-     a[i] = String.fromCharCode(GROWABLE_HEAP_U8()[payload + i >>> 0]);
+     a[i] = String.fromCharCode(GROWABLE_HEAP_U8()[payload + i]);
     }
     str = a.join("");
    }
@@ -5912,8 +5681,7 @@ function __embind_register_std_string(rawType, name) {
    }
    var base = _malloc(4 + length + 1);
    var ptr = base + 4;
-   ptr >>>= 0;
-   GROWABLE_HEAP_U32()[base >>> 2] = length;
+   GROWABLE_HEAP_U32()[base >> 2] = length;
    if (stdStringIsUTF8 && valueIsOfTypeString) {
     stringToUTF8(value, ptr, length + 1);
    } else {
@@ -5924,11 +5692,11 @@ function __embind_register_std_string(rawType, name) {
        _free(ptr);
        throwBindingError("String has UTF-16 code units that do not fit in 8 bits");
       }
-      GROWABLE_HEAP_U8()[ptr + i >>> 0] = charCode;
+      GROWABLE_HEAP_U8()[ptr + i] = charCode;
      }
     } else {
      for (var i = 0; i < length; ++i) {
-      GROWABLE_HEAP_U8()[ptr + i >>> 0] = value[i];
+      GROWABLE_HEAP_U8()[ptr + i] = value[i];
      }
     }
    }
@@ -5952,12 +5720,12 @@ function UTF16ToString(ptr, maxBytesToRead) {
  var endPtr = ptr;
  var idx = endPtr >> 1;
  var maxIdx = idx + maxBytesToRead / 2;
- while (!(idx >= maxIdx) && GROWABLE_HEAP_U16()[idx >>> 0]) ++idx;
+ while (!(idx >= maxIdx) && GROWABLE_HEAP_U16()[idx]) ++idx;
  endPtr = idx << 1;
  if (endPtr - ptr > 32 && UTF16Decoder) return UTF16Decoder.decode(GROWABLE_HEAP_U8().slice(ptr, endPtr));
  var str = "";
  for (var i = 0; !(i >= maxBytesToRead / 2); ++i) {
-  var codeUnit = GROWABLE_HEAP_I16()[ptr + i * 2 >>> 1];
+  var codeUnit = GROWABLE_HEAP_I16()[ptr + i * 2 >> 1];
   if (codeUnit == 0) break;
   str += String.fromCharCode(codeUnit);
  }
@@ -5976,10 +5744,10 @@ function stringToUTF16(str, outPtr, maxBytesToWrite) {
  var numCharsToWrite = maxBytesToWrite < str.length * 2 ? maxBytesToWrite / 2 : str.length;
  for (var i = 0; i < numCharsToWrite; ++i) {
   var codeUnit = str.charCodeAt(i);
-  GROWABLE_HEAP_I16()[outPtr >>> 1] = codeUnit;
+  GROWABLE_HEAP_I16()[outPtr >> 1] = codeUnit;
   outPtr += 2;
  }
- GROWABLE_HEAP_I16()[outPtr >>> 1] = 0;
+ GROWABLE_HEAP_I16()[outPtr >> 1] = 0;
  return outPtr - startPtr;
 }
 
@@ -5992,7 +5760,7 @@ function UTF32ToString(ptr, maxBytesToRead) {
  var i = 0;
  var str = "";
  while (!(i >= maxBytesToRead / 4)) {
-  var utf32 = GROWABLE_HEAP_I32()[ptr + i * 4 >>> 2];
+  var utf32 = GROWABLE_HEAP_I32()[ptr + i * 4 >> 2];
   if (utf32 == 0) break;
   ++i;
   if (utf32 >= 65536) {
@@ -6006,7 +5774,6 @@ function UTF32ToString(ptr, maxBytesToRead) {
 }
 
 function stringToUTF32(str, outPtr, maxBytesToWrite) {
- outPtr >>>= 0;
  assert(outPtr % 4 == 0, "Pointer passed to stringToUTF32 must be aligned to four bytes!");
  assert(typeof maxBytesToWrite == "number", "stringToUTF32(str, outPtr, maxBytesToWrite) is missing the third parameter that specifies the length of the output buffer!");
  if (maxBytesToWrite === undefined) {
@@ -6021,11 +5788,11 @@ function stringToUTF32(str, outPtr, maxBytesToWrite) {
    var trailSurrogate = str.charCodeAt(++i);
    codeUnit = 65536 + ((codeUnit & 1023) << 10) | trailSurrogate & 1023;
   }
-  GROWABLE_HEAP_I32()[outPtr >>> 2] = codeUnit;
+  GROWABLE_HEAP_I32()[outPtr >> 2] = codeUnit;
   outPtr += 4;
   if (outPtr + 4 > endPtr) break;
  }
- GROWABLE_HEAP_I32()[outPtr >>> 2] = 0;
+ GROWABLE_HEAP_I32()[outPtr >> 2] = 0;
  return outPtr - startPtr;
 }
 
@@ -6058,13 +5825,13 @@ function __embind_register_std_wstring(rawType, charSize, name) {
  registerType(rawType, {
   name: name,
   "fromWireType": function(value) {
-   var length = GROWABLE_HEAP_U32()[value >>> 2];
+   var length = GROWABLE_HEAP_U32()[value >> 2];
    var HEAP = getHeap();
    var str;
    var decodeStartPtr = value + 4;
    for (var i = 0; i <= length; ++i) {
     var currentBytePtr = value + 4 + i * charSize;
-    if (i == length || HEAP[currentBytePtr >>> shift] == 0) {
+    if (i == length || HEAP[currentBytePtr >> shift] == 0) {
      var maxReadBytes = currentBytePtr - decodeStartPtr;
      var stringSegment = decodeString(decodeStartPtr, maxReadBytes);
      if (str === undefined) {
@@ -6085,8 +5852,7 @@ function __embind_register_std_wstring(rawType, charSize, name) {
    }
    var length = lengthBytesUTF(value);
    var ptr = _malloc(4 + length + charSize);
-   ptr >>>= 0;
-   GROWABLE_HEAP_U32()[ptr >>> 2] = length >> shift;
+   GROWABLE_HEAP_U32()[ptr >> 2] = length >> shift;
    encodeString(value, ptr + 4, length + charSize);
    if (destructors !== null) {
     destructors.push(_free, ptr);
@@ -6188,6 +5954,31 @@ function _abort() {
  abort("native code called abort()");
 }
 
+var readAsmConstArgsArray = [];
+
+function readAsmConstArgs(sigPtr, buf) {
+ assert(Array.isArray(readAsmConstArgsArray));
+ assert(buf % 16 == 0);
+ readAsmConstArgsArray.length = 0;
+ var ch;
+ buf >>= 2;
+ while (ch = GROWABLE_HEAP_U8()[sigPtr++]) {
+  var chr = String.fromCharCode(ch);
+  var validChars = [ "d", "f", "i" ];
+  assert(validChars.includes(chr), "Invalid character " + ch + '("' + chr + '") in readAsmConstArgs! Use only [' + validChars + '], and do not specify "v" for void return argument.');
+  buf += ch != 105 & buf;
+  readAsmConstArgsArray.push(ch == 105 ? GROWABLE_HEAP_I32()[buf] : GROWABLE_HEAP_F64()[buf++ >> 1]);
+  ++buf;
+ }
+ return readAsmConstArgsArray;
+}
+
+function _emscripten_asm_const_int(code, sigPtr, argbuf) {
+ var args = readAsmConstArgs(sigPtr, argbuf);
+ if (!ASM_CONSTS.hasOwnProperty(code)) abort("No EM_ASM constant found at address " + code);
+ return ASM_CONSTS[code].apply(null, args);
+}
+
 function _emscripten_check_blocking_allowed() {
  if (ENVIRONMENT_IS_NODE) return;
  if (ENVIRONMENT_IS_WORKER) return;
@@ -6210,7 +6001,7 @@ if (ENVIRONMENT_IS_NODE) {
 } else _emscripten_get_now = () => performance.now();
 
 function _emscripten_memcpy_big(dest, src, num) {
- GROWABLE_HEAP_U8().copyWithin(dest >>> 0, src >>> 0, src + num >>> 0);
+ GROWABLE_HEAP_U8().copyWithin(dest, src, src + num);
 }
 
 function _emscripten_proxy_to_main_thread_js(index, sync) {
@@ -6223,7 +6014,7 @@ function _emscripten_proxy_to_main_thread_js(index, sync) {
   var b = args >> 3;
   for (var i = 0; i < numCallArgs; i++) {
    var arg = outerArgs[2 + i];
-   GROWABLE_HEAP_F64()[b + i >>> 0] = arg;
+   GROWABLE_HEAP_F64()[b + i] = arg;
   }
   return _emscripten_run_in_main_runtime_thread_js(index, serializedNumCallArgs, args, sync);
  });
@@ -6235,7 +6026,7 @@ function _emscripten_receive_on_main_thread_js(index, numCallArgs, args) {
  _emscripten_receive_on_main_thread_js_callArgs.length = numCallArgs;
  var b = args >> 3;
  for (var i = 0; i < numCallArgs; i++) {
-  _emscripten_receive_on_main_thread_js_callArgs[i] = GROWABLE_HEAP_F64()[b + i >>> 0];
+  _emscripten_receive_on_main_thread_js_callArgs[i] = GROWABLE_HEAP_F64()[b + i];
  }
  var isEmAsmConst = index < 0;
  var func = !isEmAsmConst ? proxiedFunctionTable[index] : ASM_CONSTS[-index - 1];
@@ -6244,7 +6035,7 @@ function _emscripten_receive_on_main_thread_js(index, numCallArgs, args) {
 }
 
 function getHeapMax() {
- return 4294901760;
+ return 2147483648;
 }
 
 function emscripten_realloc_buffer(size) {
@@ -6319,9 +6110,9 @@ function getEnvStrings() {
 function writeAsciiToMemory(str, buffer, dontAddNull) {
  for (var i = 0; i < str.length; ++i) {
   assert(str.charCodeAt(i) === (str.charCodeAt(i) & 255));
-  GROWABLE_HEAP_I8()[buffer++ >>> 0] = str.charCodeAt(i);
+  GROWABLE_HEAP_I8()[buffer++ >> 0] = str.charCodeAt(i);
  }
- if (!dontAddNull) GROWABLE_HEAP_I8()[buffer >>> 0] = 0;
+ if (!dontAddNull) GROWABLE_HEAP_I8()[buffer >> 0] = 0;
 }
 
 function _environ_get(__environ, environ_buf) {
@@ -6329,7 +6120,7 @@ function _environ_get(__environ, environ_buf) {
  var bufSize = 0;
  getEnvStrings().forEach(function(string, i) {
   var ptr = environ_buf + bufSize;
-  GROWABLE_HEAP_U32()[__environ + i * 4 >>> 2] = ptr;
+  GROWABLE_HEAP_U32()[__environ + i * 4 >> 2] = ptr;
   writeAsciiToMemory(string, ptr);
   bufSize += string.length + 1;
  });
@@ -6339,12 +6130,12 @@ function _environ_get(__environ, environ_buf) {
 function _environ_sizes_get(penviron_count, penviron_buf_size) {
  if (ENVIRONMENT_IS_PTHREAD) return _emscripten_proxy_to_main_thread_js(8, 1, penviron_count, penviron_buf_size);
  var strings = getEnvStrings();
- GROWABLE_HEAP_U32()[penviron_count >>> 2] = strings.length;
+ GROWABLE_HEAP_U32()[penviron_count >> 2] = strings.length;
  var bufSize = 0;
  strings.forEach(function(string) {
   bufSize += string.length + 1;
  });
- GROWABLE_HEAP_U32()[penviron_buf_size >>> 2] = bufSize;
+ GROWABLE_HEAP_U32()[penviron_buf_size >> 2] = bufSize;
  return 0;
 }
 
@@ -6363,8 +6154,8 @@ function _fd_close(fd) {
 function doReadv(stream, iov, iovcnt, offset) {
  var ret = 0;
  for (var i = 0; i < iovcnt; i++) {
-  var ptr = GROWABLE_HEAP_U32()[iov >>> 2];
-  var len = GROWABLE_HEAP_U32()[iov + 4 >>> 2];
+  var ptr = GROWABLE_HEAP_U32()[iov >> 2];
+  var len = GROWABLE_HEAP_U32()[iov + 4 >> 2];
   iov += 8;
   var curr = FS.read(stream, GROWABLE_HEAP_I8(), ptr, len, offset);
   if (curr < 0) return -1;
@@ -6379,7 +6170,7 @@ function _fd_read(fd, iov, iovcnt, pnum) {
  try {
   var stream = SYSCALLS.getStreamFromFD(fd);
   var num = doReadv(stream, iov, iovcnt);
-  GROWABLE_HEAP_U32()[pnum >>> 2] = num;
+  GROWABLE_HEAP_U32()[pnum >> 2] = num;
   return 0;
  } catch (e) {
   if (typeof FS == "undefined" || !(e instanceof FS.ErrnoError)) throw e;
@@ -6401,7 +6192,7 @@ function _fd_seek(fd, offset_low, offset_high, whence, newOffset) {
   var stream = SYSCALLS.getStreamFromFD(fd);
   FS.llseek(stream, offset, whence);
   tempI64 = [ stream.position >>> 0, (tempDouble = stream.position, +Math.abs(tempDouble) >= 1 ? tempDouble > 0 ? (Math.min(+Math.floor(tempDouble / 4294967296), 4294967295) | 0) >>> 0 : ~~+Math.ceil((tempDouble - +(~~tempDouble >>> 0)) / 4294967296) >>> 0 : 0) ], 
-  GROWABLE_HEAP_I32()[newOffset >>> 2] = tempI64[0], GROWABLE_HEAP_I32()[newOffset + 4 >>> 2] = tempI64[1];
+  GROWABLE_HEAP_I32()[newOffset >> 2] = tempI64[0], GROWABLE_HEAP_I32()[newOffset + 4 >> 2] = tempI64[1];
   if (stream.getdents && offset === 0 && whence === 0) stream.getdents = null;
   return 0;
  } catch (e) {
@@ -6413,8 +6204,8 @@ function _fd_seek(fd, offset_low, offset_high, whence, newOffset) {
 function doWritev(stream, iov, iovcnt, offset) {
  var ret = 0;
  for (var i = 0; i < iovcnt; i++) {
-  var ptr = GROWABLE_HEAP_U32()[iov >>> 2];
-  var len = GROWABLE_HEAP_U32()[iov + 4 >>> 2];
+  var ptr = GROWABLE_HEAP_U32()[iov >> 2];
+  var len = GROWABLE_HEAP_U32()[iov + 4 >> 2];
   iov += 8;
   var curr = FS.write(stream, GROWABLE_HEAP_I8(), ptr, len, offset);
   if (curr < 0) return -1;
@@ -6428,7 +6219,7 @@ function _fd_write(fd, iov, iovcnt, pnum) {
  try {
   var stream = SYSCALLS.getStreamFromFD(fd);
   var num = doWritev(stream, iov, iovcnt);
-  GROWABLE_HEAP_U32()[pnum >>> 2] = num;
+  GROWABLE_HEAP_U32()[pnum >> 2] = num;
   return 0;
  } catch (e) {
   if (typeof FS == "undefined" || !(e instanceof FS.ErrnoError)) throw e;
@@ -6474,18 +6265,18 @@ function __addDays(date, days) {
 }
 
 function _strftime(s, maxsize, format, tm) {
- var tm_zone = GROWABLE_HEAP_I32()[tm + 40 >>> 2];
+ var tm_zone = GROWABLE_HEAP_I32()[tm + 40 >> 2];
  var date = {
-  tm_sec: GROWABLE_HEAP_I32()[tm >>> 2],
-  tm_min: GROWABLE_HEAP_I32()[tm + 4 >>> 2],
-  tm_hour: GROWABLE_HEAP_I32()[tm + 8 >>> 2],
-  tm_mday: GROWABLE_HEAP_I32()[tm + 12 >>> 2],
-  tm_mon: GROWABLE_HEAP_I32()[tm + 16 >>> 2],
-  tm_year: GROWABLE_HEAP_I32()[tm + 20 >>> 2],
-  tm_wday: GROWABLE_HEAP_I32()[tm + 24 >>> 2],
-  tm_yday: GROWABLE_HEAP_I32()[tm + 28 >>> 2],
-  tm_isdst: GROWABLE_HEAP_I32()[tm + 32 >>> 2],
-  tm_gmtoff: GROWABLE_HEAP_I32()[tm + 36 >>> 2],
+  tm_sec: GROWABLE_HEAP_I32()[tm >> 2],
+  tm_min: GROWABLE_HEAP_I32()[tm + 4 >> 2],
+  tm_hour: GROWABLE_HEAP_I32()[tm + 8 >> 2],
+  tm_mday: GROWABLE_HEAP_I32()[tm + 12 >> 2],
+  tm_mon: GROWABLE_HEAP_I32()[tm + 16 >> 2],
+  tm_year: GROWABLE_HEAP_I32()[tm + 20 >> 2],
+  tm_wday: GROWABLE_HEAP_I32()[tm + 24 >> 2],
+  tm_yday: GROWABLE_HEAP_I32()[tm + 28 >> 2],
+  tm_isdst: GROWABLE_HEAP_I32()[tm + 32 >> 2],
+  tm_gmtoff: GROWABLE_HEAP_I32()[tm + 36 >> 2],
   tm_zone: tm_zone ? UTF8ToString(tm_zone) : ""
  };
  var pattern = UTF8ToString(format);
@@ -6897,27 +6688,6 @@ ERRNO_CODES = {
  "ESTRPIPE": 135
 };
 
-if (ENVIRONMENT_IS_NODE) {
- var _wrapNodeError = function(func) {
-  return function() {
-   try {
-    return func.apply(this, arguments);
-   } catch (e) {
-    if (e.code) {
-     throw new FS.ErrnoError(ERRNO_CODES[e.code]);
-    }
-    throw e;
-   }
-  };
- };
- var VFS = Object.assign({}, FS);
- for (var _key in NODERAWFS) {
-  FS[_key] = _wrapNodeError(NODERAWFS[_key]);
- }
-} else {
- throw new Error("NODERAWFS is currently only supported on Node.js environment.");
-}
-
 embind_init_charCodes();
 
 BindingError = Module["BindingError"] = extendError(Error, "BindingError");
@@ -6971,6 +6741,7 @@ var asmLibraryArg = {
  "_emval_incref": __emval_incref,
  "_emval_take_value": __emval_take_value,
  "abort": _abort,
+ "emscripten_asm_const_int": _emscripten_asm_const_int,
  "emscripten_check_blocking_allowed": _emscripten_check_blocking_allowed,
  "emscripten_date_now": _emscripten_date_now,
  "emscripten_get_now": _emscripten_get_now,
@@ -7065,11 +6836,11 @@ Module["wasmMemory"] = wasmMemory;
 
 Module["ExitStatus"] = ExitStatus;
 
-var unexportedRuntimeSymbols = [ "run", "UTF8ArrayToString", "UTF8ToString", "stringToUTF8Array", "stringToUTF8", "lengthBytesUTF8", "addOnPreRun", "addOnInit", "addOnPreMain", "addOnExit", "addOnPostRun", "addRunDependency", "removeRunDependency", "FS_createFolder", "FS_createPath", "FS_createDataFile", "FS_createPreloadedFile", "FS_createLazyFile", "FS_createLink", "FS_createDevice", "FS_unlink", "getLEB", "getFunctionTables", "alignFunctionTables", "registerFunctions", "prettyPrint", "getCompilerSetting", "print", "printErr", "callMain", "abort", "stackAlloc", "stackSave", "stackRestore", "getTempRet0", "setTempRet0", "GROWABLE_HEAP_I8", "GROWABLE_HEAP_U8", "GROWABLE_HEAP_I16", "GROWABLE_HEAP_U16", "GROWABLE_HEAP_I32", "GROWABLE_HEAP_U32", "GROWABLE_HEAP_F32", "GROWABLE_HEAP_F64", "writeStackCookie", "checkStackCookie", "ptrToString", "zeroMemory", "stringToNewUTF8", "exitJS", "getHeapMax", "emscripten_realloc_buffer", "ENV", "ERRNO_CODES", "ERRNO_MESSAGES", "setErrNo", "inetPton4", "inetNtop4", "inetPton6", "inetNtop6", "readSockaddr", "writeSockaddr", "DNS", "getHostByName", "Protocols", "Sockets", "getRandomDevice", "warnOnce", "traverseStack", "UNWIND_CACHE", "convertPCtoSourceLocation", "readAsmConstArgsArray", "readAsmConstArgs", "mainThreadEM_ASM", "jstoi_q", "jstoi_s", "getExecutableName", "listenOnce", "autoResumeAudioContext", "dynCallLegacy", "getDynCaller", "dynCall", "handleException", "runtimeKeepalivePush", "runtimeKeepalivePop", "callUserCallback", "maybeExit", "safeSetTimeout", "asmjsMangle", "asyncLoad", "alignMemory", "mmapAlloc", "writeI53ToI64", "writeI53ToI64Clamped", "writeI53ToI64Signaling", "writeI53ToU64Clamped", "writeI53ToU64Signaling", "readI53FromI64", "readI53FromU64", "convertI32PairToI53", "convertI32PairToI53Checked", "convertU32PairToI53", "getCFunc", "ccall", "cwrap", "uleb128Encode", "sigToWasmTypes", "generateFuncType", "convertJsFunctionToWasm", "freeTableIndexes", "functionsInTableMap", "getEmptyTableSlot", "updateTableMap", "addFunction", "removeFunction", "reallyNegative", "unSign", "strLen", "reSign", "formatString", "setValue", "getValue", "PATH", "PATH_FS", "intArrayFromString", "intArrayToString", "AsciiToString", "stringToAscii", "UTF16Decoder", "UTF16ToString", "stringToUTF16", "lengthBytesUTF16", "UTF32ToString", "stringToUTF32", "lengthBytesUTF32", "allocateUTF8", "allocateUTF8OnStack", "writeStringToMemory", "writeArrayToMemory", "writeAsciiToMemory", "SYSCALLS", "getSocketFromFD", "getSocketAddress", "JSEvents", "registerKeyEventCallback", "specialHTMLTargets", "maybeCStringToJsString", "findEventTarget", "findCanvasEventTarget", "getBoundingClientRect", "fillMouseEventData", "registerMouseEventCallback", "registerWheelEventCallback", "registerUiEventCallback", "registerFocusEventCallback", "fillDeviceOrientationEventData", "registerDeviceOrientationEventCallback", "fillDeviceMotionEventData", "registerDeviceMotionEventCallback", "screenOrientation", "fillOrientationChangeEventData", "registerOrientationChangeEventCallback", "fillFullscreenChangeEventData", "registerFullscreenChangeEventCallback", "JSEvents_requestFullscreen", "JSEvents_resizeCanvasForFullscreen", "registerRestoreOldStyle", "hideEverythingExceptGivenElement", "restoreHiddenElements", "setLetterbox", "currentFullscreenStrategy", "restoreOldWindowedStyle", "softFullscreenResizeWebGLRenderTarget", "doRequestFullscreen", "fillPointerlockChangeEventData", "registerPointerlockChangeEventCallback", "registerPointerlockErrorEventCallback", "requestPointerLock", "fillVisibilityChangeEventData", "registerVisibilityChangeEventCallback", "registerTouchEventCallback", "fillGamepadEventData", "registerGamepadEventCallback", "registerBeforeUnloadEventCallback", "fillBatteryEventData", "battery", "registerBatteryEventCallback", "setCanvasElementSize", "getCanvasElementSize", "demangle", "demangleAll", "jsStackTrace", "stackTrace", "getEnvStrings", "checkWasiClock", "doReadv", "doWritev", "dlopenMissingError", "createDyncallWrapper", "setImmediateWrapped", "clearImmediateWrapped", "polyfillSetImmediate", "getExceptionMessageCommon", "getCppExceptionTag", "getCppExceptionThrownObjectFromWebAssemblyException", "incrementExceptionRefcount", "decrementExceptionRefcount", "getExceptionMessage", "Browser", "setMainLoop", "wget", "FS", "MEMFS", "TTY", "PIPEFS", "SOCKFS", "_setNetworkCallback", "NODERAWFS", "tempFixedLengthArray", "miniTempWebGLFloatBuffers", "heapObjectForWebGLType", "heapAccessShiftForWebGLHeap", "GL", "emscriptenWebGLGet", "computeUnpackAlignedImageSize", "emscriptenWebGLGetTexPixelData", "emscriptenWebGLGetUniform", "webglGetUniformLocation", "webglPrepareUniformLocationsBeforeFirstUse", "webglGetLeftBracePos", "emscriptenWebGLGetVertexAttrib", "writeGLArray", "AL", "SDL_unicode", "SDL_ttfContext", "SDL_audio", "SDL", "SDL_gfx", "GLUT", "EGL", "GLFW_Window", "GLFW", "GLEW", "IDBStore", "runAndAbortIfError", "ALLOC_NORMAL", "ALLOC_STACK", "allocate", "PThread", "killThread", "cleanupThread", "registerTLSInit", "cancelThread", "spawnThread", "exitOnMainThread", "invokeEntryPoint", "executeNotifiedProxyingQueue", "InternalError", "BindingError", "UnboundTypeError", "PureVirtualError", "init_embind", "throwInternalError", "throwBindingError", "throwUnboundTypeError", "ensureOverloadTable", "exposePublicSymbol", "replacePublicSymbol", "extendError", "createNamedFunction", "embindRepr", "registeredInstances", "getBasestPointer", "registerInheritedInstance", "unregisterInheritedInstance", "getInheritedInstance", "getInheritedInstanceCount", "getLiveInheritedInstances", "registeredTypes", "awaitingDependencies", "typeDependencies", "registeredPointers", "registerType", "whenDependentTypesAreResolved", "embind_charCodes", "embind_init_charCodes", "readLatin1String", "getTypeName", "heap32VectorToArray", "requireRegisteredType", "getShiftFromSize", "integerReadValueFromPointer", "enumReadValueFromPointer", "floatReadValueFromPointer", "simpleReadValueFromPointer", "runDestructors", "new_", "craftInvokerFunction", "embind__requireFunction", "tupleRegistrations", "structRegistrations", "genericPointerToWireType", "constNoSmartPtrRawPointerToWireType", "nonConstNoSmartPtrRawPointerToWireType", "init_RegisteredPointer", "RegisteredPointer", "RegisteredPointer_getPointee", "RegisteredPointer_destructor", "RegisteredPointer_deleteObject", "RegisteredPointer_fromWireType", "runDestructor", "releaseClassHandle", "finalizationRegistry", "detachFinalizer_deps", "detachFinalizer", "attachFinalizer", "makeClassHandle", "init_ClassHandle", "ClassHandle", "ClassHandle_isAliasOf", "throwInstanceAlreadyDeleted", "ClassHandle_clone", "ClassHandle_delete", "deletionQueue", "ClassHandle_isDeleted", "ClassHandle_deleteLater", "flushPendingDeletes", "delayFunction", "setDelayFunction", "RegisteredClass", "shallowCopyInternalPointer", "downcastPointer", "upcastPointer", "validateThis", "char_0", "char_9", "makeLegalFunctionName", "emval_handle_array", "emval_free_list", "emval_symbols", "init_emval", "count_emval_handles", "get_first_emval", "getStringOrSymbol", "Emval", "emval_newers", "craftEmvalAllocator", "emval_get_global", "emval_lookupTypes", "emval_allocateDestructors", "emval_methodCallers", "emval_addMethodCaller", "emval_registeredMethods", "NODEFS" ];
+var unexportedRuntimeSymbols = [ "run", "UTF8ArrayToString", "UTF8ToString", "stringToUTF8Array", "stringToUTF8", "lengthBytesUTF8", "addOnPreRun", "addOnInit", "addOnPreMain", "addOnExit", "addOnPostRun", "addRunDependency", "removeRunDependency", "FS_createFolder", "FS_createPath", "FS_createDataFile", "FS_createPreloadedFile", "FS_createLazyFile", "FS_createLink", "FS_createDevice", "FS_unlink", "getLEB", "getFunctionTables", "alignFunctionTables", "registerFunctions", "prettyPrint", "getCompilerSetting", "print", "printErr", "callMain", "abort", "stackAlloc", "stackSave", "stackRestore", "getTempRet0", "setTempRet0", "GROWABLE_HEAP_I8", "GROWABLE_HEAP_U8", "GROWABLE_HEAP_I16", "GROWABLE_HEAP_U16", "GROWABLE_HEAP_I32", "GROWABLE_HEAP_U32", "GROWABLE_HEAP_F32", "GROWABLE_HEAP_F64", "writeStackCookie", "checkStackCookie", "ptrToString", "zeroMemory", "stringToNewUTF8", "exitJS", "getHeapMax", "emscripten_realloc_buffer", "ENV", "ERRNO_CODES", "ERRNO_MESSAGES", "setErrNo", "inetPton4", "inetNtop4", "inetPton6", "inetNtop6", "readSockaddr", "writeSockaddr", "DNS", "getHostByName", "Protocols", "Sockets", "getRandomDevice", "warnOnce", "traverseStack", "UNWIND_CACHE", "convertPCtoSourceLocation", "readAsmConstArgsArray", "readAsmConstArgs", "mainThreadEM_ASM", "jstoi_q", "jstoi_s", "getExecutableName", "listenOnce", "autoResumeAudioContext", "dynCallLegacy", "getDynCaller", "dynCall", "handleException", "runtimeKeepalivePush", "runtimeKeepalivePop", "callUserCallback", "maybeExit", "safeSetTimeout", "asmjsMangle", "asyncLoad", "alignMemory", "mmapAlloc", "writeI53ToI64", "writeI53ToI64Clamped", "writeI53ToI64Signaling", "writeI53ToU64Clamped", "writeI53ToU64Signaling", "readI53FromI64", "readI53FromU64", "convertI32PairToI53", "convertI32PairToI53Checked", "convertU32PairToI53", "getCFunc", "ccall", "cwrap", "uleb128Encode", "sigToWasmTypes", "generateFuncType", "convertJsFunctionToWasm", "freeTableIndexes", "functionsInTableMap", "getEmptyTableSlot", "updateTableMap", "addFunction", "removeFunction", "reallyNegative", "unSign", "strLen", "reSign", "formatString", "setValue", "getValue", "PATH", "PATH_FS", "intArrayFromString", "intArrayToString", "AsciiToString", "stringToAscii", "UTF16Decoder", "UTF16ToString", "stringToUTF16", "lengthBytesUTF16", "UTF32ToString", "stringToUTF32", "lengthBytesUTF32", "allocateUTF8", "allocateUTF8OnStack", "writeStringToMemory", "writeArrayToMemory", "writeAsciiToMemory", "SYSCALLS", "getSocketFromFD", "getSocketAddress", "JSEvents", "registerKeyEventCallback", "specialHTMLTargets", "maybeCStringToJsString", "findEventTarget", "findCanvasEventTarget", "getBoundingClientRect", "fillMouseEventData", "registerMouseEventCallback", "registerWheelEventCallback", "registerUiEventCallback", "registerFocusEventCallback", "fillDeviceOrientationEventData", "registerDeviceOrientationEventCallback", "fillDeviceMotionEventData", "registerDeviceMotionEventCallback", "screenOrientation", "fillOrientationChangeEventData", "registerOrientationChangeEventCallback", "fillFullscreenChangeEventData", "registerFullscreenChangeEventCallback", "JSEvents_requestFullscreen", "JSEvents_resizeCanvasForFullscreen", "registerRestoreOldStyle", "hideEverythingExceptGivenElement", "restoreHiddenElements", "setLetterbox", "currentFullscreenStrategy", "restoreOldWindowedStyle", "softFullscreenResizeWebGLRenderTarget", "doRequestFullscreen", "fillPointerlockChangeEventData", "registerPointerlockChangeEventCallback", "registerPointerlockErrorEventCallback", "requestPointerLock", "fillVisibilityChangeEventData", "registerVisibilityChangeEventCallback", "registerTouchEventCallback", "fillGamepadEventData", "registerGamepadEventCallback", "registerBeforeUnloadEventCallback", "fillBatteryEventData", "battery", "registerBatteryEventCallback", "setCanvasElementSize", "getCanvasElementSize", "demangle", "demangleAll", "jsStackTrace", "stackTrace", "getEnvStrings", "checkWasiClock", "doReadv", "doWritev", "dlopenMissingError", "createDyncallWrapper", "setImmediateWrapped", "clearImmediateWrapped", "polyfillSetImmediate", "getExceptionMessageCommon", "getCppExceptionTag", "getCppExceptionThrownObjectFromWebAssemblyException", "incrementExceptionRefcount", "decrementExceptionRefcount", "getExceptionMessage", "Browser", "setMainLoop", "wget", "FS", "MEMFS", "TTY", "PIPEFS", "SOCKFS", "_setNetworkCallback", "tempFixedLengthArray", "miniTempWebGLFloatBuffers", "heapObjectForWebGLType", "heapAccessShiftForWebGLHeap", "GL", "emscriptenWebGLGet", "computeUnpackAlignedImageSize", "emscriptenWebGLGetTexPixelData", "emscriptenWebGLGetUniform", "webglGetUniformLocation", "webglPrepareUniformLocationsBeforeFirstUse", "webglGetLeftBracePos", "emscriptenWebGLGetVertexAttrib", "writeGLArray", "AL", "SDL_unicode", "SDL_ttfContext", "SDL_audio", "SDL", "SDL_gfx", "GLUT", "EGL", "GLFW_Window", "GLFW", "GLEW", "IDBStore", "runAndAbortIfError", "ALLOC_NORMAL", "ALLOC_STACK", "allocate", "PThread", "killThread", "cleanupThread", "registerTLSInit", "cancelThread", "spawnThread", "exitOnMainThread", "invokeEntryPoint", "executeNotifiedProxyingQueue", "InternalError", "BindingError", "UnboundTypeError", "PureVirtualError", "init_embind", "throwInternalError", "throwBindingError", "throwUnboundTypeError", "ensureOverloadTable", "exposePublicSymbol", "replacePublicSymbol", "extendError", "createNamedFunction", "embindRepr", "registeredInstances", "getBasestPointer", "registerInheritedInstance", "unregisterInheritedInstance", "getInheritedInstance", "getInheritedInstanceCount", "getLiveInheritedInstances", "registeredTypes", "awaitingDependencies", "typeDependencies", "registeredPointers", "registerType", "whenDependentTypesAreResolved", "embind_charCodes", "embind_init_charCodes", "readLatin1String", "getTypeName", "heap32VectorToArray", "requireRegisteredType", "getShiftFromSize", "integerReadValueFromPointer", "enumReadValueFromPointer", "floatReadValueFromPointer", "simpleReadValueFromPointer", "runDestructors", "new_", "craftInvokerFunction", "embind__requireFunction", "tupleRegistrations", "structRegistrations", "genericPointerToWireType", "constNoSmartPtrRawPointerToWireType", "nonConstNoSmartPtrRawPointerToWireType", "init_RegisteredPointer", "RegisteredPointer", "RegisteredPointer_getPointee", "RegisteredPointer_destructor", "RegisteredPointer_deleteObject", "RegisteredPointer_fromWireType", "runDestructor", "releaseClassHandle", "finalizationRegistry", "detachFinalizer_deps", "detachFinalizer", "attachFinalizer", "makeClassHandle", "init_ClassHandle", "ClassHandle", "ClassHandle_isAliasOf", "throwInstanceAlreadyDeleted", "ClassHandle_clone", "ClassHandle_delete", "deletionQueue", "ClassHandle_isDeleted", "ClassHandle_deleteLater", "flushPendingDeletes", "delayFunction", "setDelayFunction", "RegisteredClass", "shallowCopyInternalPointer", "downcastPointer", "upcastPointer", "validateThis", "char_0", "char_9", "makeLegalFunctionName", "emval_handle_array", "emval_free_list", "emval_symbols", "init_emval", "count_emval_handles", "get_first_emval", "getStringOrSymbol", "Emval", "emval_newers", "craftEmvalAllocator", "emval_get_global", "emval_lookupTypes", "emval_allocateDestructors", "emval_methodCallers", "emval_addMethodCaller", "emval_registeredMethods", "NODEFS" ];
 
 unexportedRuntimeSymbols.forEach(unexportedRuntimeSymbol);
 
-var missingLibrarySymbols = [ "stringToNewUTF8", "inetPton4", "inetNtop4", "inetPton6", "inetNtop6", "readSockaddr", "writeSockaddr", "getHostByName", "traverseStack", "convertPCtoSourceLocation", "readAsmConstArgs", "mainThreadEM_ASM", "jstoi_q", "jstoi_s", "listenOnce", "autoResumeAudioContext", "runtimeKeepalivePush", "runtimeKeepalivePop", "callUserCallback", "maybeExit", "safeSetTimeout", "asmjsMangle", "writeI53ToI64", "writeI53ToI64Clamped", "writeI53ToI64Signaling", "writeI53ToU64Clamped", "writeI53ToU64Signaling", "readI53FromI64", "readI53FromU64", "convertI32PairToI53", "convertU32PairToI53", "getCFunc", "ccall", "cwrap", "uleb128Encode", "sigToWasmTypes", "generateFuncType", "convertJsFunctionToWasm", "getEmptyTableSlot", "updateTableMap", "addFunction", "removeFunction", "reallyNegative", "unSign", "strLen", "reSign", "formatString", "intArrayToString", "AsciiToString", "stringToAscii", "allocateUTF8", "allocateUTF8OnStack", "writeStringToMemory", "getSocketFromFD", "getSocketAddress", "registerKeyEventCallback", "maybeCStringToJsString", "findEventTarget", "findCanvasEventTarget", "getBoundingClientRect", "fillMouseEventData", "registerMouseEventCallback", "registerWheelEventCallback", "registerUiEventCallback", "registerFocusEventCallback", "fillDeviceOrientationEventData", "registerDeviceOrientationEventCallback", "fillDeviceMotionEventData", "registerDeviceMotionEventCallback", "screenOrientation", "fillOrientationChangeEventData", "registerOrientationChangeEventCallback", "fillFullscreenChangeEventData", "registerFullscreenChangeEventCallback", "JSEvents_requestFullscreen", "JSEvents_resizeCanvasForFullscreen", "registerRestoreOldStyle", "hideEverythingExceptGivenElement", "restoreHiddenElements", "setLetterbox", "softFullscreenResizeWebGLRenderTarget", "doRequestFullscreen", "fillPointerlockChangeEventData", "registerPointerlockChangeEventCallback", "registerPointerlockErrorEventCallback", "requestPointerLock", "fillVisibilityChangeEventData", "registerVisibilityChangeEventCallback", "registerTouchEventCallback", "fillGamepadEventData", "registerGamepadEventCallback", "registerBeforeUnloadEventCallback", "fillBatteryEventData", "battery", "registerBatteryEventCallback", "setCanvasElementSize", "getCanvasElementSize", "checkWasiClock", "createDyncallWrapper", "setImmediateWrapped", "clearImmediateWrapped", "polyfillSetImmediate", "getExceptionMessageCommon", "getCppExceptionTag", "getCppExceptionThrownObjectFromWebAssemblyException", "incrementExceptionRefcount", "decrementExceptionRefcount", "getExceptionMessage", "setMainLoop", "_setNetworkCallback", "heapObjectForWebGLType", "heapAccessShiftForWebGLHeap", "emscriptenWebGLGet", "computeUnpackAlignedImageSize", "emscriptenWebGLGetTexPixelData", "emscriptenWebGLGetUniform", "webglGetUniformLocation", "webglPrepareUniformLocationsBeforeFirstUse", "webglGetLeftBracePos", "emscriptenWebGLGetVertexAttrib", "writeGLArray", "SDL_unicode", "SDL_ttfContext", "SDL_audio", "GLFW_Window", "runAndAbortIfError", "ALLOC_NORMAL", "ALLOC_STACK", "allocate", "registerInheritedInstance", "unregisterInheritedInstance", "enumReadValueFromPointer", "getStringOrSymbol", "craftEmvalAllocator", "emval_get_global", "emval_lookupTypes", "emval_allocateDestructors", "emval_addMethodCaller" ];
+var missingLibrarySymbols = [ "stringToNewUTF8", "inetPton4", "inetNtop4", "inetPton6", "inetNtop6", "readSockaddr", "writeSockaddr", "getHostByName", "traverseStack", "convertPCtoSourceLocation", "mainThreadEM_ASM", "jstoi_q", "jstoi_s", "listenOnce", "autoResumeAudioContext", "runtimeKeepalivePush", "runtimeKeepalivePop", "callUserCallback", "maybeExit", "safeSetTimeout", "asmjsMangle", "writeI53ToI64", "writeI53ToI64Clamped", "writeI53ToI64Signaling", "writeI53ToU64Clamped", "writeI53ToU64Signaling", "readI53FromI64", "readI53FromU64", "convertI32PairToI53", "convertU32PairToI53", "getCFunc", "ccall", "cwrap", "uleb128Encode", "sigToWasmTypes", "generateFuncType", "convertJsFunctionToWasm", "getEmptyTableSlot", "updateTableMap", "addFunction", "removeFunction", "reallyNegative", "unSign", "strLen", "reSign", "formatString", "intArrayToString", "AsciiToString", "stringToAscii", "allocateUTF8", "allocateUTF8OnStack", "writeStringToMemory", "getSocketFromFD", "getSocketAddress", "registerKeyEventCallback", "maybeCStringToJsString", "findEventTarget", "findCanvasEventTarget", "getBoundingClientRect", "fillMouseEventData", "registerMouseEventCallback", "registerWheelEventCallback", "registerUiEventCallback", "registerFocusEventCallback", "fillDeviceOrientationEventData", "registerDeviceOrientationEventCallback", "fillDeviceMotionEventData", "registerDeviceMotionEventCallback", "screenOrientation", "fillOrientationChangeEventData", "registerOrientationChangeEventCallback", "fillFullscreenChangeEventData", "registerFullscreenChangeEventCallback", "JSEvents_requestFullscreen", "JSEvents_resizeCanvasForFullscreen", "registerRestoreOldStyle", "hideEverythingExceptGivenElement", "restoreHiddenElements", "setLetterbox", "softFullscreenResizeWebGLRenderTarget", "doRequestFullscreen", "fillPointerlockChangeEventData", "registerPointerlockChangeEventCallback", "registerPointerlockErrorEventCallback", "requestPointerLock", "fillVisibilityChangeEventData", "registerVisibilityChangeEventCallback", "registerTouchEventCallback", "fillGamepadEventData", "registerGamepadEventCallback", "registerBeforeUnloadEventCallback", "fillBatteryEventData", "battery", "registerBatteryEventCallback", "setCanvasElementSize", "getCanvasElementSize", "checkWasiClock", "createDyncallWrapper", "setImmediateWrapped", "clearImmediateWrapped", "polyfillSetImmediate", "getExceptionMessageCommon", "getCppExceptionTag", "getCppExceptionThrownObjectFromWebAssemblyException", "incrementExceptionRefcount", "decrementExceptionRefcount", "getExceptionMessage", "setMainLoop", "_setNetworkCallback", "heapObjectForWebGLType", "heapAccessShiftForWebGLHeap", "emscriptenWebGLGet", "computeUnpackAlignedImageSize", "emscriptenWebGLGetTexPixelData", "emscriptenWebGLGetUniform", "webglGetUniformLocation", "webglPrepareUniformLocationsBeforeFirstUse", "webglGetLeftBracePos", "emscriptenWebGLGetVertexAttrib", "writeGLArray", "SDL_unicode", "SDL_ttfContext", "SDL_audio", "GLFW_Window", "runAndAbortIfError", "ALLOC_NORMAL", "ALLOC_STACK", "allocate", "registerInheritedInstance", "unregisterInheritedInstance", "enumReadValueFromPointer", "getStringOrSymbol", "craftEmvalAllocator", "emval_get_global", "emval_lookupTypes", "emval_allocateDestructors", "emval_addMethodCaller" ];
 
 missingLibrarySymbols.forEach(missingLibrarySymbol);
 

@@ -9,7 +9,7 @@ describe('fsFreqDbReader', () => {
         module = await import(modulePath);
         await waitForWasmRuntime(module);
     })
-    const modulePath = path.resolve("src/wasmFreqDbReader/fsFreqDbReader.wasm.js");
+    const modulePath = path.resolve("src/wasmFreqDbReader/freqDbReader.wasm.js");
     it('can read all frequencies to an array', async () => {
         const freqDbReader = new FsFreqDbReader(module, "test/testFreqDbs/TestFreqDb.freqdb");
         const expectedResult = [-500, -499, -10, -2, -1,
