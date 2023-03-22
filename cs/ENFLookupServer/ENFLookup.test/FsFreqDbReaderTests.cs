@@ -117,7 +117,7 @@ public class FsFreqDbReaderTests
     
     [Fact]
     [Trait("Category","Long-running")]
-    public void CanDoNoTamcthLookupOnRealWorldDEFreqs()
+    public void CanDoWeakMatchLookupOnRealWorldDEFreqs()
     {
         //Note this is GB lookup data on the DE grid so there shouldn't be a strong match.
         var gbLookupData = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
