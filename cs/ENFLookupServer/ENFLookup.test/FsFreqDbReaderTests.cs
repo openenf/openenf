@@ -1,9 +1,18 @@
 using FluentAssertions;
+using Newtonsoft.Json;
+using Xunit.Abstractions;
 
 namespace ENFLookup.test;
 
 public class FsFreqDbReaderTests
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public FsFreqDbReaderTests(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public void CanReadFileWithMillionsOfEntries()
     {
@@ -47,33 +56,87 @@ public class FsFreqDbReaderTests
     public void CanDoSingleThreadLookupOnLargeFile()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
-        short[] lookupFreqs =
-        {
-            -7, -6, -2, -2, 1, 2, 5, 1, 1, 3, 4, 4, 5, 5, 6, 4, 2, 1, -4, -5, -9, -11, -14, -13, -15, -15, -19, -25,
-            -26, -31, -35, -38, -39, -39, -38, -40, -40, -38, -37, -38, -38, -40, -41, -41, -44, -46, -46, -44, -47,
-            -46, -48, -49, -48, -48, -48, -46, -45, -47, -47, -49, -49, -50, -50, -52, -53, -51, -53, -51, -49, -46,
-            -46, -44, -44, -42, -39, -40, -39, -37, -39, -36, -36, -37, -36, -37, -36, -37, -37, -36, -33, -31, -29,
-            -29, -28, -26, -25, -23, -23, -22, -22, -21
-        };
-        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 1).ToArray();
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        var resultLeague = new ResultLeague(100);
+        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 1, resultLeague).ToArray();
         result[0].Position.Should().Be(1339200);
         result[0].Score.Should().Be(0);
     }
     
     [Fact]
+    public void ProgressCallbackWorks()
+    {
+        var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        var resultLeague = new ResultLeague(100);
+        double previousD = 0;
+        freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 16, resultLeague, d =>
+        {
+            _testOutputHelper.WriteLine($"{d}");
+            d.Should().BeGreaterThan(previousD);
+            previousD = d;
+        });
+        previousD.Should().Be(1);
+    }
+    
+    [Fact]
+    public void CorruptedFileThrowsExceptionOnLoad()
+    {
+        var action = () =>
+        {
+            new FsFreqDbReader("TestResources/Corrupted.freqdb");
+        };
+        action.Should().Throw<FormatException>();
+    }
+    
+    [Fact]
+    [Trait("Category","Long-running")]
+    public void GridFileContainingNullsCanBeLoaded()
+    {
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var freqDbReader = new FsFreqDbReader(testPath);
+        freqDbReader.FreqDbMetaData.BaseFrequency.Should().Be(50);
+        var expectedStartDate = new DateTime(2009, 12, 31, 23, 0, 0, DateTimeKind.Utc);
+        freqDbReader.FreqDbMetaData.StartDate.Should().Be(expectedStartDate.ToUnixTimeSeconds().Value);
+    }
+    
+    [Fact]
+    [Trait("Category","Long-running")]
+    public void CanDoLookupOnRealWorldDEFile()
+    {
+        var lookupFreqs =
+            JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/DEFreqs404956000.json"));
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var freqDbReader = new FsFreqDbReader(testPath);
+        var resultLeague = new ResultLeague(100);
+        var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
+        var result = freqDbReader.Lookup(lookupFreqs, 10, 0, endTime, 16, resultLeague).ToArray();
+        result[0].Position.Should().Be(404956000);
+        result[0].Score.Should().Be(0);
+    }
+    
+    [Fact]
+    [Trait("Category","Long-running")]
+    public void CanDoNoTamcthLookupOnRealWorldDEFreqs()
+    {
+        //Note this is GB lookup data on the DE grid so there shouldn't be a strong match.
+        var gbLookupData = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var deFreqDbReader = new FsFreqDbReader(testPath);
+        var resultLeague = new ResultLeague(100);
+        var result = deFreqDbReader.Lookup(gbLookupData, 1000, 126234000, 189302400, 16, resultLeague).ToArray();
+        result[0].Position.Should().Be(53744404);
+        result[0].Score.Should().Be(438);
+    }
+
+    [Fact]
     public void CanDoEightThreadLookupOnLargeFile()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
-        short[] lookupFreqs =
-        {
-            -7, -6, -2, -2, 1, 2, 5, 1, 1, 3, 4, 4, 5, 5, 6, 4, 2, 1, -4, -5, -9, -11, -14, -13, -15, -15, -19, -25,
-            -26, -31, -35, -38, -39, -39, -38, -40, -40, -38, -37, -38, -38, -40, -41, -41, -44, -46, -46, -44, -47,
-            -46, -48, -49, -48, -48, -48, -46, -45, -47, -47, -49, -49, -50, -50, -52, -53, -51, -53, -51, -49, -46,
-            -46, -44, -44, -42, -39, -40, -39, -37, -39, -36, -36, -37, -36, -37, -36, -37, -37, -36, -33, -31, -29,
-            -29, -28, -26, -25, -23, -23, -22, -22, -21
-        };
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
         var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
-        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, endTime, 16).ToArray();
+        var resultLeague = new ResultLeague(100);
+        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, endTime, 16, resultLeague).ToArray();
         result[0].Position.Should().Be(1339200);
         result[0].Score.Should().Be(0);
     }

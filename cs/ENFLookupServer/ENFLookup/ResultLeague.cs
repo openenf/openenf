@@ -1,6 +1,6 @@
 namespace ENFLookup;
 
-internal class ResultLeague
+public class ResultLeague
 {
     private readonly int _maxSize;
     

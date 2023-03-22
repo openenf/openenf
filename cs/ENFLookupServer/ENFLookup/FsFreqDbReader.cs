@@ -2,10 +2,12 @@ using Newtonsoft.Json;
 
 namespace ENFLookup;
 
-public class FsFreqDbReader
+public class FsFreqDbReader : IFreqDbReader
 {
     private readonly string _filepath;
     private readonly short[] _shortArray;
+
+    private const int MaxHeaderLength = 1024;
 
     public FsFreqDbReader(string filepath)
     {
@@ -30,6 +32,16 @@ public class FsFreqDbReader
             {
                 break;
             }
+
+            if (filestream.Position > MaxHeaderLength)
+            {
+                throw new FormatException($"File at {_filepath} does not seem to be in the correct format.");
+            }
+        }
+
+        if (separatorCount < 5)
+        {
+            throw new FormatException($"File at {_filepath} does not seem to be in the correct format.");
         }
 
         FreqDbMetaData = JsonConvert.DeserializeObject<FreqDbMetaData>(header);
@@ -47,10 +59,10 @@ public class FsFreqDbReader
         return _shortArray;
     }
 
-    public IEnumerable<LookupResult> ComprehensiveLookup(short[] freqs, int aroundTs, int diffBefore, int diffAfter)
+    public IEnumerable<LookupResult> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter)
     {
-        int startTime = aroundTs - diffBefore;
-        int endTime = aroundTs + diffAfter;
+        var startTime = aroundTs - diffBefore;
+        var endTime = aroundTs + diffAfter;
         int maxSingleDiff = 10000;
         List<LookupResult> results = new List<LookupResult>();
         this.ThreadSafeLookup(startTime, endTime, freqs.ToList(), maxSingleDiff, _shortArray, (score, position) => {
@@ -62,25 +74,32 @@ public class FsFreqDbReader
         return results;
     }
 
-    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, int startTime, int endTime,
-        int numThreads)
+    public FreqDbMetaData GetFreqDbMetaData()
+    {
+        return this.FreqDbMetaData;
+    }
+
+    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
+        int numThreads, ResultLeague resultLeague, Action<double> onProgress = null)
     {
         if (endTime <= startTime)
         {
             throw new ArgumentException("Was expecting endTime to be greater than startTime");
         }
         var threadBounds = LookupHelpers.GetArrayThreadBounds(endTime - startTime, numThreads, freqs.Length);
-        var resultLeague = new ResultLeague(100);
         var tasks = new List<Task>();
+        var threadCount = 0;
         foreach (var threadBound in threadBounds)
         {
             var clone = ((short[])freqs.Clone()).ToList();
             var task = Task.Run(() =>
             {
+                //We're only adding a progress callback to the first thread since all threads are likely to progress at a similar rate:
+                Action<double> progress = threadCount == 0 ? onProgress : null;
                 ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray, (score, position) =>
                 {
-                    resultLeague.Add(new LookupResult(score,position));
-                });
+                    resultLeague.Add(new LookupResult(score,position,FreqDbMetaData.GridId));
+                }, progress);
             });
             tasks.Add(task);
         }
@@ -89,8 +108,11 @@ public class FsFreqDbReader
         return resultLeague.Results;
     }
 
-    public void ThreadSafeLookup(double startTime, double endTime, List<short> freqs, int maxSingleDiff, short[] largeArray, Action<int, double> onNewResult) {
+    public void ThreadSafeLookup(double startTime, double endTime, List<short> freqs, int maxSingleDiff, short[] largeArray, Action<int, double> onNewResult, Action<double> onProgress = null, int? threadId = null) {
         var i = startTime;
+        var total = endTime - startTime;
+        var progressChunk = total / 100;
+        var nextProgress = i + progressChunk;
         var resultPosition = startTime - 1;
         var scores = new List<ushort>();
         var compareArray = new List<short>();
@@ -110,11 +132,19 @@ public class FsFreqDbReader
             var compareArraySize = compareArray.Count;
             var newValue = largeArray[(int)i];
             i++;
+            if (i >= nextProgress)
+            {
+                if (onProgress != null)
+                {
+                    onProgress((i - startTime) / total);
+                }
+                nextProgress += progressChunk;
+            }
             for (var j = 0; j < compareArraySize; j++)
             {
                 if (scores[j] == ushort.MaxValue) continue;
                 var compareValue = compareArray[compareArraySize - 1 - j];
-                if (compareValue == ushort.MaxValue) continue;
+                if (compareValue == short.MaxValue) continue;
                 var newDiff = (ushort)Math.Abs(compareValue - newValue);
                 if (newDiff > maxSingleDiff) {
                     scores[j] = ushort.MaxValue;

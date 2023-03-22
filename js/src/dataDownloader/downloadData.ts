@@ -3,14 +3,15 @@ import * as os from "os";
 import path from "path";
 import * as cliProgress from "cli-progress";
 import fs from "fs";
+import {getENFDataDirectory} from "./ENFDataDirectory";
 
 const gbFreqDbUrl = "https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb";
 export const downloadData = async ():Promise<void> => {
     return new Promise(async resolve => {
         const urlParts = gbFreqDbUrl.split("/");
         const fileName = urlParts[urlParts.length - 1];
-        fs.mkdir(getDataFilePath(),() => {});
-        const filePath = path.join(getDataFilePath(), fileName);
+        fs.mkdir(getENFDataDirectory(),() => {});
+        const filePath = path.join(getENFDataDirectory(), fileName);
         const response = await fetch(gbFreqDbUrl);
         const contentLength = response.headers.get('content-length');
         let total = -1;
@@ -49,7 +50,7 @@ export const downloadData = async ():Promise<void> => {
 export const getDataPath = async () => {
     const urlParts = gbFreqDbUrl.split("/");
     const fileName = urlParts[urlParts.length - 1];
-    const filePath = path.join(getDataFilePath(), fileName);
+    const filePath = path.join(getENFDataDirectory(), fileName);
     if (fs.existsSync(filePath)) {
         return filePath;
     }
@@ -57,16 +58,3 @@ export const getDataPath = async () => {
     await downloadData();
     return filePath;
 }
-
-export const getDataFilePath = (): string => {
-    const platform = os.platform();
-    const appDataPath = app ? app.getPath('userData') : os.homedir();
-    const appDirectoryName = "OpenENF";
-    if (platform === 'win32') {
-        return path.join(appDataPath, 'AppData', 'Roaming', appDirectoryName);
-    } else if (platform === 'darwin') {
-        return path.join(appDataPath, 'Library', 'Application Support', appDirectoryName);
-    } else {
-        return path.join(appDataPath, '.config', appDirectoryName.toLowerCase());
-    }
-};

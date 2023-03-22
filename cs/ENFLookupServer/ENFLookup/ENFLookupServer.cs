@@ -7,11 +7,17 @@ namespace ENFLookup;
 
 public class ENFLookupServer
 {
+    public ENFLookupServer(int? port = null)
+    {
+        Port = port ?? DefaultPort;
+    }
+    
     private TcpListener _tcpListener = null;
     private Thread _listenerThread;
     private bool _shouldStop;
     private bool _started;
     private ILookupRequestHandler _lookupRequestHandler;
+    public int Port { get; private set; }
 
     void HandleClient(TcpClient client)
     {
@@ -39,7 +45,11 @@ public class ENFLookupServer
                 var requestBody = JsonConvert.DeserializeObject<LookupRequest>(message.Substring(1));
                 if (_lookupRequestHandler != null)
                 {
-                    _lookupRequestHandler.Lookup(requestBody);
+                    var results = _lookupRequestHandler.Lookup(requestBody, d =>
+                    {
+                        stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
+                    } );
+                    responseString = JsonConvert.SerializeObject(results);
                 }
                 break;
             default:
@@ -60,14 +70,10 @@ public class ENFLookupServer
         {
             return;
         }
-        // Set the TcpListener on port 4200
-        var port = DefaultPort;
         var localAddr = IPAddress.Parse("127.0.0.1");
-        _tcpListener = new TcpListener(localAddr, port);
-
-        // Start listening for client requests
-        _tcpListener.Start();
+        _tcpListener = new TcpListener(localAddr, Port);
         
+        _tcpListener.Start();
         _listenerThread = new Thread(async () =>
         {
 
@@ -75,10 +81,20 @@ public class ENFLookupServer
             while (!_shouldStop)
             {
                 // Accept the client connection
-                TcpClient client = await _tcpListener.AcceptTcpClientAsync();
-                Thread t = new Thread(() => HandleClient(client));
-                t.Start();
-                _started = true;
+                try
+                {
+                    var client = await _tcpListener.AcceptTcpClientAsync();
+                    var t = new Thread(() => HandleClient(client));
+                    t.Start();
+                    _started = true;
+                }
+                catch (SocketException e)
+                {
+                    if (e.SocketErrorCode != SocketError.OperationAborted)
+                    {
+                        throw;
+                    }
+                }
             }
         });
         _listenerThread.Start();
@@ -97,7 +113,14 @@ public class ENFLookupServer
 
         if (_tcpListener != null)
         {
-            _tcpListener.Stop();
+            try
+            {
+                _tcpListener.Stop();
+            }
+            catch (SocketException e)
+            {
+                throw new Exception(e.SocketErrorCode.ToString());
+            }
         }
 
         _started = false;

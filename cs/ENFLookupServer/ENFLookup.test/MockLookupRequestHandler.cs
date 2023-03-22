@@ -1,9 +1,10 @@
 namespace ENFLookup.test;
 
 public class MockLookupRequestHandler : ILookupRequestHandler {
-    public void Lookup(LookupRequest lookupRequest)
+    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress = null)
     {
-        this.LookupRequest = lookupRequest;
+        LookupRequest = lookupRequest;
+        return null;
     }
 
     public LookupRequest LookupRequest { get; set; }

@@ -1,9 +1,10 @@
-import {downloadData, getDataFilePath} from "./downloadData";
+import {downloadData} from "./downloadData";
 import os from "os";
+import {getENFDataDirectory} from "./ENFDataDirectory";
 
 describe('downloadData', () => {
     it('can get the correct download directory for the current platform', () => {
-        const result = getDataFilePath();
+        const result = getENFDataDirectory();
         const platform = os.platform();
         switch (platform) {
             case "win32":
