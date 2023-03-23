@@ -3,5 +3,6 @@ namespace ENFLookup;
 public enum ENFLookupServerCommands
 {
     Ping,
-    Lookup
+    Lookup,
+    LoadGrid
 }

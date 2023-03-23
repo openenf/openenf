@@ -92,16 +92,33 @@ public class FsFreqDbReader : IFreqDbReader
         foreach (var threadBound in threadBounds)
         {
             var clone = ((short[])freqs.Clone()).ToList();
-            var task = Task.Run(() =>
+            Task task;
+            //We're only adding a progress callback to the last thread since all threads are likely to progress at a similar rate:
+
+            if (threadCount == 0)
             {
-                //We're only adding a progress callback to the first thread since all threads are likely to progress at a similar rate:
-                Action<double> progress = threadCount == 0 ? onProgress : null;
-                ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray, (score, position) =>
+                task = Task.Run(() =>
                 {
-                    resultLeague.Add(new LookupResult(score,position,FreqDbMetaData.GridId));
-                }, progress);
-            });
+                    ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray,
+                        (score, position) =>
+                        {
+                            resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
+                        }, onProgress);
+                });
+            }
+            else
+            {
+                task = Task.Run(() =>
+                {
+                    ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray,
+                        (score, position) =>
+                        {
+                            resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
+                        });
+                });
+            }
             tasks.Add(task);
+            threadCount++;
         }
 
         Task.WaitAll(tasks.ToArray());

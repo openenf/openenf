@@ -16,7 +16,7 @@ public static class ExtensionMethods
     public static short[] ToShortArray(this decimal?[] decimals)
     {
         var baseFreq = GetBaseFrequency(decimals);
-        return decimals.Select(x => x.HasValue ? (short)((x.Value - baseFreq)*1000) : short.MaxValue).ToArray();
+        return decimals.Select(x => x.HasValue ? (short)((x.Value - baseFreq)*100) : short.MaxValue).ToArray();
     }
 
     public static int GetBaseFrequency(this decimal?[] decimals)

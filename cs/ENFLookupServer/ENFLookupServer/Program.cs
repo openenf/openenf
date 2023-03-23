@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System;
+using System.Threading;
 using CommandLine;
 using ENFLookup;
 using ENFLookupServer;
@@ -24,6 +26,11 @@ try
     Parser.Default.ParseArguments<CommandLineOptions>(args)
         .WithParsed(async commandLineOptions =>
         {
+            foreach (var grid in commandLineOptions.Grids)
+            {
+                lookupRequestHandler.AddFreqDbReader(new FsFreqDbReader(grid));
+            }
+            
             server = new ENFLookup.ENFLookupServer(commandLineOptions.Port);
             server.SetLookupRequestHandler(lookupRequestHandler);
 

@@ -47,8 +47,18 @@ describe("TcpServerLookupComponent", () => {
         tcpServerComponentOptions.executablePath = getTestExecutablePath();
         const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath;
+        let progress = 0;
         const gbFreqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
+        tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
+            if (d) {
+                expect(d).toBeGreaterThan(progress);
+                progress = d;
+            }
+        })
         const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"]);
+        const r = response[0];
+        expect(r).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
+        expect(progress).toBe(1);
     })
 })

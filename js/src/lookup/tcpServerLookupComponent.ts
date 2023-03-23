@@ -2,63 +2,14 @@ import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {LookupResult} from "../model/lookupResult";
 import {LookupComponent} from "./lookupComponent";
 import {TcpServerComponentOptions} from "./tcpServerComponentOptions";
-import net from "net";
 import fs from "fs";
 import {exec} from "child_process";
+import {TcpRequestClient} from "./tcpRequestClient";
 
 export enum LookupCommand {
     ping = 0,
-    lookup = 1
-}
-
-export class TcpRequestClient {
-    private readonly host: string;
-    private readonly socket: net.Socket
-    private readonly port: number;
-    private readonly timeout: number = 2000;
-    private connected: boolean = false;
-
-    constructor(port: number, host: string) {
-        this.port = port;
-        this.host = host;
-        this.socket = new net.Socket();
-    }
-
-    request(message:string, onUpdate?:(buffer:Buffer)=>void):Promise<{response: string, error: Error | null}> {
-        this.connected = false;
-        const self = this;
-        return new Promise<{response: string, error: Error | null}>(resolve => {
-            let wholeMessage = "";
-            setTimeout(() => {
-                if (!this.connected) {
-                    resolve({response:wholeMessage, error:new Error(`Timeout after ${this.timeout} ms`)})
-                }
-            }, this.timeout)
-            const socket = this.socket;
-            const errorHandler = ((e:Error) => {
-                resolve({response:wholeMessage, error:e})
-            });
-            socket.on('error', errorHandler)
-            socket.connect(this.port, this.host, function () {
-                self.connected = true;
-                socket.write(message);
-            });
-            const newDataHandler = (buffer:Buffer) => {
-                if (onUpdate) {
-                    onUpdate(buffer);
-                }
-                wholeMessage += buffer;
-            };
-            socket.on('data', newDataHandler);
-            const closeHandler = (hadError:boolean) => {
-                socket.removeListener('data', newDataHandler);
-                socket.removeListener('close', closeHandler);
-                socket.removeListener('error', errorHandler);
-                resolve({response:wholeMessage, error:socket.errored});
-            };
-            socket.on('close', closeHandler);
-        })
-    }
+    lookup = 1,
+    loadGrid = 2,
 }
 
 export class TcpServerLookupComponent implements LookupComponent {
@@ -73,13 +24,36 @@ export class TcpServerLookupComponent implements LookupComponent {
     readonly implementationId: string = "TcpServerLookupComponent0.0.1";
     lookupProgressEvent: ENFEventBase<number> = new ENFEventBase<number>();
 
-    private buildPingCommand():string {
+    private buildPingCommand(): string {
         return LookupCommand.ping.toString();
     }
 
-    private fireExecutable = (executablePath:string):Promise<boolean> => {
-        const command = `${executablePath} -p ${this.options.port}`
-        return new Promise((resolve,reject) => {
+    private buildLoadGridCommand(id: string, path: string) {
+        const request = {
+            id,
+            path
+        }
+        return `${LookupCommand.loadGrid.toString()}${JSON.stringify(path)}`;
+    }
+
+    private buildLookupCommand(freqs: (number | null)[], gridIds: string[], startTime?: Date, endTime?: Date): string {
+        const request = {
+            freqs,
+            gridIds,
+            startTime,
+            endTime
+        }
+        return `${LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
+    }
+
+    private buildCommandLine(executablePath: string, options: TcpServerComponentOptions): string {
+        let command = `${executablePath} -p ${this.options.port}`;
+        return command;
+    }
+
+    private fireExecutable = (executablePath: string): Promise<boolean> => {
+        const command = this.buildCommandLine(executablePath, this.options);
+        return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
                     reject(error)
@@ -99,11 +73,11 @@ export class TcpServerLookupComponent implements LookupComponent {
                 } else {
                     resolve(true);
                 }
-            },500)
+            }, 500)
         })
     }
 
-    async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
+    async activateServer(): Promise<void> {
         return new Promise(async (resolve, reject) => {
             const {response, error} = await this.client.request(this.buildPingCommand());
             if (error || response !== "pong") {
@@ -113,18 +87,51 @@ export class TcpServerLookupComponent implements LookupComponent {
                         reject(new Error(`Cannot reach server at port ${this.options.port}`))
                     });
                     if (fireExecutableResponse) {
-                        console.log("Yei");
-                        resolve([]);
+                        resolve();
                     }
                 } else {
                     reject(new Error(`Cannot reach server at port ${this.options.port}`))
                 }
             } else {
-                console.log("Yei2");
-                resolve([]);
+                resolve();
             }
         })
     }
 
+    toPascalCase(key: string, value: any) {
+        if (value && typeof value === 'object') {
+            for (var k in value) {
+                if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+                    value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+                    delete value[k];
+                }
+            }
+        }
+        return value;
+    }
+
+    async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
+        await this.activateServer();
+        const optionsGridIds = Object.keys(this.options.grids);
+        if (optionsGridIds.length) {
+            for (const id of optionsGridIds) {
+                const loadGridCommand = this.buildLoadGridCommand(id, this.options.grids[id]);
+                const {error} = await this.client.request(loadGridCommand);
+                if (error) {
+                    throw error;
+                }
+            }
+        }
+        const lookupCommand = this.buildLookupCommand(freqs, gridIds, from, to);
+        const {responses} = await this.client.request(lookupCommand, (buffer: Buffer) => {
+            const progress = parseFloat(buffer.toString().replace('Progress: ', ""));
+            if (!isNaN(progress)) {
+                this.lookupProgressEvent.trigger(progress);
+            }
+        });
+        const response = responses[responses.length - 1]
+        const r = JSON.parse(response, this.toPascalCase);
+        return r;
+    }
 }
 

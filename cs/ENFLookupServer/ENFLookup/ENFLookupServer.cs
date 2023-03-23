@@ -41,11 +41,19 @@ public class ENFLookupServer
             case ENFLookupServerCommands.Ping:
                 responseString = "pong";
                 break;
+            case ENFLookupServerCommands.LoadGrid:
+                var freqDbFilePath = JsonConvert.DeserializeObject<string>(message.Substring(1));
+                if (_lookupRequestHandler is ICanAddDbReader iCanAddDbReader)
+                {
+                    Console.WriteLine($"Loading grid file at {freqDbFilePath}");
+                    iCanAddDbReader.AddFreqDbReader(new FsFreqDbReader(freqDbFilePath));
+                }
+                break;
             case ENFLookupServerCommands.Lookup:
-                var requestBody = JsonConvert.DeserializeObject<LookupRequest>(message.Substring(1));
+                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message.Substring(1));
                 if (_lookupRequestHandler != null)
                 {
-                    var results = _lookupRequestHandler.Lookup(requestBody, d =>
+                    var results = _lookupRequestHandler.Lookup(lookupRequest, d =>
                     {
                         stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
                     } );
