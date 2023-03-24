@@ -97,7 +97,7 @@ public class FsFreqDbReaderTests
         var freqDbReader = new FsFreqDbReader(testPath);
         freqDbReader.FreqDbMetaData.BaseFrequency.Should().Be(50);
         var expectedStartDate = new DateTime(2009, 12, 31, 23, 0, 0, DateTimeKind.Utc);
-        freqDbReader.FreqDbMetaData.StartDate.Should().Be(expectedStartDate.ToUnixTimeSeconds().Value);
+        freqDbReader.FreqDbMetaData.StartDate.Should().Be(expectedStartDate.ToUnixTimeSeconds());
     }
     
     [Fact]

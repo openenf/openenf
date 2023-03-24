@@ -30,7 +30,7 @@ public static class ExtensionMethods
         return baseFreq;
     }
     
-    public static long? ToUnixTimeSeconds(this DateTime dateTime)
+    public static long ToUnixTimeSeconds(this DateTime dateTime)
     {
         return ((DateTimeOffset)dateTime).ToUnixTimeSeconds();
     }

@@ -34,7 +34,7 @@ public class ENFLookupServer
         } while (stream.DataAvailable);
 
         var message = messageBuilder.ToString();
-        var messageType = (ENFLookupServerCommands)int.Parse(message.Substring(0, 1));
+        var messageType = (ENFLookupServerCommands)int.Parse(message[..1]);
         string responseString = "";
         switch (messageType)
         {
@@ -42,7 +42,7 @@ public class ENFLookupServer
                 responseString = "pong";
                 break;
             case ENFLookupServerCommands.LoadGrid:
-                var freqDbFilePath = JsonConvert.DeserializeObject<string>(message.Substring(1));
+                var freqDbFilePath = JsonConvert.DeserializeObject<string>(message[1..]);
                 if (_lookupRequestHandler is ICanAddDbReader iCanAddDbReader)
                 {
                     Console.WriteLine($"Loading grid file at {freqDbFilePath}");
@@ -50,7 +50,7 @@ public class ENFLookupServer
                 }
                 break;
             case ENFLookupServerCommands.Lookup:
-                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message.Substring(1));
+                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);
                 if (_lookupRequestHandler != null)
                 {
                     var results = _lookupRequestHandler.Lookup(lookupRequest, d =>
@@ -59,6 +59,19 @@ public class ENFLookupServer
                     } );
                     responseString = JsonConvert.SerializeObject(results);
                 }
+                break;
+            case ENFLookupServerCommands.ComprehensiveLookup:
+                var comprehensiveLookupRequest = JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
+                if (_lookupRequestHandler != null)
+                {
+                    var results = _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
+                    responseString = JsonConvert.SerializeObject(results);
+                }
+                break;
+            case ENFLookupServerCommands.GetMetaData:
+                var gridId = JsonConvert.DeserializeObject<string>(message[1..]);
+                FreqDbMetaData metaData = _lookupRequestHandler.GetMetaData(gridId);
+                responseString = JsonConvert.SerializeObject(metaData);
                 break;
             default:
                 throw new NotImplementedException($"Unable to handle message of type: {messageType}");

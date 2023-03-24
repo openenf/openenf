@@ -49,18 +49,40 @@ public class LookupRequestHandler : ICanAddDbReader
             reader.Lookup(normalisedFreqs, DefaultMaxSingleDiff, start, end, _numThreads, resultLeague, d =>
             {
                 var aggregatedProgress = Math.Round(gridCount * progressPerGrid + (d / gridsToBeRead), 3);
-                //if (aggregatedProgress > lastAggregatedProgress)
-                //{
-                    Console.WriteLine($"Progresszz: {aggregatedProgress}");
-                    onProgress(aggregatedProgress);
-                //}
-
-                //lastAggregatedProgress = aggregatedProgress;
+                onProgress(aggregatedProgress);
             });
             gridCount++;
         }
 
         return resultLeague.Results;
+    }
+
+    public IEnumerable<LookupResult> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
+    {
+        var gridId = comprehensiveLookupRequest.GridId;
+        if (!_readers.ContainsKey(gridId))
+        {
+            throw new ArgumentException($"No freqdb loaded with grid id ${gridId}");
+        }
+
+        long aroundTs = comprehensiveLookupRequest.Around;
+        var reader = _readers[gridId];
+        var metaData = reader.GetFreqDbMetaData();
+        var timestampOffset = aroundTs - metaData.StartDate;
+        var normalisedFreqs = comprehensiveLookupRequest.Freqs.ToShortArray();
+        var result = reader.ComprehensiveLookup(normalisedFreqs, aroundTs, comprehensiveLookupRequest.Range,
+            comprehensiveLookupRequest.Range);
+        return result;
+    }
+
+    public FreqDbMetaData GetMetaData(string gridId)
+    {
+        if (!_readers.ContainsKey(gridId))
+        {
+            return null;
+        }
+
+        return _readers[gridId].GetFreqDbMetaData();
     }
 
     public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)

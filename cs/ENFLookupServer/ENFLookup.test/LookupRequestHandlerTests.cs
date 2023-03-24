@@ -26,9 +26,29 @@ public class LookupRequestHandlerTests
             GridIds = new[] { "XX" }
         };
         lookupRequestHandler.Lookup(lookupRequest);
-        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 100, 200, 300, 400 });
+        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 10, 20, 30, 40 });
         mockFreqDbReader.StartTime.Should().Be(0);
         mockFreqDbReader.EndTime.Should().Be((int)TimeSpan.FromDays(1).TotalSeconds);
+    }
+
+    [Fact]
+    public void PassesCorrectValuesForComprehensiveLookup()
+    {
+        var lookupRequestHandler = new LookupRequestHandler();
+        var mockFreqDbReader = new MockFreqDbReader();
+        lookupRequestHandler.AddFreqDbReader(mockFreqDbReader);
+        var comprehensiveLookupRequest = new ComprehensiveLookupRequest
+        {
+            Around = 1388534442,
+            Freqs = new decimal?[] { 50, 50.1m, 50.2m, 50.3m, 50.4m },
+            GridId = "XX",
+            Range = 12
+        };
+        lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
+        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 10, 20, 30, 40 });
+        mockFreqDbReader.AroundTs.Should().Be(1388534442);
+        mockFreqDbReader.DiffAfter.Should().Be(12);
+        mockFreqDbReader.DiffBefore.Should().Be(12);
     }
 
     [Fact]

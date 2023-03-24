@@ -7,5 +7,15 @@ public class MockLookupRequestHandler : ILookupRequestHandler {
         return null;
     }
 
+    public IEnumerable<LookupResult> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
+    {
+        throw new NotImplementedException();
+    }
+
+    public FreqDbMetaData GetMetaData(string gridId)
+    {
+        throw new NotImplementedException();
+    }
+
     public LookupRequest LookupRequest { get; set; }
 }

@@ -3,21 +3,7 @@ import {TcpServerComponentOptions} from "./tcpServerComponentOptions";
 import os from "os";
 import path from "path";
 import fs from "fs";
-
-const getTestExecutablePath = () => {
-    let executablePath = path.join("test","serverExecutable");
-    switch (os.platform()) {
-        case "win32":
-            executablePath = path.join(executablePath,"windows","ENFLookupServer.exe");
-            break;
-        case "darwin":
-            executablePath = path.join(executablePath,"macos","ENFLookupServer");
-            break;
-        default:
-            executablePath = path.join(executablePath,"linux","ENFLookupServer");
-    }
-    return path.resolve(executablePath);
-}
+import {getTestExecutablePath} from "../testUtils";
 
 describe("TcpServerLookupComponent", () => {
     it('will throw an error if the server is not running on the specified port and executable cannot be found', async () => {
