@@ -37,7 +37,15 @@ export class TcpServerRefineComponent implements RefineComponent {
         for (const r of peaks) {
             const command = this.buildComprehensiveLookupCommand(lookupFrequencies,r.gridId,12,r.position);
             const {response} = await this.client.request(command);
-            const comprehensiveResults:any[] = JSON.parse(response, toPascalCase);
+            let comprehensiveResults: any[] = [];
+            try {
+                comprehensiveResults = JSON.parse(response, toPascalCase);
+            }
+            catch (e) {
+                console.error('Unable to parse: ');
+                console.error(response);
+                throw e;
+            }
             const kurtosis =  computeKurtosis(comprehensiveResults.map(x => x.score));
             const startDate = new Date(gridMetaData[r.gridId].startDate * 1000);
             const result:ENFAnalysisResult = {

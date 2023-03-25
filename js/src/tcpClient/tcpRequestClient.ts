@@ -1,7 +1,6 @@
 import net from "net";
 import fs from "fs";
 import {exec} from "child_process";
-import {TcpServerComponentOptions} from "../lookup/tcpServerComponentOptions";
 import {LookupCommand} from "../lookup/lookupCommand";
 
 export class TcpRequestClient {

@@ -7,7 +7,7 @@ describe("WasmFreqDbReaderLookupComponent", () => {
     it("Can do a 100 second lookup on the GB_50_Jan2014.freqdb database", async () => {
         const freqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
         const dbPath = "test/testFreqDbs/GB_50_Jan2014.freqdb";
-        const wasmPath = "src/wasmFreqDbReader/fsFreqDbReader.wasm.js"
+        const wasmPath = "src/wasmFreqDbReader/freqDbReader.wasm.js"
         const freqDbReaderStore = new WasmFreqDbReaderStore(wasmPath);
         freqDbReaderStore.addPath("GB", dbPath);
         const lookupComponent = new WasmFreqDbReaderLookupComponent(freqDbReaderStore);

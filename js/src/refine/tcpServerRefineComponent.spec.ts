@@ -22,7 +22,6 @@ describe("TcpServerRefineComponent", () => {
         tcpServerComponentOptions.grids["GB"] = dbPath;
         const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
         const results = await refineComponent.refine(denormalisedFreqs, lookupResults);
-        console.log('results', results);
         expect(results).toStrictEqual([
             {
                 gridId: 'GB',
