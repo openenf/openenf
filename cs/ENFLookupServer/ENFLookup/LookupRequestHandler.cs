@@ -3,12 +3,13 @@ namespace ENFLookup;
 public class LookupRequestHandler : ICanAddDbReader
 {
     //TODO Max the MaxSingleDiff variable dependent on the request and/or grid
-    const int DefaultMaxSingleDiff = 1000;
+    const int DefaultMaxSingleDiff = 10000;
 
-    public LookupRequestHandler(int resultLeagueSize = 100)
+    public LookupRequestHandler(int resultLeagueSize = 10)
     {
         _resultLeagueSize = resultLeagueSize;
         _numThreads = Environment.ProcessorCount;
+        Console.WriteLine($"LookupRequestHandler created. MaxSingleDiff: {DefaultMaxSingleDiff}");
     }
 
     private readonly IDictionary<string, IFreqDbReader> _readers = new Dictionary<string, IFreqDbReader>();

@@ -65,7 +65,16 @@ public class FsFreqDbReader : IFreqDbReader
         var endTime = aroundTs + diffAfter;
         int maxSingleDiff = 10000;
         List<LookupResult> results = new List<LookupResult>();
-        this.ThreadSafeLookup(startTime, endTime, freqs.ToList(), maxSingleDiff, _shortArray, (score, position) => {
+        var request = new ThreadLookupRequest
+        {
+            StartTime = startTime,
+            EndTime = endTime,
+            Freqs = freqs.ToList(),
+            MaxSingleDiff = maxSingleDiff,
+            LargeArray = _shortArray
+        };
+        this.ThreadSafeLookup(request, (score, position) =>
+        {
             LookupResult lookupResult = new LookupResult();
             lookupResult.Position = position;
             lookupResult.Score = score;
@@ -86,6 +95,7 @@ public class FsFreqDbReader : IFreqDbReader
         {
             throw new ArgumentException("Was expecting endTime to be greater than startTime");
         }
+
         var threadBounds = LookupHelpers.GetArrayThreadBounds(endTime - startTime, numThreads, freqs.Length);
         var tasks = new List<Task>();
         var threadCount = 0;
@@ -94,91 +104,127 @@ public class FsFreqDbReader : IFreqDbReader
             var clone = ((short[])freqs.Clone()).ToList();
             Task task;
             //We're only adding a progress callback to the last thread since all threads are likely to progress at a similar rate:
-
+            var request = new ThreadLookupRequest
+            {
+                StartTime = threadBound.Start,
+                EndTime = threadBound.End,
+                Freqs = clone,
+                LargeArray = _shortArray,
+                MaxSingleDiff = maxSingleDiff
+            };
             if (threadCount == 0)
             {
                 task = Task.Run(() =>
                 {
-                    ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray,
+                    ThreadSafeLookup(request,
                         (score, position) =>
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
-                        }, token, onProgress);
+                        }, token, onProgress, resultLeague);
                 });
             }
             else
             {
                 task = Task.Run(() =>
                 {
-                    ThreadSafeLookup(threadBound.Start, threadBound.End, clone, maxSingleDiff, _shortArray,
+                    ThreadSafeLookup(request,
                         (score, position) =>
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
-                        }, token);
+                        }, token, null, resultLeague);
                 });
             }
+
             tasks.Add(task);
             threadCount++;
         }
 
         Task.WaitAll(tasks.ToArray());
+        Console.WriteLine("Complete");
+        Console.WriteLine();
         return resultLeague.Results;
     }
 
-    public void ThreadSafeLookup(double startTime, double endTime, List<short> freqs, int maxSingleDiff, short[] largeArray, Action<int, double> onNewResult, CancellationToken token, Action<double> onProgress = null, int? threadId = null) {
-        var i = startTime;
-        var total = endTime - startTime;
+    private void LoopCompareArray(int compareArraySize, List<ushort> scores, List<short> compareArray, short newValue,
+        int maxSingleDiff, int maxTotal)
+    {
+        for (var j = 0; j < compareArraySize; j++)
+        {
+            if (scores[j] == ushort.MaxValue) continue;
+            var compareValue = compareArray[compareArraySize - 1 - j];
+            if (compareValue == short.MaxValue) continue;
+            var newDiff = (ushort)Math.Abs(compareValue - newValue);
+            if (newDiff > maxSingleDiff)
+            {
+                scores[j] = ushort.MaxValue;
+            }
+            else
+            {
+                scores[j] += newDiff;
+                if (scores[j] > maxTotal)
+                {
+                    scores[j] = ushort.MaxValue;
+                }
+            }
+        }
+    }
+
+    public void ThreadSafeLookup(ThreadLookupRequest request, Action<int, double> onNewResult, CancellationToken token,
+        Action<double> onProgress = null, ResultLeague resultLeague = null)
+    {
+        var i = request.StartTime;
+        var total = request.EndTime - request.StartTime;
         var progressChunk = total / 100;
         var nextProgress = i + progressChunk;
-        var resultPosition = startTime - 1;
+        var resultPosition = request.StartTime - 1;
         var scores = new List<ushort>();
         var compareArray = new List<short>();
-        var largeArraySize = largeArray.Length;
-        var freqsSize = freqs.Count;
-        var lastIndexToRead = Math.Min(largeArraySize, (endTime + freqsSize));
-        while (!token.IsCancellationRequested) {
+        var largeArraySize = request.LargeArray.Length;
+        var freqsSize = request.Freqs.Count;
+        var lastIndexToRead = Math.Min(largeArraySize, (request.EndTime + freqsSize));
+        var maxSingleDiff = request.MaxSingleDiff;
+        var maxTotal = int.MaxValue;
+        while (!token.IsCancellationRequested)
+        {
             scores.Add(0);
-            if (freqs.Count > 0) {
-                var firstElement = freqs[0];
+            if (request.Freqs.Count > 0)
+            {
+                var firstElement = request.Freqs[0];
                 compareArray.Add(firstElement);
-                freqs.RemoveAt(0);
+                request.Freqs.RemoveAt(0);
             }
-            if (i >= lastIndexToRead) {
-                Console.WriteLine("Thread completed");
+
+            if (i >= lastIndexToRead)
+            {
                 break;
             }
+
             var compareArraySize = compareArray.Count;
-            var newValue = largeArray[(int)i];
+            var newValue = request.LargeArray[(int)i];
             i++;
             if (i >= nextProgress)
             {
                 if (onProgress != null)
                 {
-                    onProgress((i - startTime) / total);
+                    onProgress((i - request.StartTime) / total);
                 }
+
                 nextProgress += progressChunk;
             }
-            for (var j = 0; j < compareArraySize; j++)
-            {
-                if (scores[j] == ushort.MaxValue) continue;
-                var compareValue = compareArray[compareArraySize - 1 - j];
-                if (compareValue == short.MaxValue) continue;
-                var newDiff = (ushort)Math.Abs(compareValue - newValue);
-                if (newDiff > maxSingleDiff) {
-                    scores[j] = ushort.MaxValue;
-                } else {
-                    scores[j] += newDiff;
-                }
-            }
+            LoopCompareArray(compareArraySize, scores, compareArray, newValue, maxSingleDiff, maxTotal);
 
             if (scores.Count < freqsSize) continue;
             resultPosition++;
             ushort front = scores[0];
-            if (front != ushort.MaxValue) {
+            if (front != ushort.MaxValue)
+            {
                 onNewResult(front, resultPosition);
+                if (resultLeague != null)
+                {
+                    maxTotal = resultLeague.MaxValue;
+                }
             }
             scores.RemoveAt(0);
         }
     }
-
 }

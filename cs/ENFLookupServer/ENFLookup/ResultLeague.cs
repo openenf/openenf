@@ -12,6 +12,7 @@ public class ResultLeague
     }
 
     public IList<LookupResult> Results { get; set; } = new List<LookupResult>();
+    public int MaxValue { get; set; } = Int32.MaxValue;
 
     public void Add(LookupResult lookupResult)
     {
@@ -46,6 +47,8 @@ public class ResultLeague
             if (inserting) {
                 Results.RemoveAt(Results.Count - 1);
             }
+
+            MaxValue = Results.Last().Score;
         }
     }
 }

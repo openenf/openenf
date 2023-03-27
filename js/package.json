@@ -26,11 +26,13 @@
 		"fun"
 	],
 	"dependencies": {
+		"benchmark": "^2.1.4",
 		"fluent-ffmpeg": "^2.1.2",
 		"meow": "^9.0.0",
 		"node-fetch": "^2.6.9"
 	},
 	"devDependencies": {
+		"@types/benchmark": "^2.1.2",
 		"@types/cli-progress": "^3.11.0",
 		"@types/fluent-ffmpeg": "^2.1.21",
 		"@types/jest": "^29.4.0",

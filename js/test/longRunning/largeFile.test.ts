@@ -9,10 +9,12 @@ import {TcpServerLookupComponent} from "../../src/lookup/tcpServerLookupComponen
 import {TcpServerRefineComponent} from "../../src/refine/tcpServerRefineComponent";
 import {BaseENFProcessor} from "../../src/ENFProcessor/baseENFProcessor";
 import fs from "fs";
+import path from "path";
 
 describe('BaseENFProcessor', () => {
     it('can do 1 hour sec lookup over 2 grids', async () => {
-        const lookupFreqs:number[] = JSON.parse(fs.readFileSync("test/testFreqs/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json").toString());
+        //const lookupFreqs:number[] = JSON.parse(fs.readFileSync("test/testFreqs/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json").toString());
+        const lookupFreqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
         const overlapFactor = 1;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
@@ -29,7 +31,8 @@ describe('BaseENFProcessor', () => {
         baseENFProcessor.lookupProgressEvent.addHandler(d => {
             console.log('d', d)
         })
-        const results = await baseENFProcessor.lookup(lookupFreqs,["DE","GB"], new Date("2020-11-01"), new Date("2021-12-01"));
+        const results = await baseENFProcessor.lookup(lookupFreqs,["GB"], new Date("2014-01-01"), new Date("2014-04-01"));
         console.log('results', results);
+        expect(results[0]).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
     }, 30000000)
 });
