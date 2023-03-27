@@ -4,7 +4,7 @@ public class MockFreqDbReader : IFreqDbReader
 {
     public ResultLeague ResultLeague { get; set; }
 
-    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime, int numThreads, ResultLeague resultLeague, Action<double> onProgress)
+    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime, int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress)
     {
         Freqs = freqs;
         MaxSingleDiff = maxSingleDiff;

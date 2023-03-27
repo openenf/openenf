@@ -67,7 +67,7 @@ export class TcpRequestClient {
         return command;
     }
 
-    private fireExecutable = (executablePath: string, port:number): Promise<boolean> => {
+    fireExecutable = (executablePath: string, port:number): Promise<boolean> => {
         const command = this.buildCommandLine(executablePath, port);
         return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {

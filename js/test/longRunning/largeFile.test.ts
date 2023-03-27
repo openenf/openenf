@@ -1,38 +1,35 @@
-import * as net from "net";
+import {downloadData} from "../../src/dataDownloader/downloadData";
+import {GoertzelFilterCache} from "../../src/goertzel/GoertzelFilterCache";
+import {AudioContextPreScanComponent} from "../../src/preScan/audioContextPreScanComponent";
+import {AudioContextAnalyzeComponent} from "../../src/analyze/audioContextAnalyzeComponent";
+import {GoertzelReduceComponent} from "../../src/reduce/goertzelReduceComponent";
+import {TcpServerComponentOptions} from "../../src/lookup/tcpServerComponentOptions";
+import {getTestExecutablePath} from "../../src/testUtils";
+import {TcpServerLookupComponent} from "../../src/lookup/tcpServerLookupComponent";
+import {TcpServerRefineComponent} from "../../src/refine/tcpServerRefineComponent";
+import {BaseENFProcessor} from "../../src/ENFProcessor/baseENFProcessor";
+import fs from "fs";
 
-describe('enf server', () => {
-    it('works', resolve => {
-        const lookupFreqs =
-            [
-                -7, -6, -2, -2, 1, 2, 5, 1, 1, 3, 4, 4, 5, 5, 6, 4, 2, 1, -4, -5, -9, -11, -14, -13, -15, -15, -19, -25,
-                -26, -31, -35, -38, -39, -39, -38, -40, -40, -38, -37, -38, -38, -40, -41, -41, -44, -46, -46, -44, -47,
-                -46, -48, -49, -48, -48, -48, -46, -45, -47, -47, -49, -49, -50, -50, -52, -53, -51, -53, -51, -49, -46,
-                -46, -44, -44, -42, -39, -40, -39, -37, -39, -36, -36, -37, -36, -37, -36, -37, -37, -36, -33, -31, -29,
-                -29, -28, -26, -25, -23, -23, -22, -22, -21
-            ]; //Position 1339200 on the GB grid.
-        const lookupFreqsAsDecimal = lookupFreqs.map(x => 50 + (x / 1000));
-        const lookupRequest = {
-            Freqs: lookupFreqsAsDecimal,
-            GridIds: ["DE","GB","XY"],
-            StartTime:"2014-01-01T00:00:00Z",
-            EndTime:"2020-01-01T00:00:00Z"
-        }
-        const client = new net.Socket();
-        const message = '0' + JSON.stringify(lookupRequest);
-        client.connect(49177, '127.0.0.1', function () {
-            console.log('Connected');
-            client.write(message);
-        });
+describe('BaseENFProcessor', () => {
+    it('can do 1 hour sec lookup over 2 grids', async () => {
+        const lookupFreqs:number[] = JSON.parse(fs.readFileSync("test/testFreqs/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json").toString());
+        const overlapFactor = 1;
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
+        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
+        const reduceComponent = new GoertzelReduceComponent(overlapFactor);
 
-        client.on('data', function (data) {
-            console.log('Received: ' + data);
-        });
+        const tcpServerComponentOptions = new TcpServerComponentOptions();
+        tcpServerComponentOptions.executablePath = getTestExecutablePath();
 
-        client.on('close', function (hadError:boolean) {
-            if (hadError && client.errored) {
-                throw client.errored;
-            }
-            resolve();
-        });
-    }, 3000000)
-})
+        const lookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
+        const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
+
+        const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
+        baseENFProcessor.lookupProgressEvent.addHandler(d => {
+            console.log('d', d)
+        })
+        const results = await baseENFProcessor.lookup(lookupFreqs,["DE","GB"], new Date("2020-11-01"), new Date("2021-12-01"));
+        console.log('results', results);
+    }, 30000000)
+});

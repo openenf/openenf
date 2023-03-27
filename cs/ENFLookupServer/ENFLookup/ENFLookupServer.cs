@@ -11,7 +11,7 @@ public class ENFLookupServer
     {
         Port = port ?? DefaultPort;
     }
-    
+
     private TcpListener _tcpListener = null;
     private Thread _listenerThread;
     private bool _shouldStop;
@@ -21,10 +21,10 @@ public class ENFLookupServer
 
     void HandleClient(TcpClient client)
     {
+        var cancellationTokenSource = new CancellationTokenSource();
         // Get the client stream
         NetworkStream stream = client.GetStream();
-
-        // Read the incoming message
+        // Read the incoming message*/
         var buffer = new byte[256];
         var messageBuilder = new StringBuilder();
         do
@@ -48,25 +48,38 @@ public class ENFLookupServer
                     Console.WriteLine($"Loading grid file at {freqDbFilePath}");
                     iCanAddDbReader.AddFreqDbReader(new FsFreqDbReader(freqDbFilePath));
                 }
+
                 break;
             case ENFLookupServerCommands.Lookup:
                 var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);
                 if (_lookupRequestHandler != null)
                 {
-                    var results = _lookupRequestHandler.Lookup(lookupRequest, d =>
-                    {
-                        stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
-                    } );
+                    var results = _lookupRequestHandler.Lookup(lookupRequest,
+                        d =>
+                        {
+                            try
+                            {
+                                stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
+                            }
+                            catch(IOException e)
+                            {
+                                Console.WriteLine($"Exception writing to stream: {e.GetType()}, Connected: {stream.Socket.Connected}");
+                                cancellationTokenSource.Cancel();
+                            }
+                        }, cancellationTokenSource.Token);
                     responseString = JsonConvert.SerializeObject(results);
                 }
+
                 break;
             case ENFLookupServerCommands.ComprehensiveLookup:
-                var comprehensiveLookupRequest = JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
+                var comprehensiveLookupRequest =
+                    JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
                 if (_lookupRequestHandler != null)
                 {
                     var results = _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
                     responseString = JsonConvert.SerializeObject(results);
                 }
+
                 break;
             case ENFLookupServerCommands.GetMetaData:
                 var gridId = JsonConvert.DeserializeObject<string>(message[1..]);
@@ -79,7 +92,10 @@ public class ENFLookupServer
 
         // Send a response back to the client
         var response = Encoding.ASCII.GetBytes(responseString);
-        stream.Write(response, 0, response.Length);
+        if (stream.Socket.Connected)
+        {
+            stream.Write(response, 0, response.Length);
+        }
 
         // Close the connection
         client.Close();
@@ -91,13 +107,13 @@ public class ENFLookupServer
         {
             return;
         }
+
         var localAddr = IPAddress.Parse("127.0.0.1");
         _tcpListener = new TcpListener(localAddr, Port);
-        
+
         _tcpListener.Start();
         _listenerThread = new Thread(async () =>
         {
-
             // Enter the listening loop
             while (!_shouldStop)
             {

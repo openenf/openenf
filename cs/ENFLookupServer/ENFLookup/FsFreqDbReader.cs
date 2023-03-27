@@ -70,7 +70,7 @@ public class FsFreqDbReader : IFreqDbReader
             lookupResult.Position = position;
             lookupResult.Score = score;
             results.Add(lookupResult);
-        });
+        }, CancellationToken.None);
         return results;
     }
 
@@ -80,7 +80,7 @@ public class FsFreqDbReader : IFreqDbReader
     }
 
     public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
-        int numThreads, ResultLeague resultLeague, Action<double> onProgress = null)
+        int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null)
     {
         if (endTime <= startTime)
         {
@@ -103,7 +103,7 @@ public class FsFreqDbReader : IFreqDbReader
                         (score, position) =>
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
-                        }, onProgress);
+                        }, token, onProgress);
                 });
             }
             else
@@ -114,7 +114,7 @@ public class FsFreqDbReader : IFreqDbReader
                         (score, position) =>
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
-                        });
+                        }, token);
                 });
             }
             tasks.Add(task);
@@ -125,7 +125,7 @@ public class FsFreqDbReader : IFreqDbReader
         return resultLeague.Results;
     }
 
-    public void ThreadSafeLookup(double startTime, double endTime, List<short> freqs, int maxSingleDiff, short[] largeArray, Action<int, double> onNewResult, Action<double> onProgress = null, int? threadId = null) {
+    public void ThreadSafeLookup(double startTime, double endTime, List<short> freqs, int maxSingleDiff, short[] largeArray, Action<int, double> onNewResult, CancellationToken token, Action<double> onProgress = null, int? threadId = null) {
         var i = startTime;
         var total = endTime - startTime;
         var progressChunk = total / 100;
@@ -136,7 +136,7 @@ public class FsFreqDbReader : IFreqDbReader
         var largeArraySize = largeArray.Length;
         var freqsSize = freqs.Count;
         var lastIndexToRead = Math.Min(largeArraySize, (endTime + freqsSize));
-        while (true) {
+        while (!token.IsCancellationRequested) {
             scores.Add(0);
             if (freqs.Count > 0) {
                 var firstElement = freqs[0];
@@ -144,6 +144,7 @@ public class FsFreqDbReader : IFreqDbReader
                 freqs.RemoveAt(0);
             }
             if (i >= lastIndexToRead) {
+                Console.WriteLine("Thread completed");
                 break;
             }
             var compareArraySize = compareArray.Count;

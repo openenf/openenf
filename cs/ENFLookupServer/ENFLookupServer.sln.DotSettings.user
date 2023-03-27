@@ -11,6 +11,13 @@
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.LookupRequestHandlerTests.PassesCorrectValuesForComprehensiveLookup&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.LookupRequestHandlerTests.LookupPassesLookupRequestToCorrectGridReader&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoComprehensiveLookupAroundSpecifiedRange&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsGridStartDateIfNoRequestStartDate&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsGridStartIfRequestStartIsBefore&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsRequestDiffBetweenRequestAndGridStartIfRequestIsAfter&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsGridEndDateOffsetIfNoRequestEndDate&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsGridEndDateOffsetIfRequestEndDateAfter&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsRequestEndDateOffsetIfRequestEndDateBefore&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=697b3938_002Dbbcd_002D41b7_002Da6d4_002D994aa5a06bc3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanPingENFLookupServerOnDefaultPort" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
@@ -56,6 +63,7 @@
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoLookupOnRealWorldDEFile2&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.FsFreqDbReaderTests.CanDoNoTamcthLookupOnRealWorldDEFreqs&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.LookupRequestHandlerTests.PassesCorrectValuesForComprehensiveLookup&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::FC3C133E-F776-4B99-890F-2A73F4DD03A3::net6.0::ENFLookup.test.GridDateHelperTests.ReturnsGridStartDateIfNoRequestStartDate&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

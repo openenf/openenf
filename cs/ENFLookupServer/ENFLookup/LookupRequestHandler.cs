@@ -11,23 +11,21 @@ public class LookupRequestHandler : ICanAddDbReader
         _numThreads = Environment.ProcessorCount;
     }
 
-    private IDictionary<string, IFreqDbReader> _readers = new Dictionary<string, IFreqDbReader>();
+    private readonly IDictionary<string, IFreqDbReader> _readers = new Dictionary<string, IFreqDbReader>();
     private readonly int _resultLeagueSize;
     private readonly int _numThreads;
 
-    private readonly object _lockObject = new();
-
-    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress = null)
+    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress,
+        CancellationToken cancellationToken)
     {
+        if (lookupRequest.EndTime < lookupRequest.StartTime)
+        {
+            Console.WriteLine($"Was expecting start time to be before end time but got start time: {lookupRequest.StartTime} end time: {lookupRequest.EndTime}");
+            return new List<LookupResult>();
+        }
         Console.WriteLine(
             $"Lookup request received for grids: {string.Join(",", lookupRequest.GridIds)}. Using {_numThreads} threads.");
         var normalisedFreqs = lookupRequest.Freqs.ToShortArray();
-        var unixSecsStart = lookupRequest.StartTime.HasValue
-            ? ((DateTimeOffset)lookupRequest.StartTime.Value).ToUnixTimeSeconds()
-            : default(long?);
-        var unixSecsEnd = lookupRequest.EndTime.HasValue
-            ? ((DateTimeOffset)lookupRequest.EndTime.Value).ToUnixTimeSeconds()
-            : default(long?);
         var resultLeague = new ResultLeague(_resultLeagueSize);
         var gridCount = 0;
         var gridsToBeRead = _readers.Keys.Intersect(lookupRequest.GridIds).Count();
@@ -37,16 +35,9 @@ public class LookupRequestHandler : ICanAddDbReader
             if (!_readers.ContainsKey(gridId)) continue;
             var reader = _readers[gridId];
             var metaData = reader.GetFreqDbMetaData();
-            var unixStart = unixSecsStart.HasValue
-                ? Math.Max(unixSecsStart.Value, metaData.StartDate)
-                : metaData.StartDate;
-            var unixEnd = unixSecsEnd.HasValue
-                ? Math.Min(unixSecsEnd.Value, metaData.EndDate)
-                : metaData.EndDate;
-            var start = unixStart - metaData.StartDate;
-            var end = unixEnd - unixStart;
-            double lastAggregatedProgress = 0;
-            reader.Lookup(normalisedFreqs, DefaultMaxSingleDiff, start, end, _numThreads, resultLeague, d =>
+            var startEnd = GridDateHelper.CalculateLookupTs(lookupRequest.StartTime, lookupRequest.EndTime,
+                metaData.StartDate, metaData.EndDate);
+            reader.Lookup(normalisedFreqs, DefaultMaxSingleDiff, startEnd.Item1, startEnd.Item2, _numThreads, resultLeague, cancellationToken, d =>
             {
                 var aggregatedProgress = Math.Round(gridCount * progressPerGrid + (d / gridsToBeRead), 3);
                 onProgress(aggregatedProgress);

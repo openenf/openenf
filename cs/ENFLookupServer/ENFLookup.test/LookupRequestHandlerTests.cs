@@ -25,7 +25,7 @@ public class LookupRequestHandlerTests
             EndTime = new DateTime(1970, 1, 2,0,0,0,DateTimeKind.Utc),
             GridIds = new[] { "XX" }
         };
-        lookupRequestHandler.Lookup(lookupRequest);
+        lookupRequestHandler.Lookup(lookupRequest, null, CancellationTokenSource.CreateLinkedTokenSource().Token);
         mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 10, 20, 30, 40 });
         mockFreqDbReader.StartTime.Should().Be(0);
         mockFreqDbReader.EndTime.Should().Be((int)TimeSpan.FromDays(1).TotalSeconds);
@@ -118,7 +118,7 @@ public class LookupRequestHandlerTests
                 default:
                     throw new Exception("OnProgress should only be fired 5 times total");
             }
-        });
+        }, new CancellationTokenSource().Token);
         progressFiredCount.Should().Be(5);
     }
     
@@ -153,7 +153,7 @@ public class LookupRequestHandlerTests
             EndTime = new DateTime(1970, 1, 2,0,0,0,DateTimeKind.Utc),
             GridIds = new[] { "XX","YY" }
         };
-        lookupRequestHandler.Lookup(lookupRequest);
+        lookupRequestHandler.Lookup(lookupRequest, null, CancellationTokenSource.CreateLinkedTokenSource().Token);
         mockFreqDbReader1.Freqs.Should().BeEquivalentTo(new[] { 0, 100, 200, 300, 400 });
         mockFreqDbReader1.StartTime.Should().Be(0);
         mockFreqDbReader1.EndTime.Should().Be((int)TimeSpan.FromDays(1).TotalSeconds);

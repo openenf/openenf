@@ -1,7 +1,8 @@
 namespace ENFLookup.test;
 
 public class MockLookupRequestHandler : ILookupRequestHandler {
-    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress = null)
+    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress,
+        CancellationToken cancellationToken)
     {
         LookupRequest = lookupRequest;
         return null;

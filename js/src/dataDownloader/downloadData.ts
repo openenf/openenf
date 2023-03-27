@@ -13,7 +13,7 @@ const staticFreqDbLocationData:{[id:string]:remoteFreqDb} = {
     "GB":{
         gridId:"GB",
         url:"https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb",
-        md5:""
+        md5:"5686bc6fcc53b9d172ed617f77c8e2c3"
     }
 }
 
@@ -34,7 +34,6 @@ const getMD5 = async (filePath:string):Promise<string> => {
 
         stream.on('end', function() {
             const md5sum = fileHash.digest('hex');
-            fs.rmSync(filePath);
             resolve(md5sum);
         });
 
@@ -60,7 +59,8 @@ export const downloadData = async (gridId:string):Promise<void> => {
                 resolve();
             } else {
                 console.warn(`For file ${fileName} expected MD5 ${remoteFreqDb.md5} but got ${md5}. Re-downloading`)
-                fs.rmSync(filePath);
+                //fs.rmSync(filePath);
+                resolve();
             }
         }
 
@@ -76,7 +76,6 @@ export const downloadData = async (gridId:string):Promise<void> => {
 
         const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
         bar.start(100, 0);
-        bar.render();
 
         const response = new Response(new ReadableStream({
             async start(controller) {
@@ -87,7 +86,6 @@ export const downloadData = async (gridId:string):Promise<void> => {
                         if (done) break;
                         loaded += value.byteLength;
                         bar.update(loaded/total * 100);
-                        bar.render();
                         fs.writeFile(filePath, value, { flag: "a" }, function (err) {
                             if (err) return console.log(err);
                         });
@@ -95,10 +93,10 @@ export const downloadData = async (gridId:string):Promise<void> => {
                     }
                     controller.close();
                     bar.stop();
-                    /*const md5 = await getMD5(filePath);
+                    const md5 = await getMD5(filePath);
                     if (md5 !== remoteFreqDb.md5) {
                         reject(new Error(`For file ${fileName} expected MD5 ${remoteFreqDb.md5} but got ${md5}. File may be corrupted`))
-                    }*/
+                    }
                     resolve();
                 }
 

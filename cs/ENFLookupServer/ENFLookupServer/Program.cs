@@ -8,29 +8,30 @@ using ENFLookupServer;
 
 ENFLookup.ENFLookupServer server = null;
 
-try
-{
-    Console.WriteLine("ENF Lookup Server");
-    Console.WriteLine();
-    Console.WriteLine("Loading frequency data...");
-    //var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB_50_2014-2021.freqdb");
-    //var deFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/DE_50_20091231230000.freqdb");
-    //var xyFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/XY_50_20140101.freqdb");
-    Console.WriteLine("Frequency data loaded");
 
-    var lookupRequestHandler = new LookupRequestHandler();
-    //lookupRequestHandler.AddFreqDbReader(freqDbReader);
-    //lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
-    //lookupRequestHandler.AddFreqDbReader(xyFreqDbReader);
+Console.WriteLine("ENF Lookup Server");
+Console.WriteLine();
+Console.WriteLine("Loading frequency data...");
+var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB.freqdb");
+var deFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/DE.freqdb");
+//var xyFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/XY_50_20140101.freqdb");
+Console.WriteLine("Frequency data loaded");
 
-    Parser.Default.ParseArguments<CommandLineOptions>(args)
-        .WithParsed(async commandLineOptions =>
+var lookupRequestHandler = new LookupRequestHandler();
+lookupRequestHandler.AddFreqDbReader(freqDbReader);
+lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
+//lookupRequestHandler.AddFreqDbReader(xyFreqDbReader);
+
+Parser.Default.ParseArguments<CommandLineOptions>(args)
+    .WithParsed(async commandLineOptions =>
+    {
+        try
         {
             foreach (var grid in commandLineOptions.Grids)
             {
                 lookupRequestHandler.AddFreqDbReader(new FsFreqDbReader(grid));
             }
-            
+
             server = new ENFLookup.ENFLookupServer(commandLineOptions.Port);
             server.SetLookupRequestHandler(lookupRequestHandler);
 
@@ -50,16 +51,21 @@ try
                     }
                 }
             }
-        });
-}
-finally
-{
-    Console.WriteLine("Closing server...");
-    if (server != null)
-    {
-        server.Stop();
-        server.Dispose();
-    }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Unhandled exception: {e.Message}");
+            Console.WriteLine(e.StackTrace);
+        }
+        finally
+        {
+            Console.WriteLine("Closing server...");
+            if (server != null)
+            {
+                server.Stop();
+                server.Dispose();
+            }
 
-    Console.WriteLine("Done. Bye.");
-}
+            Console.WriteLine("Done. Bye.");
+        }
+    });
