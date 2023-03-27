@@ -41,6 +41,7 @@ export class TcpServerLookupComponent implements LookupComponent {
     async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
         await this.client.activateServer(this.options.executablePath, this.options.port);
         await this.client.loadGrids(this.options.grids);
+        let position = 0;
         let sequence:(number | null)[] = [];
         //If this is a relatively short frequency sequence we search for it all in one go:
         if (freqs.length <= this.contiguousSearchLimit) {
@@ -48,7 +49,7 @@ export class TcpServerLookupComponent implements LookupComponent {
         } else {
             //Otherwise we need to
             // 1: find the longest non-null section:
-            ({sequence} = getStrongestSubsequence(freqs,this.contiguousSearchLimit));
+            ({position, sequence} = getStrongestSubsequence(freqs,this.contiguousSearchLimit));
         }
         const lookupCommand = this.buildLookupCommand(sequence, gridIds, from, to);
         const {responses} = await this.client.request(lookupCommand, (buffer: Buffer) => {
@@ -59,6 +60,9 @@ export class TcpServerLookupComponent implements LookupComponent {
         });
         const response = responses[responses.length - 1]
         const r = JSON.parse(response, toPascalCase);
+        r.forEach((r1:any) => {
+            r1.position = r1.position - position;
+        })
         return r;
     }
 }

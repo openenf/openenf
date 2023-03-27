@@ -12,7 +12,7 @@ import fs from "fs";
 import path from "path";
 
 describe('BaseENFProcessor', () => {
-    it('can lookup over 2 grids', async () => {
+    it('can lookup 1 hour frequency sample over 2 grids entire range', async () => {
         const lookupFreqs:number[] = JSON.parse(fs.readFileSync("test/testFreqs/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json").toString());
         //const lookupFreqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
         const overlapFactor = 1;
@@ -31,8 +31,8 @@ describe('BaseENFProcessor', () => {
         baseENFProcessor.lookupProgressEvent.addHandler(d => {
             console.log('d', d)
         })
-        const results = await baseENFProcessor.lookup(lookupFreqs,["GB","DE"], new Date("2020-11-01"), new Date("2020-12-01"));
+        const results = await baseENFProcessor.lookup(lookupFreqs,["GB","DE"], new Date("2010-11-01"), new Date("2030-12-01"));
         console.log('results', results);
-        //expect(results[0]).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
+        //expect(results[0]).toStrictEqual({ gridId: 'GB', position: 218063344, score: 0 });
     }, 30000000)
 });
