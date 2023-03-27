@@ -1,35 +1,27 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System;
-using System.Threading;
 using CommandLine;
 using ENFLookup;
 using ENFLookupServer;
 
 ENFLookup.ENFLookupServer server = null;
-
-
 Console.WriteLine("ENF Lookup Server");
 Console.WriteLine();
-Console.WriteLine("Loading frequency data...");
-var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB.freqdb");
-var deFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/DE.freqdb");
-//var xyFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/XY_50_20140101.freqdb");
-Console.WriteLine("Frequency data loaded");
-
 var lookupRequestHandler = new LookupRequestHandler();
-lookupRequestHandler.AddFreqDbReader(freqDbReader);
-lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
-//lookupRequestHandler.AddFreqDbReader(xyFreqDbReader);
 
 Parser.Default.ParseArguments<CommandLineOptions>(args)
     .WithParsed(async commandLineOptions =>
     {
         try
         {
-            foreach (var grid in commandLineOptions.Grids)
+            if (!commandLineOptions.NoGrids)
             {
-                lookupRequestHandler.AddFreqDbReader(new FsFreqDbReader(grid));
+                Console.WriteLine("Loading frequency data...");
+                var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB.freqdb");
+                var deFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/DE.freqdb");
+                Console.WriteLine("Frequency data loaded");
+                lookupRequestHandler.AddFreqDbReader(freqDbReader);
+                lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
             }
 
             server = new ENFLookup.ENFLookupServer(commandLineOptions.Port);

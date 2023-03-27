@@ -25,8 +25,8 @@ public class LookupRequestHandlerTests
             EndTime = new DateTime(1970, 1, 2,0,0,0,DateTimeKind.Utc),
             GridIds = new[] { "XX" }
         };
-        lookupRequestHandler.Lookup(lookupRequest, null, CancellationTokenSource.CreateLinkedTokenSource().Token);
-        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 10, 20, 30, 40 });
+        lookupRequestHandler.Lookup(lookupRequest, null, CancellationToken.None);
+        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 100, 200, 300, 400 });
         mockFreqDbReader.StartTime.Should().Be(0);
         mockFreqDbReader.EndTime.Should().Be((int)TimeSpan.FromDays(1).TotalSeconds);
     }
@@ -45,7 +45,7 @@ public class LookupRequestHandlerTests
             Range = 12
         };
         lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
-        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 10, 20, 30, 40 });
+        mockFreqDbReader.Freqs.Should().BeEquivalentTo(new[] { 0, 100, 200, 300, 400 });
         mockFreqDbReader.AroundTs.Should().Be(1388534442);
         mockFreqDbReader.DiffAfter.Should().Be(12);
         mockFreqDbReader.DiffBefore.Should().Be(12);
@@ -153,7 +153,7 @@ public class LookupRequestHandlerTests
             EndTime = new DateTime(1970, 1, 2,0,0,0,DateTimeKind.Utc),
             GridIds = new[] { "XX","YY" }
         };
-        lookupRequestHandler.Lookup(lookupRequest, null, CancellationTokenSource.CreateLinkedTokenSource().Token);
+        lookupRequestHandler.Lookup(lookupRequest, null, CancellationToken.None);
         mockFreqDbReader1.Freqs.Should().BeEquivalentTo(new[] { 0, 100, 200, 300, 400 });
         mockFreqDbReader1.StartTime.Should().Be(0);
         mockFreqDbReader1.EndTime.Should().Be((int)TimeSpan.FromDays(1).TotalSeconds);

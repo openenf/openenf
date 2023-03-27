@@ -19,7 +19,7 @@ export class WasmFreqDbReaderLookupComponent implements LookupComponent {
     async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
         let lookupResults:LookupResult[] = [];
         const frequencyBase = getFrequencyBase(freqs);
-        const normalisedFreqs = freqs.map(x => x === null ? null : parseFloat(((x - frequencyBase) * 100).toFixed(3)));
+        const normalisedFreqs = freqs.map(x => x === null ? null : parseFloat(((x - frequencyBase) * 1000).toFixed(3)));
         await this.readerStore.ready();
         for (const gridId of gridIds) {
             const reader = await this.readerStore.getReader(gridId);

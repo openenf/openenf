@@ -51,7 +51,7 @@ public class ENFLookupServerTests
     [Fact]
     public async Task CanPingENFLookupServerOnDefaultPort()
     {
-        var port = ENFLookupServer.DefaultPort;
+        var port = 50001;
         var server = new ENFLookupServer(port);
         var mockLookupRequestHandler = new MockLookupRequestHandler();
         server.SetLookupRequestHandler(mockLookupRequestHandler);

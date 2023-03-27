@@ -93,7 +93,7 @@ public class FsFreqDbReaderTests
     [Trait("Category","Long-running")]
     public void GridFileContainingNullsCanBeLoaded()
     {
-        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE.freqdb");
         var freqDbReader = new FsFreqDbReader(testPath);
         freqDbReader.FreqDbMetaData.BaseFrequency.Should().Be(50);
         var expectedStartDate = new DateTime(2009, 12, 31, 23, 0, 0, DateTimeKind.Utc);
@@ -106,11 +106,10 @@ public class FsFreqDbReaderTests
     {
         var lookupFreqs =
             JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/DEFreqs404956000.json"));
-        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE.freqdb");
         var freqDbReader = new FsFreqDbReader(testPath);
         var resultLeague = new ResultLeague(100);
-        var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
-        var result = freqDbReader.Lookup(lookupFreqs, 10, 0, endTime, 16, resultLeague, CancellationToken.None).ToArray();
+        var result = freqDbReader.Lookup(lookupFreqs, 10, 404956000 - 1000000, 404956000 + 100000, 16, resultLeague, CancellationToken.None).ToArray();
         result[0].Position.Should().Be(404956000);
         result[0].Score.Should().Be(0);
     }
@@ -121,12 +120,12 @@ public class FsFreqDbReaderTests
     {
         //Note this is GB lookup data on the DE grid so there shouldn't be a strong match.
         var gbLookupData = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
-        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE_50_20091231230000.freqdb");
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE.freqdb");
         var deFreqDbReader = new FsFreqDbReader(testPath);
         var resultLeague = new ResultLeague(100);
         var result = deFreqDbReader.Lookup(gbLookupData, 1000, 126234000, 189302400, 16, resultLeague, CancellationToken.None).ToArray();
-        result[0].Position.Should().Be(53744404);
-        result[0].Score.Should().Be(438);
+        result[0].Position.Should().Be(159650997);
+        result[0].Score.Should().Be(373);
     }
 
     [Fact]

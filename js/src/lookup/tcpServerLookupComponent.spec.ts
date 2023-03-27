@@ -19,22 +19,30 @@ describe("TcpServerLookupComponent", () => {
         expect(response).toBeUndefined();
         expect(errorThrown).toBe(true);
     })
-    it('will fire the executable if the server is not running on the specified port and executable cannot be found', async () => {
+    it('will fire the executable if the server is not running on the specified port and executable can be found', done => {
         const tcpServerComponentOptions = new TcpServerComponentOptions();
+        tcpServerComponentOptions.port = 50000;
         tcpServerComponentOptions.executablePath = getTestExecutablePath();
-        tcpServerComponentOptions.port = 49176; //Note this is a non-standard port so should reliably throw an exception.
+        const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
+        tcpServerComponentOptions.grids["GB"] = dbPath;//Note this is a non-standard port so should reliably throw an exception.
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
         //There's no 'ZZ' grid so this should return an empty array:
-        const response = await tcpServerLookupComponent.lookup([1,2,3,4],["ZZ"]);
-        expect(response).toStrictEqual([]);
-    }, 30000)
+        tcpServerLookupComponent.lookup([50.001,50.002,50.003,50.004],["ZZ"]).then(response => {
+            expect(response).toStrictEqual([]);
+            done();
+        }).catch(() => {
+            throw "Failed";
+            done();
+        })
+    }, 10000)
     it('will lookup data from grid', async () => {
-        const tcpServerComponentOptions = new TcpServerComponentOptions();
-        tcpServerComponentOptions.executablePath = getTestExecutablePath();
-        //const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
-        //tcpServerComponentOptions.grids["GB"] = dbPath;
         let progress = 0;
         const gbFreqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
+        const tcpServerComponentOptions = new TcpServerComponentOptions();
+        tcpServerComponentOptions.port = 50000;
+        tcpServerComponentOptions.executablePath = getTestExecutablePath();
+        const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
+        tcpServerComponentOptions.grids["GB"] = dbPath;
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
         tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
             if (d) {
@@ -42,7 +50,7 @@ describe("TcpServerLookupComponent", () => {
                 progress = d;
             }
         })
-        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"]);
+        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date('2014-01-01'), new Date('2015-01-03'));
         const r = response[0];
         expect(r).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
         expect(progress).toBe(1);

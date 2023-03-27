@@ -23,8 +23,9 @@ public static class LookupHelpers
         return Path.Combine(path, "OpenENF");
     }
     
-    internal static IEnumerable<ThreadBounds> GetArrayThreadBounds(long arrayLength, long numThreads, int freqLength)
+    internal static IEnumerable<ThreadBounds> GetArrayThreadBounds(long startTime, long endTime, long numThreads, int freqLength)
     {
+        var arrayLength = endTime - startTime;
         var results = new List<ThreadBounds>();
         var startInterval = Math.Floor((double)arrayLength / numThreads);
         var remainder = arrayLength - (startInterval * numThreads);
@@ -37,8 +38,8 @@ public static class LookupHelpers
             double end = Math.Min(arrayLength, ((i+1) * startInterval) - 1 + chunkRemainder);
             results.Add(new ThreadBounds
             {
-                Start = start,
-                End = end
+                Start = start + startTime,
+                End = end + startTime
             });
         }
 

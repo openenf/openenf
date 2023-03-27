@@ -18,7 +18,7 @@ export class TcpServerLookupComponent implements LookupComponent {
      * calculate the scores for the full sequence based on the top matches for the subsequence
      * @private
      */
-    private contiguousSearchLimit = 300;
+    private contiguousSearchLimit = 100;
 
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
@@ -50,7 +50,7 @@ export class TcpServerLookupComponent implements LookupComponent {
             // 1: find the longest non-null section:
             ({sequence} = getStrongestSubsequence(freqs,this.contiguousSearchLimit));
         }
-        const lookupCommand = this.buildLookupCommand(freqs, gridIds, from, to);
+        const lookupCommand = this.buildLookupCommand(sequence, gridIds, from, to);
         const {responses} = await this.client.request(lookupCommand, (buffer: Buffer) => {
             const progress = parseFloat(buffer.toString().replace('Progress: ', ""));
             if (!isNaN(progress)) {

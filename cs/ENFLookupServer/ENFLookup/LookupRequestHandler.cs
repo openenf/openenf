@@ -59,8 +59,6 @@ public class LookupRequestHandler : ICanAddDbReader
 
         long aroundTs = comprehensiveLookupRequest.Around;
         var reader = _readers[gridId];
-        var metaData = reader.GetFreqDbMetaData();
-        var timestampOffset = aroundTs - metaData.StartDate;
         var normalisedFreqs = comprehensiveLookupRequest.Freqs.ToShortArray();
         var result = reader.ComprehensiveLookup(normalisedFreqs, aroundTs, comprehensiveLookupRequest.Range,
             comprehensiveLookupRequest.Range);

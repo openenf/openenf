@@ -27,6 +27,9 @@ export class TcpRequestClient {
                 //We can't ping the server, so we'll try to fire up the executable:
                 if (fs.existsSync(executablePath)) {
                     const fireExecutableResponse = await this.fireExecutable(executablePath,port).catch(e => {
+                        if (!e) {
+                            reject(new Error(`Cannot reach server at port ${port} - no error defined`));
+                        }
                         reject(new Error(`Cannot reach server at port ${port} because ${e.message || e.toString()}`))
                     });
                     if (fireExecutableResponse) {
@@ -63,7 +66,7 @@ export class TcpRequestClient {
     }
 
     private buildCommandLine(executablePath: string, port: number): string {
-        let command = `${executablePath} -p ${port}`;
+        let command = `${executablePath} -p ${port} -n`;
         return command;
     }
 
@@ -72,20 +75,23 @@ export class TcpRequestClient {
         return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
-                    reject(error)
                     console.error(`Error: ${error.message}`);
+                    reject(error)
                     return;
                 }
                 if (stderr) {
-                    reject(new Error(stderr))
                     console.error(`stderr: ${stderr}`);
+                    reject(new Error(stderr))
                     return;
+                }
+                if (stdout) {
+                    console.log('stdout', stdout);
                 }
             })
             setTimeout(async () => {
-                const {response, error} = await this.request(this.buildPingCommand());
+                const {response, error} =await this.request(this.buildPingCommand());
                 if (error || response !== "pong") {
-                    reject();
+                    reject(new Error('Timeout pinging server'));
                 } else {
                     resolve(true);
                 }

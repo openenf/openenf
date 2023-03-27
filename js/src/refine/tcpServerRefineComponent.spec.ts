@@ -25,14 +25,14 @@ describe("TcpServerRefineComponent", () => {
         expect(results).toStrictEqual([
             {
                 gridId: 'GB',
-                kurtosis: -0.9835929160494498,
+                kurtosis:  -0.9663522861655578,
                 normalisedScore: 0,
                 score: 0,
                 time: new Date("2014-01-16T12:00:00.000Z")
             },
             {
                 gridId: "GB",
-                kurtosis: -1.4222159661636022,
+                kurtosis: -0.4592466438748986,
                 normalisedScore: 3.91,
                 score: 391,
                 time: new Date("2014-01-15T08:13:17.000Z"),

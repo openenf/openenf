@@ -16,7 +16,14 @@ public static class ExtensionMethods
     public static short[] ToShortArray(this decimal?[] decimals)
     {
         var baseFreq = GetBaseFrequency(decimals);
-        return decimals.Select(x => x.HasValue ? (short)((x.Value - baseFreq)*100) : short.MaxValue).ToArray();
+        var normalisedFreqs = decimals.Select(x => (x - baseFreq) * 1000);
+        var outOfRangeValues = normalisedFreqs.Where(x => x < short.MinValue || x > short.MaxValue);
+        if (outOfRangeValues.Any())
+        {
+            var reconvertedValues = outOfRangeValues.Select(x => (x / 1000) + baseFreq);
+            throw new ArgumentOutOfRangeException("decimals", $"The following values were out of range: '{string.Join(",",reconvertedValues)}'");
+        }
+        return decimals.Select(x => x.HasValue ? (short)((x.Value - baseFreq)*1000) : short.MaxValue).ToArray();
     }
 
     public static int GetBaseFrequency(this decimal?[] decimals)

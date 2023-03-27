@@ -34,7 +34,7 @@ function getStandardDeviation (array:number[]) {
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
 }
 
-export const getMinStdDevSequence = (subsequences:{[index:number]:number[]}):{position:number, sequence:number[]} => {
+export const getMaxStdDevSequence = (subsequences:{[index:number]:number[]}):{position:number, sequence:number[]} => {
     let stdDevs = Object.keys(subsequences).map(x => parseInt(x)).map((p:number) => {
         return {
             position: p,
@@ -48,6 +48,6 @@ export const getMinStdDevSequence = (subsequences:{[index:number]:number[]}):{po
 
 export const getStrongestSubsequence = (sequence:(number | null)[], max: number):{position:number, sequence:number[]} => {
     const longestSubsequences = findLongestNonNullSubsequences(sequence,max);
-    const minStdDevSequence = getMinStdDevSequence(longestSubsequences);
+    const minStdDevSequence = getMaxStdDevSequence(longestSubsequences);
     return minStdDevSequence;
 }

@@ -96,7 +96,7 @@ public class FsFreqDbReader : IFreqDbReader
             throw new ArgumentException("Was expecting endTime to be greater than startTime");
         }
 
-        var threadBounds = LookupHelpers.GetArrayThreadBounds(endTime - startTime, numThreads, freqs.Length);
+        var threadBounds = LookupHelpers.GetArrayThreadBounds(startTime, endTime, numThreads, freqs.Length);
         var tasks = new List<Task>();
         var threadCount = 0;
         foreach (var threadBound in threadBounds)

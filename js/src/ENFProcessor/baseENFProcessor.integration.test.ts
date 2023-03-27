@@ -21,6 +21,7 @@ describe("BaseENFProcessor", () => {
     const reduceComponent = new GoertzelReduceComponent(overlapFactor);
 
     const tcpServerComponentOptions = new TcpServerComponentOptions();
+    tcpServerComponentOptions.port = 50000;
     tcpServerComponentOptions.executablePath = getTestExecutablePath();
     const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
     tcpServerComponentOptions.grids["GB"] = dbPath;

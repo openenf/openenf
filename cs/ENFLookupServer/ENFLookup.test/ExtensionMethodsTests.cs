@@ -13,6 +13,17 @@ public class ExtensionMethodsTests
     }
     
     [Fact]
+    public void CanHandleBadInput()
+    {
+        var freqs = new decimal?[] { 1, 5000 };
+        var action = () =>
+        {
+            freqs.ToShortArray();
+        };
+        action.Should().Throw<ArgumentOutOfRangeException>();
+    }
+    
+    [Fact]
     public void FiftyCenteredFreqArrayReturnsBaseFrequencyOfFifty()
     {
         var freqs = new decimal?[] { 50, 50.1m, 50.2m, 50.3m, 50.4m };

@@ -1,19 +1,19 @@
 import {
     findLongestNonNullSubsequences,
     getContiguousSequenceLengths,
-    getMinStdDevSequence
+    getMaxStdDevSequence
 } from "./lookupComponentUtils";
 
 describe('lookupComponentUtils', () => {
-    it('getMinStdDev returns the sequence with the smallest standard deviation', () => {
-        const {position,sequence} = getMinStdDevSequence({
+    it('getMaxStdDevSequence returns the sequence with the smallest standard deviation', () => {
+        const {position,sequence} = getMaxStdDevSequence({
             '5': [ 1, 2, 3, 8 ],
             '16': [ 1, 2, 3, 4 ],
             '21': [ 1, 2, 3, 3 ],
             '22': [ 2, 3, 4, 5 ]
         });
-        expect(position).toBe(21);
-        expect(sequence).toStrictEqual([ 1, 2, 3, 3 ]);
+        expect(position).toBe(5);
+        expect(sequence).toStrictEqual([ 1, 2, 3, 8 ]);
     })
     it('findLongestNonNullSubsequences finds the longest non-null subsequences smaller than 5', () => {
         const sequence:(number | null)[] = [1,null,1,2,null,1,2,3,4,null,null,1,2,3,null,null,1,2,3,4,null,1,2,3,4,5];
