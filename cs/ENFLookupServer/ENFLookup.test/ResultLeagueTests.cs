@@ -4,6 +4,7 @@ namespace ENFLookup.test;
 
 public class ResultLeagueTests
 {
+
     [Fact]
     public void AddsSingleResultToUnderlyingArray()
     {

@@ -116,6 +116,25 @@ public class FsFreqDbReaderTests
     
     [Fact]
     [Trait("Category","Long-running")]
+    public void CanDoOneHourLookupOnRealWorldGBFile()
+    {
+        var lookupFreqs =
+            JsonConvert.DeserializeObject<decimal?[]>(File.ReadAllText("TestResources/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json"));
+        var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"GB.freqdb");
+        var freqDbReader = new FsFreqDbReader(testPath);
+        var resultLeague = new ResultLeague(100);
+        var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
+        var result = freqDbReader.Lookup(lookupFreqs.ToShortArray(), 1000, 0, endTime, 16, resultLeague, CancellationToken.None, d =>
+        {
+            _testOutputHelper.WriteLine($"{d}");
+        }).ToArray();
+        _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
+        //result[0].Position.Should().Be(404956000);
+        //result[0].Score.Should().Be(0);
+    }
+    
+    [Fact]
+    [Trait("Category","Long-running")]
     public void CanDoWeakMatchLookupOnRealWorldDEFreqs()
     {
         //Note this is GB lookup data on the DE grid so there shouldn't be a strong match.

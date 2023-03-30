@@ -4,10 +4,13 @@ public class LookupRequestHandler : ICanAddDbReader
 {
     //TODO Max the MaxSingleDiff variable dependent on the request and/or grid
     const int DefaultMaxSingleDiff = 10000;
-
-    public LookupRequestHandler(int resultLeagueSize = 10)
+    const int ContiguousSearchLimit = 10000;
+    private const int DefaultResultLeagueSize = 1;
+    private bool UseNonConsecutiveResultLeague = false;
+    
+    public LookupRequestHandler(int? resultLeagueSize = null)
     {
-        _resultLeagueSize = resultLeagueSize;
+        _resultLeagueSize = resultLeagueSize ?? DefaultResultLeagueSize;
         _numThreads = Environment.ProcessorCount;
         Console.WriteLine($"LookupRequestHandler created. MaxSingleDiff: {DefaultMaxSingleDiff}");
     }
@@ -27,10 +30,22 @@ public class LookupRequestHandler : ICanAddDbReader
         Console.WriteLine(
             $"Lookup request received for grids: {string.Join(",", lookupRequest.GridIds)}. Using {_numThreads} threads.");
         var normalisedFreqs = lookupRequest.Freqs.ToShortArray();
-        var resultLeague = new ResultLeague(_resultLeagueSize);
+        var lookupFreqs = (short[])normalisedFreqs.Clone();
+        var resultLeague = UseNonConsecutiveResultLeague
+            ? new NonConsecutiveResultLeague(_resultLeagueSize)
+            : new ResultLeague(_resultLeagueSize);
         var gridCount = 0;
         var gridsToBeRead = _readers.Keys.Intersect(lookupRequest.GridIds).Count();
         var progressPerGrid = 1.0 / gridsToBeRead;
+        long offset = 0;
+
+        if (normalisedFreqs.Length > ContiguousSearchLimit)
+        {
+            var subsequence = FrequencyUtils.GetStrongestSubsequence(normalisedFreqs, ContiguousSearchLimit);
+            offset = subsequence.position;
+            lookupFreqs = subsequence.sequence;
+        }
+
         foreach (var gridId in lookupRequest.GridIds)
         {
             if (!_readers.ContainsKey(gridId)) continue;
@@ -38,12 +53,26 @@ public class LookupRequestHandler : ICanAddDbReader
             var metaData = reader.GetFreqDbMetaData();
             var startEnd = GridDateHelper.CalculateLookupTs(lookupRequest.StartTime, lookupRequest.EndTime,
                 metaData.StartDate, metaData.EndDate);
-            reader.Lookup(normalisedFreqs, DefaultMaxSingleDiff, startEnd.Item1, startEnd.Item2, _numThreads, resultLeague, cancellationToken, d =>
+            reader.Lookup(lookupFreqs, DefaultMaxSingleDiff, startEnd.Item1, startEnd.Item2, _numThreads, resultLeague, cancellationToken, d =>
             {
                 var aggregatedProgress = Math.Round(gridCount * progressPerGrid + (d / gridsToBeRead), 3);
                 onProgress(aggregatedProgress);
             });
             gridCount++;
+        }
+
+        if (normalisedFreqs.Length > ContiguousSearchLimit)
+        {
+            var results = new List<LookupResult>();
+            var groups = resultLeague.Results.GroupBy(x => x.GridId);
+            foreach (var group in groups)
+            {
+                var targets = group.Select(x => x.Position - offset);
+                var targetedResults = _readers[group.Key].TargetedLookup(lookupRequest.Freqs.ToShortArray(), targets);
+                results.AddRange(targetedResults);
+            }
+
+            return results;
         }
 
         return resultLeague.Results;

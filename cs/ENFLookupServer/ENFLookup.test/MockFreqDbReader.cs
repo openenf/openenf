@@ -43,6 +43,11 @@ public class MockFreqDbReader : IFreqDbReader
         return null;
     }
 
+    public IEnumerable<LookupResult> TargetedLookup(short[] freqs, IEnumerable<double> targets)
+    {
+        throw new NotImplementedException();
+    }
+
     public int DiffAfter { get; set; }
 
     public int DiffBefore { get; set; }

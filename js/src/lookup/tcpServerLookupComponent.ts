@@ -18,7 +18,7 @@ export class TcpServerLookupComponent implements LookupComponent {
      * calculate the scores for the full sequence based on the top matches for the subsequence
      * @private
      */
-    private contiguousSearchLimit = 100;
+    private contiguousSearchLimit = 10000;
 
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();

@@ -6,6 +6,8 @@ public interface IFreqDbReader
         int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null);
 
     public IEnumerable<LookupResult> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter);
+    
+    public IEnumerable<LookupResult> TargetedLookup(short[] freqs, IEnumerable<double> targets);
 
     public FreqDbMetaData GetFreqDbMetaData();
 }

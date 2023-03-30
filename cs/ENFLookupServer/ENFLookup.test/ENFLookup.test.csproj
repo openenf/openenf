@@ -45,6 +45,9 @@
       <None Update="TestResources\GBFreqs1339200.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="TestResources\GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

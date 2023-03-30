@@ -71,16 +71,46 @@ public class FsFreqDbReader : IFreqDbReader
             EndTime = endTime,
             Freqs = freqs.ToList(),
             MaxSingleDiff = maxSingleDiff,
-            LargeArray = _shortArray
+            GridArray = _shortArray
         };
         this.ThreadSafeLookup(request, (score, position) =>
         {
-            LookupResult lookupResult = new LookupResult();
-            lookupResult.Position = position;
-            lookupResult.Score = score;
+            LookupResult lookupResult = new LookupResult
+            {
+                Position = position,
+                Score = score,
+                GridId = this.FreqDbMetaData.GridId
+            };
             results.Add(lookupResult);
         }, CancellationToken.None);
         return results;
+    }
+
+    public IEnumerable<LookupResult> TargetedLookup(short[] freqs, IEnumerable<double> targets)
+    {
+        var lookupResults = new List<LookupResult>();
+        foreach (var target in targets)
+        {
+            var score = 0;
+            for (var i = 0; i < freqs.Length; i++)
+            {
+                var freq = freqs[i];
+                if (freq != short.MaxValue)
+                {
+                    var gridFreq = _shortArray[(int)(target + i)];
+                    if (gridFreq != short.MaxValue)
+                    {
+                        score += Math.Abs(gridFreq - freq);
+                    }
+                }
+            }
+            lookupResults.Add(new LookupResult(score, target)
+            {
+                GridId = this.FreqDbMetaData.GridId
+            });
+        }
+
+        return lookupResults;
     }
 
     public FreqDbMetaData GetFreqDbMetaData()
@@ -88,7 +118,7 @@ public class FsFreqDbReader : IFreqDbReader
         return this.FreqDbMetaData;
     }
 
-    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
+    private IEnumerable<LookupResult> StandardLookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
         int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null)
     {
         if (endTime <= startTime)
@@ -109,7 +139,7 @@ public class FsFreqDbReader : IFreqDbReader
                 StartTime = threadBound.Start,
                 EndTime = threadBound.End,
                 Freqs = clone,
-                LargeArray = _shortArray,
+                GridArray = _shortArray,
                 MaxSingleDiff = maxSingleDiff
             };
             if (threadCount == 0)
@@ -145,7 +175,24 @@ public class FsFreqDbReader : IFreqDbReader
         return resultLeague.Results;
     }
 
-    private void LoopCompareArray(int compareArraySize, List<ushort> scores, List<short> compareArray, short newValue,
+    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
+        int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null)
+    {
+        return StandardLookup(freqs, maxSingleDiff, startTime, endTime, numThreads, resultLeague, token, onProgress);
+    }
+    
+    /*public IEnumerable<LookupResult> EfficientLookupForLargeFreqArray(short[] freqs, int maxSingleDiff, long startTime,
+        long endTime,
+        int numThreads, ResultLeague resultLeague, CancellationToken cancellationToken, Action<double> onProgress)
+    {
+        var subsequence = FrequencyUtils.GetStrongestSubsequence(freqs, _contiguousSearchLimit);
+        var results = StandardLookup(subsequence.sequence, maxSingleDiff, startTime, endTime, numThreads, resultLeague,
+            cancellationToken, onProgress);
+        var targets = results.Select(x => x.Position - subsequence.position);
+        return TargetedLookup(freqs, targets);
+    }*/
+
+    private void LoopCompareArray(int compareArraySize, List<ushort> scores, List<short> compareArray, short gridValue,
         int maxSingleDiff, int maxTotal)
     {
         for (var j = 0; j < compareArraySize; j++)
@@ -153,7 +200,7 @@ public class FsFreqDbReader : IFreqDbReader
             if (scores[j] == ushort.MaxValue) continue;
             var compareValue = compareArray[compareArraySize - 1 - j];
             if (compareValue == short.MaxValue) continue;
-            var newDiff = (ushort)Math.Abs(compareValue - newValue);
+            var newDiff = (ushort)Math.Abs(compareValue - gridValue);
             if (newDiff > maxSingleDiff)
             {
                 scores[j] = ushort.MaxValue;
@@ -179,9 +226,9 @@ public class FsFreqDbReader : IFreqDbReader
         var resultPosition = request.StartTime - 1;
         var scores = new List<ushort>();
         var compareArray = new List<short>();
-        var largeArraySize = request.LargeArray.Length;
+        var gridArraySize = request.GridArray.Length;
         var freqsSize = request.Freqs.Count;
-        var lastIndexToRead = Math.Min(largeArraySize, (request.EndTime + freqsSize));
+        var lastIndexToRead = Math.Min(gridArraySize, (request.EndTime + freqsSize));
         var maxSingleDiff = request.MaxSingleDiff;
         var maxTotal = int.MaxValue;
         while (!token.IsCancellationRequested)
@@ -200,7 +247,7 @@ public class FsFreqDbReader : IFreqDbReader
             }
 
             var compareArraySize = compareArray.Count;
-            var newValue = request.LargeArray[(int)i];
+            var gridValue = request.GridArray[(int)i];
             i++;
             if (i >= nextProgress)
             {
@@ -211,7 +258,7 @@ public class FsFreqDbReader : IFreqDbReader
 
                 nextProgress += progressChunk;
             }
-            LoopCompareArray(compareArraySize, scores, compareArray, newValue, maxSingleDiff, maxTotal);
+            LoopCompareArray(compareArraySize, scores, compareArray, gridValue, maxSingleDiff, maxTotal);
 
             if (scores.Count < freqsSize) continue;
             resultPosition++;

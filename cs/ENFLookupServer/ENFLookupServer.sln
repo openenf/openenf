@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENFLookup.test", "ENFLookup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENFLookupServer", "ENFLookupServer\ENFLookupServer.csproj", "{7A2960F8-A726-4338-A9A7-41147C464B09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENFLookup.Benchmark", "ENFLookup.Benchmark\ENFLookup.Benchmark.csproj", "{3D9159D8-4EBB-4EF0-83C0-8EA7CA1CD77C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{7A2960F8-A726-4338-A9A7-41147C464B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A2960F8-A726-4338-A9A7-41147C464B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A2960F8-A726-4338-A9A7-41147C464B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D9159D8-4EBB-4EF0-83C0-8EA7CA1CD77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9159D8-4EBB-4EF0-83C0-8EA7CA1CD77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9159D8-4EBB-4EF0-83C0-8EA7CA1CD77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9159D8-4EBB-4EF0-83C0-8EA7CA1CD77C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

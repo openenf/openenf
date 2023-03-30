@@ -1,10 +1,10 @@
 namespace ENFLookup;
 
-public class ResultLeague
+public class ResultLeague : IResultLeague
 {
     private readonly int _maxSize;
-    
-    private readonly object _lockObject = new();
+
+    protected readonly object _lockObject = new();
 
     public ResultLeague(int maxSize)
     {
@@ -14,7 +14,7 @@ public class ResultLeague
     public IList<LookupResult> Results { get; set; } = new List<LookupResult>();
     public int MaxValue { get; set; } = Int32.MaxValue;
 
-    public void Add(LookupResult lookupResult)
+    public virtual void Add(LookupResult newResult)
     {
         lock (_lockObject) { // acquire the lock
             // perform thread-safe operations here
@@ -25,7 +25,7 @@ public class ResultLeague
                 //Because the array is always sorted from the lowest score to highest the last entry will always have the maximum value:
                 int maxValue =  Results.Last().Score;
                 //If the new score is greater than the current max value there's nothing left to do.
-                if (lookupResult.Score >= maxValue) {
+                if (newResult.Score >= maxValue) {
                     return;
                 }
                 //Conversely, if the new score is lower than the current maximum, we're going to need to evict the current maximum
@@ -35,15 +35,15 @@ public class ResultLeague
                 }
             }
             for (int i = resultsSize - 1; i >= 0; i--) {
-                if (lookupResult.Score > Results[i].Score) {
-                    Results.Insert(i+1, lookupResult);
+                if (newResult.Score > Results[i].Score) {
+                    Results.Insert(i+1, newResult);
                     if (inserting) {
                         Results.RemoveAt(Results.Count - 1);
                     }
                     return;
                 }
             }
-            Results.Insert(0, lookupResult);
+            Results.Insert(0, newResult);
             if (inserting) {
                 Results.RemoveAt(Results.Count - 1);
             }

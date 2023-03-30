@@ -275,19 +275,63 @@ describe('BaseAnalyzer', () => {
     it('fires full analysis complete event', async () => {
         let result: ENFAnalysis;
         let resultFromHandler: ENFAnalysis = new ENFAnalysis("not_from_handler");
-        const baseAnalyzer = new BaseENFProcessor(
+        const baseENFProcessor = new BaseENFProcessor(
             new MockPreScanComponent(),
             new MockAnalyzeComponent(),
             new MockReduceComponent(),
             new MockLookupComponent(),
             new MockRefineComponent())
-        baseAnalyzer.fullAnalysisCompleteEvent.addHandler(r => {
+        baseENFProcessor.fullAnalysisCompleteEvent.addHandler(r => {
             if (r) {
                 resultFromHandler = r;
             }
         })
-        result = await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
+        result = await baseENFProcessor.performFullAnalysis("TEST_URL",[]);
         expect(result).toBe(resultFromHandler);
+    })
+    it('fires log event', async () => {
+        let result: ENFAnalysis;
+        const baseENFProcessor = new BaseENFProcessor(
+            new MockPreScanComponent(),
+            new MockAnalyzeComponent(),
+            new MockReduceComponent(),
+            new MockLookupComponent(),
+            new MockRefineComponent())
+        let logFiredCount = 0;
+        baseENFProcessor.logEvent.addHandler((s:(string | undefined)) => {
+            logFiredCount++;
+            switch (logFiredCount) {
+                case 1:
+                    expect(s).toBe('Starting analysis for resource: TEST_URL, grids: [GB,DE], from 2015-01-01 to 2016-01-01');
+                    break;
+                case 2:
+                    expect(s).toBe('Pre-scanning resource...');
+                    break;
+                case 3:
+                    expect(s).toBe('Pre-scan complete.');
+                    break;
+                case 4:
+                    expect(s).toBe('Obtaining frequency data...');
+                    break;
+                case 5:
+                    expect(s).toBe('Analysing frequency data...');
+                    break;
+                case 6:
+                    expect(s).toBe('Frequency analysis complete.');
+                    break;
+                case 7:
+                    expect(s).toBe('Comparing frequencies to grid data...');
+                    break;
+                case 8:
+                    expect(s).toBe('Refining results...');
+                    break;
+                case 9:
+                    expect(s).toBe('ENF analysis complete.');
+                    break;
+            }
+        })
+        await baseENFProcessor.performFullAnalysis("TEST_URL",["GB","DE"],new Date("2015-01-01"), new Date("2016-01-01"));
+        expect(logFiredCount).toBe(9);
     })
     it('passes start, end times and gridIDs to lookup component, and attaches them to response', async () => {
         const startDate = new Date('2010-01-01');
@@ -316,7 +360,6 @@ describe('BaseAnalyzer', () => {
         const startDate = new Date('2010-01-01');
         const endDate = new Date('2020-01-01');
         const gridIds = ["GB","DE"];
-        let lookupCalled = false;
         const baseAnalyzer = new BaseENFProcessor(
             new MockPreScanComponent(),
             new MockAnalyzeComponent(),
@@ -336,6 +379,9 @@ describe('BaseAnalyzer', () => {
         expect(durations.reduce).not.toBeUndefined();
         expect(durations.lookup).not.toBeUndefined();
         expect(durations.refine).not.toBeUndefined();
+    })
+    it('fire log event', async () => {
+
     })
     it('fires progress event', async () => {
         let eventCount = 0;

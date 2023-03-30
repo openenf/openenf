@@ -1,4 +1,3 @@
-import {downloadData} from "../../src/dataDownloader/downloadData";
 import {GoertzelFilterCache} from "../../src/goertzel/GoertzelFilterCache";
 import {AudioContextPreScanComponent} from "../../src/preScan/audioContextPreScanComponent";
 import {AudioContextAnalyzeComponent} from "../../src/analyze/audioContextAnalyzeComponent";
@@ -8,13 +7,10 @@ import {getTestExecutablePath} from "../../src/testUtils";
 import {TcpServerLookupComponent} from "../../src/lookup/tcpServerLookupComponent";
 import {TcpServerRefineComponent} from "../../src/refine/tcpServerRefineComponent";
 import {BaseENFProcessor} from "../../src/ENFProcessor/baseENFProcessor";
-import fs from "fs";
 import path from "path";
 
 describe('BaseENFProcessor', () => {
-    it('can lookup 1 hour frequency sample over 2 grids entire range', async () => {
-        const lookupFreqs:number[] = JSON.parse(fs.readFileSync("test/testFreqs/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json").toString());
-        //const lookupFreqs:(number | null)[] = JSON.parse(fs.readFileSync(path.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
+    it('can lookup 1 hour audio sample over 2 grids entire range', async () => {
         const overlapFactor = 1;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
@@ -28,11 +24,12 @@ describe('BaseENFProcessor', () => {
         const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
 
         const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
-        baseENFProcessor.lookupProgressEvent.addHandler(d => {
-            console.log('d', d)
+        baseENFProcessor.lookupProgressEvent.addHandler(p => {
+            console.log('p', p);
         })
-        const results = await baseENFProcessor.lookup(lookupFreqs,["GB"], new Date("2019-11-01"), new Date("2021-12-01"));
+
+        const filepath = path.resolve("test/testAudio/large/DE_2021-02-22T11:52:58_saw_600_H_secs_05amp_8Harmonics.wav");
+        const results = await baseENFProcessor.performFullAnalysis(filepath,["DE","GB"]);
         console.log('results', results);
-        //expect(results[0]).toStrictEqual({ gridId: 'GB', position: 2  18063344, score: 0 });
     }, 30000000)
 });
