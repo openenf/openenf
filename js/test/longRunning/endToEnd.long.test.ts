@@ -27,6 +27,9 @@ describe('BaseENFProcessor', () => {
         baseENFProcessor.lookupProgressEvent.addHandler(p => {
             console.log('p', p);
         })
+        baseENFProcessor.logEvent.addHandler(s => {
+            console.log(s)
+        })
 
         const filepath = path.resolve("test/testAudio/large/DE_2021-02-22T11:52:58_saw_600_H_secs_05amp_8Harmonics.wav");
         const results = await baseENFProcessor.performFullAnalysis(filepath,["DE","GB"]);

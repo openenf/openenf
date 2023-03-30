@@ -21,7 +21,7 @@ export class FfmpegAnalyzeComponent implements AnalyzeComponent {
     async analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency?:50|60): Promise<AnalysisWindowResult[]> {
         const goertzelStore = this.goertzelFilterCache.getStore(preScanResult.sampleRate, preScanResult.sampleRate);
         const frequencies = validatePreScanResult(preScanResult, expectedFrequency);
-        const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor);
+        const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor, this.analyzeProgressEvent);
         await streamAudioFile(resourceUri, preScanResult.numChannels || 1, (chunk) => {
             analyzeProcessor.process(chunk);
         })
