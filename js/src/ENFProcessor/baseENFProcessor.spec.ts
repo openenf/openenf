@@ -380,9 +380,6 @@ describe('BaseAnalyzer', () => {
         expect(durations.lookup).not.toBeUndefined();
         expect(durations.refine).not.toBeUndefined();
     })
-    it('fire log event', async () => {
-
-    })
     it('fires progress event', async () => {
         let eventCount = 0;
         const mockPreScanComponentFiresProgressTwice = new MockPreScanComponent(() => {

@@ -11,7 +11,7 @@ import path from "path";
 
 describe('BaseENFProcessor', () => {
     it('can lookup 1 hour audio sample over 2 grids entire range', async () => {
-        const overlapFactor = 1;
+        const overlapFactor = 16;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
@@ -24,7 +24,7 @@ describe('BaseENFProcessor', () => {
         const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
 
         const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
-        baseENFProcessor.lookupProgressEvent.addHandler(p => {
+        baseENFProcessor.analysisProgressEvent.addHandler(p => {
             console.log('p', p);
         })
         baseENFProcessor.logEvent.addHandler(s => {

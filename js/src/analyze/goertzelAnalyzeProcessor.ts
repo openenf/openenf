@@ -36,7 +36,7 @@ export class GoertzelAnalyzeProcessor {
             windowResult.data.push(result)
         })
         this.results.push(windowResult)
-        this.samplesProcessed += window.length;
+        this.samplesProcessed = windowResult.endSamples;
         this.analyzeProgressEvent.trigger([windowResult,this.samplesProcessed / this.totalSamples]);
         this.cursor += this.context.windowSize / this.oFactor;
     }
