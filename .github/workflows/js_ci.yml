@@ -12,15 +12,11 @@ jobs:
           - 18
     steps:
       - uses: actions/checkout@v3
-      - uses: mymindstorm/setup-emsdk@v12
       - uses: FedericoCarboni/setup-ffmpeg@v2
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: ${{github.workspace}}/js
-      - name: Build wasm
-        working-directory: ${{github.workspace}}
-        run: emcc -pthread ${{github.workspace}}/cpp/src/FreqDbMetadata.cpp ${{github.workspace}}/cpp/src/FreqDbReader.cpp ${{github.workspace}}/cpp/src/ResultLeague.cpp ${{github.workspace}}/cpp/src/LookupResult.cpp ${{github.workspace}}/cpp/src/LookupHelpers.cpp -fwasm-exceptions -sASSERTIONS -s WASM=1 -s -I ${{github.workspace}}/cpp/include -o js/src/wasmFreqDbReader/freqDbReader.wasm.js --bind -s WASM_ASYNC_COMPILATION=0 -s EXIT_RUNTIME=1 -s PTHREAD_POOL_SIZE=16 -lnodefs.js -sALLOW_MEMORY_GROWTH -s NODERAWFS=1
       - run: npm test
         working-directory: ${{github.workspace}}/js
