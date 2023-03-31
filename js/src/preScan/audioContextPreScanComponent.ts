@@ -4,7 +4,7 @@ import {PreScanResultLike} from "../model/preScanResultLike";
 import {PreScanComponent} from "./preScanComponent";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import fs from "fs";
-import {getAudioData} from "./getAudioData";
+import {getAudioData} from "../audioContextUtils/getAudioData";
 import {PreScanProcessor} from "./preScanProcessor";
 import {PreScanResult} from "./preScanResult";
 
@@ -21,8 +21,10 @@ export class AudioContextPreScanComponent implements PreScanComponent {
         let buffer = fs.readFileSync(resourceUri);
         const [audioData,metaData] = await getAudioData(buffer, resourceUri);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
-        const preScanProcessor = new PreScanProcessor(goertzelStore);
-        preScanProcessor.process(audioData);
+        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent);
+        for (let i = 0; i < audioData.length; i += 67108864) {
+            preScanProcessor.process(audioData.slice(i, i+67108864));
+        }
         const firstPassResult = preScanProcessor.getResult();
         return new PreScanResult(firstPassResult,metaData);
     }

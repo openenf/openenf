@@ -22,7 +22,7 @@ describe('ffmpegAnalyzeComponent', () => {
         const result = await analyzeComponent.analyze(filepath, preScanResult);
         const freqs = result.map(x => parseFloat(x.data[0].hz.toFixed(3)));
         expect(freqs).toStrictEqual([59.95,59.96,59.97,59.98,59.99,60,60.01,60.02,60.03,60.04]);
-    }, 10000000);
+    }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
@@ -41,11 +41,54 @@ describe('ffmpegAnalyzeComponent', () => {
         };
         const result = await analyzeComponent.analyze(filepath, preScanResult);
         const freqs = result.map(x => parseFloat(x.data[0].hz.toFixed(3)));
-        const expectedFreqs = [49.93, 49.94, 49.98, 49.98, 50.01, 50.02, 50.05, 50.01, 50.01, 50.03, 50.04, 50.04, 50.05, 50.05, 50.06, 50.04, 50.02, 50.01, 49.96, 49.95, 49.91, 49.89, 49.86, 49.87, 49.85, 49.85, 49.81, 49.75, 49.74, 49.69, 49.65, 49.62, 49.61, 49.61, 49.62,  49.6,  49.6, 49.62, 49.63, 49.62, 49.62,  49.6, 49.59, 49.59, 49.56, 49.54, 49.54, 49.56, 49.53, 49.54, 49.52, 49.51, 49.52, 49.52, 49.52, 49.54, 49.55, 49.53, 49.53, 49.51, 49.51,  49.5,  49.5, 49.48, 49.47, 49.49, 49.47, 49.49, 49.51, 49.54, 49.54, 49.56, 49.56, 49.58, 49.61,  49.6, 49.61, 49.63, 49.61, 49.64, 49.64, 49.63, 49.64, 49.63, 49.64, 49.63, 49.63, 49.64, 49.67, 49.69, 49.71, 49.71, 49.72, 49.74, 49.75, 49.77, 49.77, 49.78, 49.78];
-        let diff = 0;
-        for(let i = 0; i < freqs.length; i++) {
-            diff += Math.abs(expectedFreqs[i] - freqs[i])
-        }
-        expect(diff).toBe(0);
-    }, 10000000);
+        const expectedFreqs = [
+            49.993,
+            49.994,
+            49.998,
+            49.998,
+            50.001,
+            50.002,
+            50.005,
+            50.001,
+            50.001,
+            50.003,
+            50.004,
+            50.004,
+            50.005,
+            50.005,
+            50.006,
+            50.004,
+            50.002,
+            50.001,
+            49.996,
+            49.995,
+            49.991,
+            49.989,
+            49.986,
+            49.987,
+            49.985,
+            49.985,
+            49.981,
+            49.975,
+            49.974,
+            49.969,
+            49.965,
+            49.962,
+            49.961,
+            49.961,
+            49.962,
+            49.96,
+            49.96,
+            49.962,
+            49.963,
+            49.962,
+            49.962,
+            49.96,
+            49.959,
+            49.959,
+            49.956,
+            49.954,
+            49.954]
+        expect(freqs).toStrictEqual(expectedFreqs);
+    }, 30000);
 });

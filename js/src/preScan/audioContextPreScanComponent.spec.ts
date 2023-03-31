@@ -65,4 +65,17 @@ describe('ffmpegPreScanComponent', () => {
         expect(result.numChannels).toBe(2);
         expect(result.sampleRate).toBe(44100);
     })
+    it('fires progress event', async () => {
+        //This is a saw wave with no added noise based on real-world frequency data from the Central European Grid:
+        const filepath = "test/testAudio/DE_2013-02-05T17:46:39_saw_9_D_secs_05amp_8Harmonics.wav";
+        const absPath = path.resolve(filepath);
+        const goertzelContext = new GoertzelFilterCache();
+        const preScanComponent = new AudioContextPreScanComponent(goertzelContext);
+        let preScanProgressEventFired = false;
+        preScanComponent.preScanProgressEvent.addHandler(e => {
+            preScanProgressEventFired = true;
+        })
+        await preScanComponent.preScan(absPath);
+        expect(preScanProgressEventFired).toBe(true);
+    })
 })

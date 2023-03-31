@@ -1,0 +1,38 @@
+name: CSharp CI
+
+on:
+  pull_request:
+
+jobs:
+  build-and-test:
+
+    name: ${{ matrix.toolchain }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        toolchain:
+          - linux-gcc
+
+        configuration:
+          - Debug
+
+        include:
+          - toolchain: linux-gcc
+            os: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Build
+      working-directory: ${{github.workspace}}/cs/ENFLookupServer
+      run: dotnet build
+
+    - name: Test
+      working-directory: ${{github.workspace}}/cs/ENFLookupServer
+      run: dotnet test --filter Category!=Long-running

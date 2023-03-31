@@ -39,3 +39,8 @@ cmake-build-debug/
 node_modules
 yarn.lock
 
+**/bin/
+**/obj/
+
+js/test/testAudio/large/
+js/test/serverExecutable
