@@ -12,6 +12,11 @@ jobs:
           - 18
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+      - working-directory: ${{github.workspace}}/cs/ENFLookupServer
+        run: dotnet build --configuration Release -o ../../../js/test/serverExecutable/linux --no-incremental --runtime linux-x64
       - uses: FedericoCarboni/setup-ffmpeg@v2
       - uses: actions/setup-node@v3
         with:
