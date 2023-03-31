@@ -43,3 +43,4 @@ yarn.lock
 **/obj/
 
 js/test/testAudio/large/
+js/test/serverExecutable
