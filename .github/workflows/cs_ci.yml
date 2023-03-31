@@ -35,4 +35,4 @@ jobs:
 
     - name: Test
       working-directory: ${{github.workspace}}/cs/ENFLookupServer
-      run: dotnet test
+      run: dotnet test --filter Category!=Long-running
