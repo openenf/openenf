@@ -66,8 +66,8 @@ public class LookupRequestHandlerTests
         };
         mockFreqDbReader1.SimulateProgress = () =>
         {
-            mockFreqDbReader1.OnProgress(0.5);
-            mockFreqDbReader1.OnProgress(1);
+            mockFreqDbReader1.OnProgress?.Invoke(0.5);
+            mockFreqDbReader1.OnProgress?.Invoke(1);
         };
         var mockFreqDbReader2 = new MockFreqDbReader
         {
@@ -80,9 +80,9 @@ public class LookupRequestHandlerTests
         };
         mockFreqDbReader2.SimulateProgress = () =>
         {
-            mockFreqDbReader2.OnProgress(0.3);
-            mockFreqDbReader2.OnProgress(0.6);
-            mockFreqDbReader2.OnProgress(1);
+            mockFreqDbReader2.OnProgress?.Invoke(0.3);
+            mockFreqDbReader2.OnProgress?.Invoke(0.6);
+            mockFreqDbReader2.OnProgress?.Invoke(1);
         };
         lookupRequestHandler.AddFreqDbReader(mockFreqDbReader1);
         lookupRequestHandler.AddFreqDbReader(mockFreqDbReader2);

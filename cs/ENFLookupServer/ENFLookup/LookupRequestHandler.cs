@@ -1,16 +1,40 @@
 namespace ENFLookup;
 
+/// <summary>
+/// The responsibilities of a <see cref="LookupRequestHandler"/> are to:
+/// - Convert absolute frequencies in a lookup request into normalised frequencies (i.e. change 49.999, 50, 50.001 into -1,0,1)
+/// - Pass the request to the correct freqdb readers
+/// - Aggregate the progress of the readers onProgress events into it's own unified onProgress event
+/// </summary>
 public class LookupRequestHandler : ICanAddDbReader
 {
-    //TODO Max the MaxSingleDiff variable dependent on the request and/or grid
+    /// <summary>
+    /// See <see cref="IFreqDbReader"/> for an explanation of MaxSingleDiff. 
+    /// </summary>
     const int DefaultMaxSingleDiff = 10000;
-    const int ContiguousSearchLimit = 10000;
-    private const int DefaultResultLeagueSize = 1;
-    private bool UseNonConsecutiveResultLeague = false;
     
-    public LookupRequestHandler(int? resultLeagueSize = null)
+    /// <summary>
+    /// The longest frequency sequence that will be searched directly. For sequences longer than <see cref="ContiguousSearchLimit"/>
+    /// the best matches for a subsequence of length <see cref="ContiguousSearchLimit"/> will be searched directly and then scores for
+    /// the full sequence will determined for each of those matches. This can speed up lookups considerably but at this risk of missing
+    /// the best match if a strong signal lies outside the selected subsequence.
+    /// </summary>
+    const int ContiguousSearchLimit = 10000;
+    
+    /// <summary>
+    /// The number of results to return from the lookup. Returning just one result can be much faster than returning multiple results
+    /// but several results may be desirable if the original audio is noisy and the best match candidate is unclear.
+    /// </summary>
+    private const int DefaultNumResults = 1;
+
+    /// <summary>
+    /// We're specifying the number of results returned by a lookup in the constructor. See <see cref="DefaultNumResults"/> for why you might want to vary the
+    /// number of results returned from a lookup.
+    /// </summary>
+    /// <param name="numResults"></param>
+    public LookupRequestHandler(int? numResults = null)
     {
-        _resultLeagueSize = resultLeagueSize ?? DefaultResultLeagueSize;
+        _resultLeagueSize = numResults ?? DefaultNumResults;
         _numThreads = Environment.ProcessorCount;
         Console.WriteLine($"LookupRequestHandler created. MaxSingleDiff: {DefaultMaxSingleDiff}");
     }
@@ -19,21 +43,17 @@ public class LookupRequestHandler : ICanAddDbReader
     private readonly int _resultLeagueSize;
     private readonly int _numThreads;
 
-    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress,
+    public async Task<IList<LookupResult>> Lookup(LookupRequest lookupRequest, Action<double>? onProgress,
         CancellationToken cancellationToken)
     {
         if (lookupRequest.EndTime < lookupRequest.StartTime)
         {
-            Console.WriteLine($"Was expecting start time to be before end time but got start time: {lookupRequest.StartTime} end time: {lookupRequest.EndTime}");
-            return new List<LookupResult>();
+            throw new ArgumentException($"Was expecting start time to be before end time but got start time: {lookupRequest.StartTime} end time: {lookupRequest.EndTime}");
         }
-        Console.WriteLine(
-            $"Lookup request received for grids: {string.Join(",", lookupRequest.GridIds)}. Using {_numThreads} threads.");
+        
         var normalisedFreqs = lookupRequest.Freqs.ToShortArray();
         var lookupFreqs = (short[])normalisedFreqs.Clone();
-        var resultLeague = UseNonConsecutiveResultLeague
-            ? new NonConsecutiveResultLeague(_resultLeagueSize)
-            : new ResultLeague(_resultLeagueSize);
+        var resultLeague = new ResultLeague(_resultLeagueSize);
         var gridCount = 0;
         var gridsToBeRead = _readers.Keys.Intersect(lookupRequest.GridIds).Count();
         var progressPerGrid = 1.0 / gridsToBeRead;
@@ -53,10 +73,11 @@ public class LookupRequestHandler : ICanAddDbReader
             var metaData = reader.GetFreqDbMetaData();
             var startEnd = GridDateHelper.CalculateLookupTs(lookupRequest.StartTime, lookupRequest.EndTime,
                 metaData.StartDate, metaData.EndDate);
+            var count = gridCount;
             reader.Lookup(lookupFreqs, DefaultMaxSingleDiff, startEnd.Item1, startEnd.Item2, _numThreads, resultLeague, cancellationToken, d =>
             {
-                var aggregatedProgress = Math.Round(gridCount * progressPerGrid + (d / gridsToBeRead), 3);
-                onProgress(aggregatedProgress);
+                var aggregatedProgress = Math.Round(count * progressPerGrid + (d / gridsToBeRead), 3);
+                onProgress?.Invoke(aggregatedProgress);
             });
             gridCount++;
         }
@@ -68,7 +89,7 @@ public class LookupRequestHandler : ICanAddDbReader
             foreach (var group in groups)
             {
                 var targets = group.Select(x => x.Position - offset);
-                var targetedResults = _readers[group.Key].TargetedLookup(lookupRequest.Freqs.ToShortArray(), targets);
+                var targetedResults = await _readers[group.Key].TargetedLookup(lookupRequest.Freqs.ToShortArray(), targets);
                 results.AddRange(targetedResults);
             }
 
@@ -78,7 +99,7 @@ public class LookupRequestHandler : ICanAddDbReader
         return resultLeague.Results;
     }
 
-    public IEnumerable<LookupResult> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
+    public Task<IEnumerable<LookupResult>> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
     {
         var gridId = comprehensiveLookupRequest.GridId;
         if (!_readers.ContainsKey(gridId))
@@ -94,7 +115,7 @@ public class LookupRequestHandler : ICanAddDbReader
         return result;
     }
 
-    public FreqDbMetaData GetMetaData(string gridId)
+    public FreqDbMetaData? GetMetaData(string gridId)
     {
         if (!_readers.ContainsKey(gridId))
         {

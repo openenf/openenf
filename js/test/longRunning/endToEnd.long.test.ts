@@ -11,7 +11,7 @@ import path from "path";
 
 describe('BaseENFProcessor', () => {
     it('can lookup 1 hour audio sample over 2 grids entire range', async () => {
-        const overlapFactor = 16;
+        const overlapFactor = 4;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
@@ -31,7 +31,7 @@ describe('BaseENFProcessor', () => {
             console.log(s)
         })
 
-        const filepath = path.resolve("test/testAudio/large/DE_2021-02-22T11:52:58_saw_600_H_secs_05amp_8Harmonics.wav");
+        const filepath = path.resolve("test/testAudio/large/DE_2021-12-30T040946_saw_3600_D_secs_05amp_8Harmonics.wav");
         const results = await baseENFProcessor.performFullAnalysis(filepath,["DE","GB"]);
         console.log('results', results);
     }, 30000000)

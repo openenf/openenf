@@ -45,6 +45,7 @@ export class PreScanProcessor {
     process(input: ArrayLike<number>) {
         this.samplesProcessed = 0;
         this.totalSamples = input.length;
+        console.log('length', input.length);
         this.bufferedProcessor.addChunk(Array.from(input))
     }
 

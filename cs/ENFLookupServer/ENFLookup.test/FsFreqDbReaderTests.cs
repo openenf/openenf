@@ -4,6 +4,10 @@ using Xunit.Abstractions;
 
 namespace ENFLookup.test;
 
+/// <summary>
+/// The freqdb file 'GB_50_Jan2014.freqdb' used here is real-world data containing grid frequencies for the British (GB) grid for the month
+/// of January 2014. Long-running tests are not intended to be run in the CI pipeline.
+/// </summary>
 public class FsFreqDbReaderTests
 {
     private readonly ITestOutputHelper _testOutputHelper;
@@ -24,6 +28,7 @@ public class FsFreqDbReaderTests
             -49, -43, -37, -30, -21, -18, -19, -20, -21, -22, -23, -22, -19, -9, -3, 5, 8, 7, 8, 2, -7, -17, -25, -29,
             -34, -37, -36, -33, -32
         };
+        // ReSharper disable once InconsistentNaming
         short[] mid100_1339200_1339300 =
         {
             -7, -6, -2, -2, 1, 2, 5, 1, 1, 3, 4, 4, 5, 5, 6, 4, 2, 1, -4, -5, -9, -11, -14, -13, -15, -15, -19, -25,
@@ -53,24 +58,25 @@ public class FsFreqDbReaderTests
     }
 
     [Fact]
-    public void CanDoSingleThreadLookupOnLargeFile()
+    public async Task CanDoSingleThreadLookupOnLargeFile()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
-        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(await File.ReadAllTextAsync("TestResources/GBFreqs1339200.json"));
         var resultLeague = new ResultLeague(100);
-        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 1, resultLeague, CancellationToken.None).ToArray();
+        await freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 1, resultLeague, CancellationToken.None);
+        var result = resultLeague.Results;
         result[0].Position.Should().Be(1339200);
         result[0].Score.Should().Be(0);
     }
     
     [Fact]
-    public void ProgressCallbackWorks()
+    public async Task ProgressCallbackWorks()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
-        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(await File.ReadAllTextAsync("TestResources/GBFreqs1339200.json"));
         var resultLeague = new ResultLeague(100);
         double previousD = 0;
-        freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 16, resultLeague, CancellationToken.None, d =>
+        await freqDbReader.Lookup(lookupFreqs, 1000, 0, 2678400, 16, resultLeague, CancellationToken.None, d =>
         {
             _testOutputHelper.WriteLine($"{d}");
             d.Should().BeGreaterThan(previousD);
@@ -84,6 +90,7 @@ public class FsFreqDbReaderTests
     {
         var action = () =>
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new FsFreqDbReader("TestResources/Corrupted.freqdb");
         };
         action.Should().Throw<FormatException>();
@@ -102,59 +109,65 @@ public class FsFreqDbReaderTests
     
     [Fact]
     [Trait("Category","Long-running")]
-    public void CanDoLookupOnRealWorldDEFile()
+    public async Task CanDoLookupOnRealWorldDEFile()
     {
         var lookupFreqs =
-            JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/DEFreqs404956000.json"));
+            JsonConvert.DeserializeObject<short[]>(await File.ReadAllTextAsync("TestResources/DEFreqs404956000.json"));
         var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE.freqdb");
         var freqDbReader = new FsFreqDbReader(testPath);
         var resultLeague = new ResultLeague(100);
-        var result = freqDbReader.Lookup(lookupFreqs, 10, 404956000 - 1000000, 404956000 + 100000, 16, resultLeague, CancellationToken.None).ToArray();
+        await freqDbReader.Lookup(lookupFreqs, 10, 404956000 - 1000000, 404956000 + 100000, 16, resultLeague,
+            CancellationToken.None);
+        var result = resultLeague.Results;
         result[0].Position.Should().Be(404956000);
         result[0].Score.Should().Be(0);
     }
     
     [Fact]
     [Trait("Category","Long-running")]
-    public void CanDoOneHourLookupOnRealWorldGBFile()
+    public async Task CanDoOneHourLookupOnRealWorldGBFile()
     {
         var lookupFreqs =
-            JsonConvert.DeserializeObject<decimal?[]>(File.ReadAllText("TestResources/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json"));
+            JsonConvert.DeserializeObject<decimal?[]>(await File.ReadAllTextAsync("TestResources/GB_2020-11-28T210904_saw_3600_J_secs_05amp_8Harmonics.wav.freqs.json"));
         var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"GB.freqdb");
         var freqDbReader = new FsFreqDbReader(testPath);
-        var resultLeague = new ResultLeague(100);
+        var resultLeague = new ResultLeague(1);
         var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
-        var result = freqDbReader.Lookup(lookupFreqs.ToShortArray(), 1000, 0, endTime, 16, resultLeague, CancellationToken.None, d =>
-        {
-            _testOutputHelper.WriteLine($"{d}");
-        }).ToArray();
+        await freqDbReader.Lookup(lookupFreqs.ToShortArray(), 10, 217063344, 219063344, 16, resultLeague,
+            CancellationToken.None, d =>
+            {
+                _testOutputHelper.WriteLine($"{d}");
+            });
+        var result = resultLeague.Results;
         _testOutputHelper.WriteLine(JsonConvert.SerializeObject(result));
-        //result[0].Position.Should().Be(404956000);
-        //result[0].Score.Should().Be(0);
+        result[0].Score.Should().Be(0);
+        result[0].Position.Should().Be(218063344);
     }
     
     [Fact]
     [Trait("Category","Long-running")]
-    public void CanDoWeakMatchLookupOnRealWorldDEFreqs()
+    public async Task CanDoWeakMatchLookupOnRealWorldDEFreqs()
     {
         //Note this is GB lookup data on the DE grid so there shouldn't be a strong match.
-        var gbLookupData = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        var gbLookupData = JsonConvert.DeserializeObject<short[]>(await File.ReadAllTextAsync("TestResources/GBFreqs1339200.json"));
         var testPath = Path.Combine(LookupHelpers.GetDataFolder(),"DE.freqdb");
         var deFreqDbReader = new FsFreqDbReader(testPath);
         var resultLeague = new ResultLeague(100);
-        var result = deFreqDbReader.Lookup(gbLookupData, 1000, 126234000, 189302400, 16, resultLeague, CancellationToken.None).ToArray();
+        await deFreqDbReader.Lookup(gbLookupData, 1000, 126234000, 189302400, 16, resultLeague, CancellationToken.None);
+        var result = resultLeague.Results;
         result[0].Position.Should().Be(159650997);
         result[0].Score.Should().Be(373);
     }
 
     [Fact]
-    public void CanDoEightThreadLookupOnLargeFile()
+    public async Task CanDoEightThreadLookupOnLargeFile()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
-        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(File.ReadAllText("TestResources/GBFreqs1339200.json"));
+        short[] lookupFreqs = JsonConvert.DeserializeObject<short[]>(await File.ReadAllTextAsync("TestResources/GBFreqs1339200.json"));
         var endTime = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
         var resultLeague = new ResultLeague(100);
-        var result = freqDbReader.Lookup(lookupFreqs, 1000, 0, endTime, 16, resultLeague, CancellationToken.None).ToArray();
+        await freqDbReader.Lookup(lookupFreqs, 1000, 0, endTime, 16, resultLeague, CancellationToken.None);
+        var result = resultLeague.Results;
         result[0].Position.Should().Be(1339200);
         result[0].Score.Should().Be(0);
     }
@@ -171,11 +184,11 @@ public class FsFreqDbReaderTests
     }
 
     [Fact]
-    public void CanDoComprehensiveLookupAroundSpecifiedRange()
+    public async Task CanDoComprehensiveLookupAroundSpecifiedRange()
     {
         var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
         var lookupFreqs = new List<short> { -7,-6,-2,-2,1,2,5,1,1,3,4,4,5,5,6,4,2,1,-4,-5,-9,-11,-14,-13,-15,-15,-19,-25,-26,-31,-35,-38,-39,-39,-38,-40,-40,-38,-37,-38,-38,-40,-41,-41,-44,-46,-46,-44,-47,-46,-48,-49,-48,-48,-48,-46,-45,-47,-47,-49,-49,-50,-50,-52,-53,-51,-53,-51,-49,-46,-46,-44,-44,-42,-39,-40,-39,-37,-39,-36,-36,-37,-36,-37,-36,-37,-37,-36,-33,-31,-29,-29,-28,-26,-25,-23,-23,-22,-22,-21 }.ToArray();
-        var result = freqDbReader.ComprehensiveLookup(lookupFreqs, 1339200, 2, 2).ToArray();
+        var result = (await freqDbReader.ComprehensiveLookup(lookupFreqs, 1339200, 2, 2)).ToArray();
         result.Should().HaveCount(5);
         result[0].Position.Should().Be(1339198);
         result[0].Score.Should().Be(247);

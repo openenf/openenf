@@ -1,8 +1,8 @@
 namespace ENFLookup;
 
-public class FrequencyUtils
+internal class FrequencyUtils
 {
-    public static List<(int position, int length)> GetContiguousSequenceLengths(List<short> sequence)
+    internal static List<(int position, int length)> GetContiguousSequenceLengths(List<short> sequence)
     {
         var sequenceLengths = new List<(int position, int length)>();
 
@@ -26,7 +26,7 @@ public class FrequencyUtils
         return sequenceLengths;
     }
     
-    public static double GetStandardDeviation(int[] values)
+    internal static double GetStandardDeviation(int[] values)
     {
         if (values == null || values.Length == 0)
         {
@@ -39,7 +39,7 @@ public class FrequencyUtils
         return Math.Sqrt(variance);
     }
     
-    public static (int position, int[] sequence) GetMaxStdDevSequence(Dictionary<int, int[]> subsequences)
+    internal static (int position, int[] sequence) GetMaxStdDevSequence(Dictionary<int, int[]> subsequences)
     {
         var stdDevs = subsequences.Keys
             .Select(p => new
@@ -53,7 +53,7 @@ public class FrequencyUtils
         return (position, subsequences[position]);
     }
     
-    public static Dictionary<int, int[]> FindLongestNonNullSubsequences(IEnumerable<short> shorts, int max)
+    internal static Dictionary<int, int[]> FindLongestNonNullSubsequences(IEnumerable<short> shorts, int max)
     {
         var sequence = shorts.ToList();
         var result = new Dictionary<int, int[]>();
@@ -72,7 +72,7 @@ public class FrequencyUtils
         return result;
     }
     
-    public static (long position, short[] sequence) GetStrongestSubsequence(IEnumerable<short> sequence, int max)
+    internal static (long position, short[] sequence) GetStrongestSubsequence(IEnumerable<short> sequence, int max)
     {
         var longestSubsequences = FindLongestNonNullSubsequences(sequence, max);
         var minStdDevSequence = GetMaxStdDevSequence(longestSubsequences);

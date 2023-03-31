@@ -4,13 +4,13 @@ using CommandLine;
 using ENFLookup;
 using ENFLookupServer;
 
-ENFLookup.ENFLookupServer server = null;
+ENFLookup.ENFLookupServer? server = null;
 Console.WriteLine("ENF Lookup Server");
 Console.WriteLine();
 var lookupRequestHandler = new LookupRequestHandler();
 
 Parser.Default.ParseArguments<CommandLineOptions>(args)
-    .WithParsed(async commandLineOptions =>
+    .WithParsed(commandLineOptions =>
     {
         try
         {
@@ -24,11 +24,10 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
                 lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
             }
 
-            server = new ENFLookup.ENFLookupServer(commandLineOptions.Port);
-            server.SetLookupRequestHandler(lookupRequestHandler);
+            server = new ENFLookup.ENFLookupServer(lookupRequestHandler, commandLineOptions.Port);
 
             Console.WriteLine("Starting server...");
-            await server.Start();
+            server.Start();
             Console.WriteLine($"Server started on port {server.Port}. Awaiting requests. Press any key to quit.");
             var keepRunning = true;
             while (keepRunning)
@@ -36,11 +35,8 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
                 Thread.Sleep(1000);
                 if (!Console.IsInputRedirected && Console.KeyAvailable)
                 {
-                    var data = Console.ReadKey();
-                    if (data != null)
-                    {
-                        keepRunning = false;
-                    }
+                    Console.ReadKey();
+                    keepRunning = false;
                 }
             }
         }

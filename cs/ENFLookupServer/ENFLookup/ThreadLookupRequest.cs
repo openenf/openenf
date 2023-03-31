@@ -1,10 +1,10 @@
 namespace ENFLookup;
 
-public class ThreadLookupRequest
+internal class ThreadLookupRequest
 {
     public double StartTime { get; set; }
     public double EndTime { get; set; }
-    public List<short> Freqs { get; set; }
+    public List<short> Freqs { get; set; } = new ();
     public int MaxSingleDiff { get; set; }
-    public short[] GridArray { get; set; }
+    public short[] GridArray { get; set; } = Array.Empty<short>();
 }

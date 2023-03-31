@@ -2,9 +2,9 @@ namespace ENFLookup.test;
 
 public class MockFreqDbReader : IFreqDbReader
 {
-    public ResultLeague ResultLeague { get; set; }
+    public ResultLeague? ResultLeague { get; set; }
 
-    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime, int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress)
+    public Task Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime, int numThreads, ResultLeague resultLeague, CancellationToken cancellationToken, Action<double>? onProgress)
     {
         Freqs = freqs;
         MaxSingleDiff = maxSingleDiff;
@@ -17,16 +17,16 @@ public class MockFreqDbReader : IFreqDbReader
         {
             SimulateProgress();
         }
-        return null;
+        return Task.CompletedTask;
     }
 
-    public Action<double> OnProgress { get; set; }
+    public Action<double>? OnProgress { get; set; }
     
-    public Action SimulateProgress { get; set; }
+    public Action? SimulateProgress { get; set; }
 
     public int MaxSingleDiff { get; set; }
 
-    public short[] Freqs { get; set; }
+    public short[] Freqs { get; set; } = Array.Empty<short>();
 
     public int NumThreads { get; set; }
 
@@ -34,16 +34,16 @@ public class MockFreqDbReader : IFreqDbReader
 
     public long StartTime { get; set; }
 
-    public IEnumerable<LookupResult> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter)
+    public Task<IEnumerable<LookupResult>> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter)
     {
         Freqs = freqs;
         AroundTs = aroundTs;
         DiffBefore = diffBefore;
         DiffAfter = diffAfter;
-        return null;
+        return Task.FromResult(new List<LookupResult>().AsEnumerable());
     }
 
-    public IEnumerable<LookupResult> TargetedLookup(short[] freqs, IEnumerable<double> targets)
+    public Task<IEnumerable<LookupResult>> TargetedLookup(short[] freqs, IEnumerable<double> positions)
     {
         throw new NotImplementedException();
     }
@@ -68,5 +68,5 @@ public class MockFreqDbReader : IFreqDbReader
         return FreqDbMetaData;
     }
 
-    public FreqDbMetaData FreqDbMetaData { get; set; } = null;
+    public FreqDbMetaData? FreqDbMetaData { get; set; }
 }

@@ -19,7 +19,9 @@ export class AudioContextAnalyzeComponent implements AnalyzeComponent {
         const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor, this.analyzeProgressEvent);
         let buffer = fs.readFileSync(resourceUri);
         const [audioData,_] = await getAudioData(buffer, resourceUri);
-        analyzeProcessor.process(audioData);
+        for (let i = 0; i < audioData.length; i += 67108864) {
+            analyzeProcessor.process(audioData.slice(i, i+67108864));
+        }
         return analyzeProcessor.getResult();
     }
 

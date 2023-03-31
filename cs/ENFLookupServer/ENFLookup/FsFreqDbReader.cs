@@ -2,23 +2,48 @@ using Newtonsoft.Json;
 
 namespace ENFLookup;
 
+/// <summary>
+/// A FreqDBReader that reads an entire .freqdb file from the filesystem into memory. It's very memory intensive and very fast!
+/// </summary>
 public class FsFreqDbReader : IFreqDbReader
 {
-    private readonly string _filepath;
-    private readonly short[] _shortArray;
+    /// <summary>
+    /// The entire contents of .freqdb file (less the header) converted shorts and stored in memory,
+    /// </summary>
+    private readonly short[] _gridArray;
 
+    /// <summary>
+    /// If the file doesn't have a valid header (perhaps it's not a real .freqdb file) then we stop reading after 1024 bytes
+    /// </summary>
     private const int MaxHeaderLength = 1024;
 
+    /// <summary>
+    /// Constructs a freqdb reader and immediately (synchronously) reads the header from the file. If the header is valid the entire
+    /// file is read into memory
+    /// </summary>
+    /// <param name="filepath">
+    /// A path pointing towards a file in .freqdb format. A .freqdb format file is just a JSON object, then 5 `0x0d` characters acting as a separator
+    /// then a stream of bytes which is read into a byte array. The byte array is then converted into a signed short array
+    /// where each short represents the deviation from the base frequency of the electrical grid for a specific second in time.
+    /// </param>
+    /// <exception cref="FormatException">
+    /// Thrown if the header cannot be parsed to JSON or if the separator can't be found after <see cref="MaxHeaderLength"/> bytes
+    /// </exception>
     public FsFreqDbReader(string filepath)
     {
-        _filepath = filepath;
-        var filestream = new FileStream(_filepath, FileMode.Open);
+        var filepath1 = filepath;
+        var filestream = new FileStream(filepath1, FileMode.Open);
         var header = "";
         var separatorCount = 0;
         while (true)
         {
             var buffer = new byte[1];
-            filestream.Read(buffer);
+            
+            var numRead = filestream.Read(buffer);
+            if (numRead == 0)
+            {
+                break;
+            }
             if (buffer[0] != 0x0d)
             {
                 header += (char)buffer[0];
@@ -35,31 +60,43 @@ public class FsFreqDbReader : IFreqDbReader
 
             if (filestream.Position > MaxHeaderLength)
             {
-                throw new FormatException($"File at {_filepath} does not seem to be in the correct format.");
+                throw new FormatException($"File at {filepath1} does not seem to be in the correct format.");
             }
         }
 
         if (separatorCount < 5)
         {
-            throw new FormatException($"File at {_filepath} does not seem to be in the correct format.");
+            throw new FormatException($"File at {filepath1} does not seem to be in the correct format.");
         }
 
         FreqDbMetaData = JsonConvert.DeserializeObject<FreqDbMetaData>(header);
         var remainingBytes = filestream.Length - filestream.Position;
         FreqDbMetaData.EndDate = FreqDbMetaData.StartDate + (int)(remainingBytes / 2);
         var byteArray = new byte[remainingBytes];
+        // ReSharper disable once MustUseReturnValue as we're reading the whole of the remaining file
         filestream.Read(byteArray);
-        _shortArray = byteArray.ToShortArray();
+        _gridArray = byteArray.ToShortArray();
     }
 
+    /// <summary>
+    /// The metadata relating to the .freqdb
+    /// </summary>
     public FreqDbMetaData FreqDbMetaData { get; set; }
 
-    public short[] ReadDbToArray()
+    internal short[] ReadDbToArray()
     {
-        return _shortArray;
+        return _gridArray;
     }
 
-    public IEnumerable<LookupResult> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter)
+    /// <summary>
+    /// Implements a <see cref="IFreqDbReader.ComprehensiveLookup"/> lookup synchronously.
+    /// </summary>
+    /// <param name="freqs"></param>
+    /// <param name="aroundTs"></param>
+    /// <param name="diffBefore"></param>
+    /// <param name="diffAfter"></param>
+    /// <returns></returns>
+    public Task<IEnumerable<LookupResult>> ComprehensiveLookup(short[] freqs, long aroundTs, int diffBefore, int diffAfter)
     {
         var startTime = aroundTs - diffBefore;
         var endTime = aroundTs + diffAfter;
@@ -71,7 +108,7 @@ public class FsFreqDbReader : IFreqDbReader
             EndTime = endTime,
             Freqs = freqs.ToList(),
             MaxSingleDiff = maxSingleDiff,
-            GridArray = _shortArray
+            GridArray = _gridArray
         };
         this.ThreadSafeLookup(request, (score, position) =>
         {
@@ -83,13 +120,13 @@ public class FsFreqDbReader : IFreqDbReader
             };
             results.Add(lookupResult);
         }, CancellationToken.None);
-        return results;
+        return Task.FromResult(results.AsEnumerable());
     }
 
-    public IEnumerable<LookupResult> TargetedLookup(short[] freqs, IEnumerable<double> targets)
+    public Task<IEnumerable<LookupResult>> TargetedLookup(short[] freqs, IEnumerable<double> positions)
     {
         var lookupResults = new List<LookupResult>();
-        foreach (var target in targets)
+        foreach (var target in positions)
         {
             var score = 0;
             for (var i = 0; i < freqs.Length; i++)
@@ -97,7 +134,7 @@ public class FsFreqDbReader : IFreqDbReader
                 var freq = freqs[i];
                 if (freq != short.MaxValue)
                 {
-                    var gridFreq = _shortArray[(int)(target + i)];
+                    var gridFreq = _gridArray[(int)(target + i)];
                     if (gridFreq != short.MaxValue)
                     {
                         score += Math.Abs(gridFreq - freq);
@@ -110,7 +147,7 @@ public class FsFreqDbReader : IFreqDbReader
             });
         }
 
-        return lookupResults;
+        return Task.FromResult(lookupResults.AsEnumerable());
     }
 
     public FreqDbMetaData GetFreqDbMetaData()
@@ -118,8 +155,8 @@ public class FsFreqDbReader : IFreqDbReader
         return this.FreqDbMetaData;
     }
 
-    private IEnumerable<LookupResult> StandardLookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
-        int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null)
+    public async Task Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
+        int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double>? onProgress = null)
     {
         if (endTime <= startTime)
         {
@@ -139,7 +176,7 @@ public class FsFreqDbReader : IFreqDbReader
                 StartTime = threadBound.Start,
                 EndTime = threadBound.End,
                 Freqs = clone,
-                GridArray = _shortArray,
+                GridArray = _gridArray,
                 MaxSingleDiff = maxSingleDiff
             };
             if (threadCount == 0)
@@ -151,7 +188,7 @@ public class FsFreqDbReader : IFreqDbReader
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
                         }, token, onProgress, resultLeague);
-                });
+                }, token);
             }
             else
             {
@@ -162,35 +199,17 @@ public class FsFreqDbReader : IFreqDbReader
                         {
                             resultLeague.Add(new LookupResult(score, position, FreqDbMetaData.GridId));
                         }, token, null, resultLeague);
-                });
+                }, token);
             }
 
             tasks.Add(task);
             threadCount++;
         }
 
-        Task.WaitAll(tasks.ToArray());
+        await Task.WhenAll(tasks.ToArray());
         Console.WriteLine("Complete");
         Console.WriteLine();
-        return resultLeague.Results;
     }
-
-    public IEnumerable<LookupResult> Lookup(short[] freqs, int maxSingleDiff, long startTime, long endTime,
-        int numThreads, ResultLeague resultLeague, CancellationToken token, Action<double> onProgress = null)
-    {
-        return StandardLookup(freqs, maxSingleDiff, startTime, endTime, numThreads, resultLeague, token, onProgress);
-    }
-    
-    /*public IEnumerable<LookupResult> EfficientLookupForLargeFreqArray(short[] freqs, int maxSingleDiff, long startTime,
-        long endTime,
-        int numThreads, ResultLeague resultLeague, CancellationToken cancellationToken, Action<double> onProgress)
-    {
-        var subsequence = FrequencyUtils.GetStrongestSubsequence(freqs, _contiguousSearchLimit);
-        var results = StandardLookup(subsequence.sequence, maxSingleDiff, startTime, endTime, numThreads, resultLeague,
-            cancellationToken, onProgress);
-        var targets = results.Select(x => x.Position - subsequence.position);
-        return TargetedLookup(freqs, targets);
-    }*/
 
     private void LoopCompareArray(int compareArraySize, List<ushort> scores, List<short> compareArray, short gridValue,
         int maxSingleDiff, int maxTotal)
@@ -217,7 +236,7 @@ public class FsFreqDbReader : IFreqDbReader
     }
 
     public void ThreadSafeLookup(ThreadLookupRequest request, Action<int, double> onNewResult, CancellationToken token,
-        Action<double> onProgress = null, ResultLeague resultLeague = null)
+        Action<double>? onProgress = null, ResultLeague? resultLeague = null)
     {
         var i = request.StartTime;
         var total = request.EndTime - request.StartTime;

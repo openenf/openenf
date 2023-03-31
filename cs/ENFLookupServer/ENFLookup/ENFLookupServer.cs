@@ -5,21 +5,36 @@ using Newtonsoft.Json;
 
 namespace ENFLookup;
 
-public class ENFLookupServer
+/// <summary>
+/// A server accepting requests over TCP to perform ENF lookups. A TCP wrapper around an <see cref="ILookupRequestHandler"/>
+/// </summary>
+public class ENFLookupServer : IDisposable
 {
-    public ENFLookupServer(int? port = null)
+    /// <summary>
+    /// Creates a sever instance.
+    /// </summary>
+    /// <param name="lookupRequestHandler">The lookupRequestHandler does the actual work.</param>
+    /// <param name="port">The port over which the server should operate. Default is currently the ephemeral port 49170 but this could change
+    /// in future versions.</param>
+    public ENFLookupServer(ILookupRequestHandler lookupRequestHandler, int? port = null)
     {
         Port = port ?? DefaultPort;
+        _lookupRequestHandler = lookupRequestHandler;
     }
 
-    private TcpListener _tcpListener = null;
-    private Thread _listenerThread;
+    private TcpListener? _tcpListener;
+    private Task? _listenerTask;
     private bool _shouldStop;
     private bool _started;
-    private ILookupRequestHandler _lookupRequestHandler;
-    public int Port { get; private set; }
+    private readonly ILookupRequestHandler _lookupRequestHandler;
 
-    void HandleClient(TcpClient client)
+    /// <summary>
+    /// The port over which the server is operating. Default is currently the ephemeral port 49170 but this could change
+    /// in future versions.
+    /// </summary>
+    public int Port { get; }
+
+    private async Task HandleClient(TcpClient client)
     {
         var cancellationTokenSource = new CancellationTokenSource();
         // Get the client stream
@@ -52,38 +67,32 @@ public class ENFLookupServer
                 break;
             case ENFLookupServerCommands.Lookup:
                 var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);
-                if (_lookupRequestHandler != null)
-                {
-                    var results = _lookupRequestHandler.Lookup(lookupRequest,
-                        d =>
+                var lookupResults = await _lookupRequestHandler.Lookup(lookupRequest,
+                    d =>
+                    {
+                        try
                         {
-                            try
-                            {
-                                stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
-                            }
-                            catch(IOException e)
-                            {
-                                Console.WriteLine($"Exception writing to stream: {e.GetType()}, Connected: {stream.Socket.Connected}");
-                                cancellationTokenSource.Cancel();
-                            }
-                        }, cancellationTokenSource.Token);
-                    responseString = JsonConvert.SerializeObject(results);
-                }
+                            stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
+                        }
+                        catch (IOException e)
+                        {
+                            Console.WriteLine(
+                                $"Exception writing to stream: {e.GetType()}, Connected: {stream.Socket.Connected}");
+                            cancellationTokenSource.Cancel();
+                        }
+                    }, cancellationTokenSource.Token);
+                responseString = JsonConvert.SerializeObject(lookupResults);
 
                 break;
             case ENFLookupServerCommands.ComprehensiveLookup:
                 var comprehensiveLookupRequest =
                     JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
-                if (_lookupRequestHandler != null)
-                {
-                    var results = _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
-                    responseString = JsonConvert.SerializeObject(results);
-                }
-
+                var results = await _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
+                responseString = JsonConvert.SerializeObject(results);
                 break;
             case ENFLookupServerCommands.GetMetaData:
                 var gridId = JsonConvert.DeserializeObject<string>(message[1..]);
-                FreqDbMetaData metaData = _lookupRequestHandler.GetMetaData(gridId);
+                var metaData = _lookupRequestHandler.GetMetaData(gridId);
                 responseString = JsonConvert.SerializeObject(metaData);
                 break;
             default:
@@ -101,7 +110,10 @@ public class ENFLookupServer
         client.Close();
     }
 
-    public async Task Start()
+    /// <summary>
+    /// Starts listening for TCP requests on the specified port.
+    /// </summary>
+    public void Start()
     {
         if (_started || _tcpListener != null)
         {
@@ -112,7 +124,7 @@ public class ENFLookupServer
         _tcpListener = new TcpListener(localAddr, Port);
 
         _tcpListener.Start();
-        _listenerThread = new Thread(async () =>
+        _listenerTask = Task.Run(async () =>
         {
             // Enter the listening loop
             while (!_shouldStop)
@@ -134,43 +146,39 @@ public class ENFLookupServer
                 }
             }
         });
-        _listenerThread.Start();
     }
 
+    /// <summary>
+    /// The port over which the server should operate. Default is currently the ephemeral port 49170 but this could change
+    /// in future versions.
+    /// </summary>
     public static int DefaultPort =>
         49170; //49170 is an ephemeral port and may change to something below 49152 in the future.
 
+    /// <summary>
+    /// Stops the server listening for TCP requests.
+    /// </summary>
     public void Stop()
     {
-        if (_listenerThread != null)
+        if (_listenerTask != null)
         {
             _shouldStop = true;
-            _listenerThread = null;
+            _listenerTask = null;
         }
 
         if (_tcpListener != null)
         {
-            try
-            {
-                _tcpListener.Stop();
-            }
-            catch (SocketException e)
-            {
-                throw new Exception(e.SocketErrorCode.ToString());
-            }
+            _tcpListener.Stop();
         }
 
         _started = false;
     }
 
+    //Disposes the server.
     public void Dispose()
     {
         Stop();
         _tcpListener = null;
-    }
-
-    public void SetLookupRequestHandler(ILookupRequestHandler lookupRequestHandler)
-    {
-        _lookupRequestHandler = lookupRequestHandler;
+        GC.SuppressFinalize(this);
     }
 }

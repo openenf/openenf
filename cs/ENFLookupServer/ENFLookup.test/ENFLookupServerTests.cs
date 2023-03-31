@@ -9,72 +9,84 @@ namespace ENFLookup.test;
 public class ENFLookupServerTests
 {
     [Fact]
-    public async Task CanPassLookupRequestToHandler()
+    public void CanPassLookupRequestToHandler()
     {
-        var port = ENFLookupServer.DefaultPort + 2;
-        var server = new ENFLookupServer(port);
-        var mockLookupRequestHandler = new MockLookupRequestHandler();
-        server.SetLookupRequestHandler(mockLookupRequestHandler);
-        await server.Start();
-        
-        var client = new TcpClient("127.0.0.1", port);
-        var lookupRequest = new LookupRequest
+        Stream? stream = null;
+        TcpClient? client = null;
+        ENFLookupServer? server = null;
+        try
         {
-            Freqs = new []{1m,2m,3m,4m}.Select(x => new decimal?(x)).ToArray(),
-            GridIds = new []{"XX"},
-            StartTime = new DateTime(2010,1,1),
-            EndTime = new DateTime(2020,1,1)
-        };
-        
-        var command = ENFLookupServerCommands.Lookup;
-        var requestString = $"{(int)command}{JsonConvert.SerializeObject(lookupRequest)}";
-        var data = Encoding.ASCII.GetBytes(requestString);
-        
-        var stream = client.GetStream();
-        stream.Write(data, 0, data.Length);
-        
-        data = new byte[256];
-        var responseData = string.Empty;
-        var bytes = stream.Read(data, 0, data.Length);
-        responseData = Encoding.ASCII.GetString(data, 0, bytes);
-        responseData.Should().Be("null");
+            var port = ENFLookupServer.DefaultPort + 2;
+            var mockLookupRequestHandler = new MockLookupRequestHandler();
+            server = new ENFLookupServer(mockLookupRequestHandler, port);
+            server.Start();
 
-        mockLookupRequestHandler.LookupRequest.Should().BeEquivalentTo(lookupRequest);
+            client = new TcpClient("127.0.0.1", port);
+            var lookupRequest = new LookupRequest
+            {
+                Freqs = new[] { 1m, 2m, 3m, 4m }.Select(x => new decimal?(x)).ToArray(),
+                GridIds = new[] { "XX" },
+                StartTime = new DateTime(2010, 1, 1),
+                EndTime = new DateTime(2020, 1, 1)
+            };
+
+            var command = ENFLookupServerCommands.Lookup;
+            var requestString = $"{(int)command}{JsonConvert.SerializeObject(lookupRequest)}";
+            var data = Encoding.ASCII.GetBytes(requestString);
+
+            stream = client.GetStream();
+            stream.Write(data, 0, data.Length);
+
+            data = new byte[256];
+            var bytes = stream.Read(data, 0, data.Length);
+            var responseData = Encoding.ASCII.GetString(data, 0, bytes);
+            responseData.Should().Be("[]");
+
+            mockLookupRequestHandler.LookupRequest.Should().BeEquivalentTo(lookupRequest);
+        }
+        finally
+        {
+            stream?.Close();
+            client?.Close();
         
-        stream.Close();
-        client.Close();
-        
-        server.Stop();
-        server.Dispose();
+            server?.Stop();
+            server?.Dispose();
+        }
     }
 
     [Fact]
-    public async Task CanPingENFLookupServerOnDefaultPort()
+    public void CanPingENFLookupServerOnSpecifiedPort()
     {
-        var port = 50001;
-        var server = new ENFLookupServer(port);
-        var mockLookupRequestHandler = new MockLookupRequestHandler();
-        server.SetLookupRequestHandler(mockLookupRequestHandler);
-        await server.Start();
-        var client = new TcpClient("127.0.0.1", port);
+        Stream? stream = null;
+        TcpClient? client = null;
+        ENFLookupServer? server = null;
+        try
+        {
+            var port = 50001;
+            var mockLookupRequestHandler = new MockLookupRequestHandler();
+            server = new ENFLookupServer(mockLookupRequestHandler, port);
+            server.Start();
+            client = new TcpClient("127.0.0.1", port);
 
-        // Send the message to the server
-        var stream = client.GetStream();
+            // Send the message to the server
+            stream = client.GetStream();
+
+            var message = ENFLookupServerCommands.Ping;
+            var data = Encoding.ASCII.GetBytes(((int)message).ToString());
+            stream.Write(data, 0, data.Length);
+
+            data = new byte[256];
+            var bytes = stream.Read(data, 0, data.Length);
+            var responseData = Encoding.ASCII.GetString(data, 0, bytes);
+            responseData.Should().Be("pong");
+        }
+        finally
+        {
+            stream?.Close();
+            client?.Close();
         
-        var message = ENFLookupServerCommands.Ping;
-        var data = Encoding.ASCII.GetBytes(((int)message).ToString());
-        stream.Write(data, 0, data.Length);
-        
-        data = new byte[256];
-        var responseData = string.Empty;
-        var bytes = stream.Read(data, 0, data.Length);
-        responseData = Encoding.ASCII.GetString(data, 0, bytes);
-        responseData.Should().Be("pong");
-        
-        stream.Close();
-        client.Close();
-        
-        server.Stop();
-        server.Dispose();
+            server?.Stop();
+            server?.Dispose();
+        }
     }
 }

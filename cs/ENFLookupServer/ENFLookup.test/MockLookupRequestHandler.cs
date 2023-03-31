@@ -1,14 +1,14 @@
 namespace ENFLookup.test;
 
 public class MockLookupRequestHandler : ILookupRequestHandler {
-    public IList<LookupResult> Lookup(LookupRequest lookupRequest, Action<double> onProgress,
+    public Task<IList<LookupResult>> Lookup(LookupRequest lookupRequest, Action<double> onProgress,
         CancellationToken cancellationToken)
     {
         LookupRequest = lookupRequest;
-        return null;
+        return Task.FromResult<IList<LookupResult>>(new List<LookupResult>());
     }
 
-    public IEnumerable<LookupResult> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
+    public Task<IEnumerable<LookupResult>> ComprehensiveLookup(ComprehensiveLookupRequest comprehensiveLookupRequest)
     {
         throw new NotImplementedException();
     }
@@ -18,5 +18,5 @@ public class MockLookupRequestHandler : ILookupRequestHandler {
         throw new NotImplementedException();
     }
 
-    public LookupRequest LookupRequest { get; set; }
+    public LookupRequest? LookupRequest { get; set; }
 }

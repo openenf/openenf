@@ -3,7 +3,7 @@
 using BenchmarkDotNet.Running;
 using ENFLookup.Benchmark;
 
-BenchmarkRunner.Run<LookupBenchmark>();
+BenchmarkRunner.Run<ResultLeagueSizeBenchmark>();
 
 /*var summary = BenchmarkRunner.Run<LookupBenchmark>();
 Console.WriteLine(summary);*/
