@@ -66,7 +66,7 @@ export class TcpRequestClient {
     }
 
     private buildCommandLine(executablePath: string, port: number): string {
-        let command = `${executablePath} -p ${port} -n`;
+        let command = `${executablePath} --port ${port} -nogrids`;
         return command;
     }
 

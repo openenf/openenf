@@ -1,20 +1,21 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using CommandLine;
+using System.CommandLine;
 using ENFLookup;
-using ENFLookupServer;
 
-ENFLookup.ENFLookupServer? server = null;
-Console.WriteLine("ENF Lookup Server");
-Console.WriteLine();
-var lookupRequestHandler = new LookupRequestHandler();
+namespace MyProject;
 
-Parser.Default.ParseArguments<CommandLineOptions>(args)
-    .WithParsed(commandLineOptions =>
+class Program
+{
+    public static void Main(int port = 49170, bool nogrids = false)
     {
+        ENFLookup.ENFLookupServer? server = null;
+        Console.WriteLine($"ENF Lookup Server. Port {port}");
+        Console.WriteLine();
+        var lookupRequestHandler = new LookupRequestHandler();
         try
         {
-            if (!commandLineOptions.NoGrids)
+            if (!nogrids)
             {
                 Console.WriteLine("Loading frequency data...");
                 var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB.freqdb");
@@ -24,11 +25,12 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
                 lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
             }
 
-            server = new ENFLookup.ENFLookupServer(lookupRequestHandler, commandLineOptions.Port);
+            server = new ENFLookup.ENFLookupServer(lookupRequestHandler, port);
 
             Console.WriteLine("Starting server...");
             server.Start();
-            Console.WriteLine($"Server started on port {server.Port}. Awaiting requests. Press any key to quit.");
+            Console.WriteLine(
+                $"Server started on port {server.Port}. Awaiting requests. Press any key to quit.");
             var keepRunning = true;
             while (keepRunning)
             {
@@ -56,4 +58,5 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
 
             Console.WriteLine("Done. Bye.");
         }
-    });
+    }
+}
