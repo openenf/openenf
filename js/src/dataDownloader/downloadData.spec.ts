@@ -44,8 +44,6 @@ describe('downloadData', () => {
             stream.on('error', function(err) {
                 console.error(`Error reading file: ${err}`);
             });
-        }).catch(e => {
-            console.error(e)
         })
-    }, 30000)
+    })
 })
