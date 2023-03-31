@@ -23,7 +23,7 @@ describe('ffmpegAnalyzeComponent', () => {
         const result = await analyzeComponent.analyze(filepath, preScanResult);
         const freqs = result.map(x => parseFloat(x.data[0].hz.toFixed(3)));
         expect(freqs).toStrictEqual([59.95, 59.96, 59.97, 59.98, 59.99, 60, 60.01, 60.02, 60.03, 60.04]);
-    }, 10000000);
+    }, 30000);
     it('fires progress event', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
@@ -51,7 +51,7 @@ describe('ffmpegAnalyzeComponent', () => {
         await analyzeComponent.analyze(filepath, preScanResult);
         expect(progressFiredCount).toBe(145);
         expect(progress).toBeCloseTo(1);
-    }, 10000000);
+    }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
@@ -175,5 +175,5 @@ describe('ffmpegAnalyzeComponent', () => {
             diff += Math.abs(expectedFreqs[i] - freqs[i])
         }
         expect(diff).toBe(0);
-    }, 10000000);
+    }, 30000);
 });

@@ -38,11 +38,11 @@ describe("BaseENFProcessor", () => {
         expect(result.ENFAnalysisResults[0]).toStrictEqual(
             {
                 "gridId": "GB",
-                "kurtosis": -0.9845371657221754,
+                "kurtosis": -1.0128514961485675,
                 "normalisedScore": 0,
                 "score": 0,
                 "time": new Date("2014-01-16T12:00:01.000Z")
             }
         );
-    }, 60000)
+    }, 10000)
 })

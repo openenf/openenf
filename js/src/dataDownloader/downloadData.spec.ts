@@ -47,5 +47,5 @@ describe('downloadData', () => {
         }).catch(e => {
             console.error(e)
         })
-    }, 500000)
+    }, 30000)
 })

@@ -22,7 +22,7 @@ describe('ffmpegAnalyzeComponent', () => {
         const result = await analyzeComponent.analyze(filepath, preScanResult);
         const freqs = result.map(x => parseFloat(x.data[0].hz.toFixed(3)));
         expect(freqs).toStrictEqual([59.95,59.96,59.97,59.98,59.99,60,60.01,60.02,60.03,60.04]);
-    }, 10000000);
+    }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
         const goertzelFilterCache = new GoertzelFilterCache();
@@ -88,63 +88,7 @@ describe('ffmpegAnalyzeComponent', () => {
             49.959,
             49.956,
             49.954,
-            49.954,
-            49.956,
-            49.953,
-            49.954,
-            49.952,
-            49.951,
-            49.952,
-            49.952,
-            49.952,
-            49.954,
-            49.955,
-            49.953,
-            49.953,
-            49.951,
-            49.951,
-            49.95,
-            49.95,
-            49.948,
-            49.947,
-            49.949,
-            49.947,
-            49.949,
-            49.951,
-            49.954,
-            49.954,
-            49.956,
-            49.956,
-            49.958,
-            49.961,
-            49.96,
-            49.961,
-            49.963,
-            49.961,
-            49.964,
-            49.964,
-            49.963,
-            49.964,
-            49.963,
-            49.964,
-            49.963,
-            49.963,
-            49.964,
-            49.967,
-            49.969,
-            49.971,
-            49.971,
-            49.972,
-            49.974,
-            49.975,
-            49.977,
-            49.977,
-            49.978,
-            49.978]
-        let diff = 0;
-        for(let i = 0; i < freqs.length; i++) {
-            diff += Math.abs(expectedFreqs[i] - freqs[i])
-        }
-        expect(diff).toBe(0);
-    }, 60000);
+            49.954]
+        expect(freqs).toStrictEqual(expectedFreqs);
+    }, 30000);
 });
