@@ -3,6 +3,7 @@ import {GoertzelFilterStore} from "../goertzel/GoertzelFilterStore";
 import {BufferedAudioProcessor, OverlapFactor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
 import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {getDataForWindow} from "../goertzel/GoertzelAnalyze";
+import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 
 export class GoertzelAnalyzeProcessor {
     private context: GoertzelFilterStore;
@@ -11,6 +12,9 @@ export class GoertzelAnalyzeProcessor {
     private harmonics: number[];
     private results: AnalysisWindowResult[] = [];
     private oFactor: OverlapFactor;
+    private analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>
+    private samplesProcessed: number = 0;
+    private totalSamples: number = 0;
 
     bufferHandler(window: number[]) {
         const windowedSamples = hann(window,0);
@@ -32,17 +36,22 @@ export class GoertzelAnalyzeProcessor {
             windowResult.data.push(result)
         })
         this.results.push(windowResult)
+        this.samplesProcessed = windowResult.endSamples;
+        this.analyzeProgressEvent.trigger([windowResult,this.samplesProcessed / this.totalSamples]);
         this.cursor += this.context.windowSize / this.oFactor;
     }
 
-    constructor(context: GoertzelFilterStore, harmonic: number, oFactor: OverlapFactor) {
+    constructor(context: GoertzelFilterStore, harmonic: number, oFactor: OverlapFactor, analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>) {
         this.context = context
         this.oFactor = oFactor
         this.bufferedProcessor = new BufferedAudioProcessor<number>(this.context.windowSize, window => this.bufferHandler(window), oFactor);
         this.harmonics = [harmonic]
+        this.analyzeProgressEvent = analyzeProgressEvent
     }
 
     process(input: ArrayLike<number>) {
+        this.samplesProcessed = 0;
+        this.totalSamples = input.length;
         this.bufferedProcessor.addChunk(Array.from(input))
     }
 

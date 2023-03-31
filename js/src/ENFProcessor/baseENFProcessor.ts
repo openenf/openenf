@@ -70,37 +70,59 @@ export class BaseENFProcessor implements ENFProcessor {
         enfAnalysis.refineImplementationId = this.refineComponent.implementationId;
         this.fullAnalysisCompleteEvent.trigger(enfAnalysis);
         enfAnalysis.durations = new StageDurations(enfAnalysis.analysisStartTime, enfAnalysis.completionTimes);
+        if (enfAnalysis.noMatchReason) {
+            this.logEvent.trigger(`Ending ENF analysis early because: ${enfAnalysis.noMatchReason}`)
+        }
         return enfAnalysis;
     }
 
+    private toIsoDate(date: (Date | undefined)):string {
+        if (date === undefined) {
+            return 'unspecified'
+        }
+        return new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
+            .toISOString()
+            .split("T")[0];
+    }
+
+
     async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?:50|60): Promise<ENFAnalysis> {
+        this.logEvent.trigger(`Starting analysis for resource: ${resourceUri}, grids: [${gridIds.join(',')}], from ${this.toIsoDate(from)} to ${this.toIsoDate(to)}`);
         const enfAnalysis = new ENFAnalysis(resourceUri);
         enfAnalysis.start = from || null;
         enfAnalysis.end = to || null;
         enfAnalysis.gridIds = gridIds;
         const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
+        this.logEvent.trigger(`Pre-scanning resource...`);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
+        this.logEvent.trigger(`Pre-scan complete.`);
         enfAnalysis.completionTimes.preScan = new Date();
+        this.logEvent.trigger(`Obtaining frequency data...`)
         const analysisResult = await this.analyze(resourceUri, enfAnalysis.preScanResult, expectedFrequency).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.analysisResult = analysisResult || null;
         enfAnalysis.completionTimes.analyze = new Date();
         if (!enfAnalysis.analysisResult) {
             return this.closeOutENFAnalysis(enfAnalysis);
         }
+        this.logEvent.trigger(`Analysing frequency data...`)
         const frequencies = await this.reduce(enfAnalysis.analysisResult).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.frequencies = frequencies || null;
         enfAnalysis.completionTimes.reduce = new Date();
         if (!enfAnalysis.frequencies) {
             return this.closeOutENFAnalysis(enfAnalysis)
         }
+        this.logEvent.trigger(`Frequency analysis complete.`)
+        this.logEvent.trigger(`Comparing frequencies to grid data...`);
         const lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.lookupResults = lookupResults || null;
         enfAnalysis.completionTimes.lookup = new Date();
         if (!enfAnalysis.lookupResults) {
             return this.closeOutENFAnalysis(enfAnalysis)
         }
+        this.logEvent.trigger(`Refining results...`);
         enfAnalysis.ENFAnalysisResults = await this.refine(enfAnalysis.frequencies, enfAnalysis.lookupResults)
         enfAnalysis.completionTimes.refine = new Date();
+        this.logEvent.trigger(`ENF analysis complete.`);
         return this.closeOutENFAnalysis(enfAnalysis);
     }
 
@@ -140,6 +162,7 @@ export class BaseENFProcessor implements ENFProcessor {
         return result;
     }
     lookupProgressEvent: ENFEventBase<number> = new ENFEventBase<number>()
+    logEvent: ENFEventBase<string> = new ENFEventBase<string>()
     onLookupCompleteEvent: ENFEventBase<LookupResult[]> = new ENFEventBase<LookupResult[]>()
 
     /*Refine*/

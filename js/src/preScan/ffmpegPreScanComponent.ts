@@ -24,7 +24,7 @@ export class FfmpegPreScanComponent implements PreScanComponent {
     async preScan(resourceUri: string): Promise<PreScanResultLike> {
         const metaData = await getMetaDataFFMpeg(resourceUri);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
-        const preScanProcessor = new PreScanProcessor(goertzelStore);
+        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent);
         await streamAudioFile(resourceUri, metaData.channels, (chunk) => {
             preScanProcessor.process(chunk);
         })

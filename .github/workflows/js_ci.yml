@@ -12,15 +12,18 @@ jobs:
           - 18
     steps:
       - uses: actions/checkout@v3
-      - uses: mymindstorm/setup-emsdk@v12
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+      - working-directory: ${{github.workspace}}/cs/ENFLookupServer
+        run: dotnet restore
+      - working-directory: ${{github.workspace}}/cs/ENFLookupServer
+        run: dotnet build --configuration Release -o ../../js/test/serverExecutable/linux --no-incremental --runtime linux-x64 --self-contained
       - uses: FedericoCarboni/setup-ffmpeg@v2
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: ${{github.workspace}}/js
-      - name: Build wasm
-        working-directory: ${{github.workspace}}
-        run: emcc -pthread ${{github.workspace}}/cpp/src/FreqDbMetadata.cpp ${{github.workspace}}/cpp/src/FreqDbReader.cpp ${{github.workspace}}/cpp/src/ResultLeague.cpp ${{github.workspace}}/cpp/src/LookupResult.cpp ${{github.workspace}}/cpp/src/LookupHelpers.cpp -fwasm-exceptions -sASSERTIONS -s WASM=1 -s -I ${{github.workspace}}/cpp/include -o js/src/lookup/freqDbReader.wasm.js --bind -s WASM_ASYNC_COMPILATION=0 -s EXIT_RUNTIME=1 -s PTHREAD_POOL_SIZE=8  -lnodefs.js -sALLOW_MEMORY_GROWTH
       - run: npm test
         working-directory: ${{github.workspace}}/js
