@@ -1,1 +1,1 @@
-declare module 'src/audioContextUtils/web-audio-api';
+declare module 'web-audio-api';

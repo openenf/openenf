@@ -5,7 +5,7 @@ import {TcpServerComponentOptions} from "../lookup/tcpServerComponentOptions";
 import {TcpRequestClient} from "../tcpClient/tcpRequestClient";
 import {LookupCommand} from "../lookup/lookupCommand";
 import {computeKurtosis, convertPositionToGridDate, getPeaks} from "./refineComponentUtils";
-import {FreqDbMetaData} from "../wasmFreqDbReader/freqDbMetaData";
+import {FreqDbMetaData} from "./freqDbMetaData";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 
 export class TcpServerRefineComponent implements RefineComponent {
