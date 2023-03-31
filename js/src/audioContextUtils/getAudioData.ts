@@ -1,4 +1,4 @@
-import {AudioFileMetadata} from "./audioFileMetadata";
+import {AudioFileMetadata} from "../preScan/audioFileMetadata";
 import {NoMatch} from "../ENFProcessor/noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
 
@@ -7,7 +7,7 @@ export const getAudioData = (buffer: ArrayBuffer, path: string): Promise<[Float3
         let AudioContext;
         if (typeof AudioContext === "undefined") {
             try {
-                const result = await import('web-audio-api');
+                const result = await import('src/audioContextUtils/web-audio-api');
                 AudioContext = result.AudioContext;
             } catch (e) {
                 console.error(e);

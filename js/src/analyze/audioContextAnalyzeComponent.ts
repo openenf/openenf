@@ -6,9 +6,17 @@ import {OverlapFactor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {validatePreScanResult} from "./validatePrescanResult";
 import {GoertzelAnalyzeProcessor} from "./goertzelAnalyzeProcessor";
-import {getAudioData} from "../preScan/getAudioData";
+import {getAudioData} from "../audioContextUtils/getAudioData";
 import fs from "fs";
 
+/**
+ * Implements {@link AnalyzeComponent} using {@link getAudioData} which in turn uses an underlying {@link AudioContext}.
+ * AudioContext is native in the browser but requires the web-audio-api package in Node.
+ * Pros of using AudioContext:
+ * - Very fast
+ * Cons
+ * - Can only handle .wav and .mp3 in Node.
+ */
 export class AudioContextAnalyzeComponent implements AnalyzeComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>()
     readonly implementationId: string = "AudioContextAnalyzeComponent0.0.1";

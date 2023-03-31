@@ -8,6 +8,13 @@ import {streamAudioFile} from "../ffmpegUtils/streamAudioFile";
 import {OverlapFactor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
 import {validatePreScanResult} from "./validatePrescanResult";
 
+/**
+ * Implements {@link AnalyzeComponent} using the Fluent FFMpeg package.
+ * Pros of using FFMpeg
+ * - Can handle most media types.
+ * Cons
+ * - Slower than AudioContext
+ */
 export class FfmpegAnalyzeComponent implements AnalyzeComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>();
     readonly implementationId: string = "FfmpegAnalyzeComponent.0.0.1"

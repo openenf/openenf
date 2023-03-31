@@ -235,7 +235,7 @@ public class FsFreqDbReader : IFreqDbReader
         }
     }
 
-    public void ThreadSafeLookup(ThreadLookupRequest request, Action<int, double> onNewResult, CancellationToken token,
+    internal void ThreadSafeLookup(ThreadLookupRequest request, Action<int, double> onNewResult, CancellationToken token,
         Action<double>? onProgress = null, ResultLeague? resultLeague = null)
     {
         var i = request.StartTime;

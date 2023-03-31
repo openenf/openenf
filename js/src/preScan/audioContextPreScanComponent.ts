@@ -4,7 +4,7 @@ import {PreScanResultLike} from "../model/preScanResultLike";
 import {PreScanComponent} from "./preScanComponent";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import fs from "fs";
-import {getAudioData} from "./getAudioData";
+import {getAudioData} from "../audioContextUtils/getAudioData";
 import {PreScanProcessor} from "./preScanProcessor";
 import {PreScanResult} from "./preScanResult";
 

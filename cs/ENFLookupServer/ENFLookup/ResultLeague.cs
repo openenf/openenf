@@ -1,19 +1,40 @@
 namespace ENFLookup;
 
-public class ResultLeague : IResultLeague
+/// <summary>
+/// A ResultLeague is responsible for:
+/// - Holding the top N <see cref="LookupResult"/>s
+/// - Rejecting results that are greater than the maximum result once the ResultLeague is full
+/// - Keeping the results ordered, with the lowest scoring (and hence closest) <see cref="LookupResult"/> at the top opf the Results list.
+/// - Reporting the current highest scoring result in the league.
+/// - Handling requests to add new results from multiple threads (i.e. it's thread-safe)
+/// </summary>
+public class ResultLeague
 {
     private readonly int _maxSize;
 
     protected readonly object _lockObject = new();
 
+    /// <summary>
+    /// We need to specify the size of the result league in the constructor
+    /// </summary>
+    /// <param name="maxSize"></param>
     public ResultLeague(int maxSize)
     {
         _maxSize = maxSize;
     }
 
-    public IList<LookupResult> Results { get; set; } = new List<LookupResult>();
-    public int MaxValue { get; set; } = Int32.MaxValue;
+    public IList<LookupResult> Results { get; } = new List<LookupResult>();
+    
+    /// <summary>
+    /// This is used during lookup so we can terminate a frequency sequence calculation early if the score has already
+    /// exceeded the <see cref="MaxValue"/> in the league.
+    /// </summary>
+    public int MaxValue { get; private set; } = Int32.MaxValue;
 
+    /// <summary>
+    /// Attempts to add a new result to the league.
+    /// </summary>
+    /// <param name="newResult"></param>
     public virtual void Add(LookupResult newResult)
     {
         lock (_lockObject) { // acquire the lock

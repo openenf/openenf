@@ -133,8 +133,7 @@ public class ENFLookupServer : IDisposable
                 try
                 {
                     var client = await _tcpListener.AcceptTcpClientAsync();
-                    var t = new Thread(() => HandleClient(client));
-                    t.Start();
+                    await Task.Run(() => HandleClient(client));
                     _started = true;
                 }
                 catch (SocketException e)
