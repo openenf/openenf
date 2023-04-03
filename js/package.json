@@ -1,13 +1,13 @@
 {
-	"name": "unicorn-fun-cli",
+	"name": "enfLookup",
 	"version": "0.0.0",
-	"description": "My awesome command-line tool",
+	"description": "A Command Line Tool to perform Electrical Network Frequency analysis",
 	"license": "MIT",
-	"repository": "YOUR-GITHUB-USERNAME/unicorn-fun-cli",
+	"repository": "https://github.com/openenf/enflookup",
 	"author": {
-		"name": "YOUR NAME",
-		"email": "YOUR EMAIL",
-		"url": "YOUR WEBSITE"
+		"name": "Chris Hodges",
+		"email": "chris@openenf.io",
+		"url": "https://openenf.io"
 	},
 	"engines": {
 		"node": ">=12"
@@ -19,11 +19,27 @@
 	"files": [
 		"cli.js"
 	],
+	"bugs": {
+		"url" : "https://github.com/openENF/ENFLookup",
+		"email" : "chris@openenf.io"
+	},
+	"author": "Chris Hodges <chris@openenf.io> (https://openenf.io)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/openENF/ENFLookup.git"
+	},
+	"main": "bin/index.js",
+	"bin": {
+		"enf": "./bin/index.js"
+	},
+	"homepage": "https://github.com/openENF/ENFLookup#readme",
 	"keywords": [
 		"cli",
-		"cli-app",
-		"unicorn",
-		"fun"
+		"enf",
+		"electrical network frequency analysis",
+		"osint",
+		"open source intelligence",
+		"forensic audio"
 	],
 	"dependencies": {
 		"benchmark": "^2.1.4",
