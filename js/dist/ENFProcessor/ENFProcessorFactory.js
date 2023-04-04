@@ -1,0 +1,51 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ENFProcessorFactory = void 0;
+const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
+const audioContextPreScanComponent_1 = require("../preScan/audioContextPreScanComponent");
+const audioContextAnalyzeComponent_1 = require("../analyze/audioContextAnalyzeComponent");
+const goertzelReduceComponent_1 = require("../reduce/goertzelReduceComponent");
+const tcpServerComponentOptions_1 = require("../lookup/tcpServerComponentOptions");
+const tcpServerLookupComponent_1 = require("../lookup/tcpServerLookupComponent");
+const tcpServerRefineComponent_1 = require("../refine/tcpServerRefineComponent");
+const baseENFProcessor_1 = require("./baseENFProcessor");
+const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
+const path_1 = __importDefault(require("path"));
+const ENFDataDirectory_1 = require("../dataDownloader/ENFDataDirectory");
+class ENFProcessorFactory {
+    constructor() {
+        this.executablePath = (0, tcpClientUtils_1.getDefaultExecutablePath)();
+    }
+    static ExecutablePath(path) {
+        const factory = new ENFProcessorFactory();
+        factory.executablePath = path;
+        return factory;
+    }
+    ExecutablePath(path) {
+        this.executablePath = path;
+        return this;
+    }
+    static Build() {
+        const factory = new ENFProcessorFactory();
+        return factory.Build();
+    }
+    Build() {
+        const overlapFactor = 4;
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const preScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
+        const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
+        const reduceComponent = new goertzelReduceComponent_1.GoertzelReduceComponent(overlapFactor);
+        const tcpServerComponentOptions = new tcpServerComponentOptions_1.TcpServerComponentOptions();
+        tcpServerComponentOptions.executablePath = this.executablePath;
+        tcpServerComponentOptions.grids["GB"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "GB.freqdb");
+        tcpServerComponentOptions.grids["DE"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "DE.freqdb");
+        const lookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpServerComponentOptions);
+        const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpServerComponentOptions);
+        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
+        return baseENFProcessor;
+    }
+}
+exports.ENFProcessorFactory = ENFProcessorFactory;

@@ -21,7 +21,7 @@ export class AudioContextPreScanComponent implements PreScanComponent {
         let buffer = fs.readFileSync(resourceUri);
         const [audioData,metaData] = await getAudioData(buffer, resourceUri);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
-        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent);
+        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent, audioData.length);
         for (let i = 0; i < audioData.length; i += 67108864) {
             preScanProcessor.process(audioData.slice(i, i+67108864));
         }

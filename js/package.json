@@ -12,8 +12,8 @@
 		"node": ">=12"
 	},
 	"scripts": {
-		"test": "node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns /test/longRunning/",
-		"longRunningTest": "node --max-old-space-size=32768 --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testMatch \"**/longRunning/?(*.)+(spec|test).[jt]s?(x)\""
+		"test": "dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/macos --no-incremental --runtime osx-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/linux --no-incremental --runtime linux-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/windows --no-incremental --runtime win-x64 --self-contained && node --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns \"long.test.ts\"",
+		"longRunningTest": "node --max-old-space-size=32768 --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testMatch \"**/?(*.)+(long\\.spec|long\\.test).[jt]s?(x)\""
 	},
 	"files": [
 		"cli.js"
@@ -22,9 +22,9 @@
 		"url": "https://github.com/openENF/ENFLookup",
 		"email": "chris@openenf.io"
 	},
-	"main": "bin/index.js",
+	"main": "dist/index.js",
 	"bin": {
-		"enf": "./bin/index.js"
+		"enf": "./dist/index.js"
 	},
 	"homepage": "https://github.com/openENF/ENFLookup#readme",
 	"keywords": [

@@ -3,7 +3,7 @@ import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {PreScanResultLike} from "../model/preScanResultLike";
 import {AudioContextAnalyzeComponent} from "./audioContextAnalyzeComponent";
 
-describe('ffmpegAnalyzeComponent', () => {
+describe('audioContextAnalyzeComponent', () => {
     it('can extract frequency data from synthesized saw wave', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
         const goertzelFilterCache = new GoertzelFilterCache();

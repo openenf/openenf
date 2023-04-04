@@ -36,7 +36,7 @@ export class TcpRequestClient {
                         resolve();
                     }
                 } else {
-                    reject(new Error(`Cannot reach server at port ${port}`))
+                    reject(new Error(`No TCP Lookup executable found at ${executablePath}`))
                 }
             } else {
                 resolve();
@@ -66,7 +66,7 @@ export class TcpRequestClient {
     }
 
     private buildCommandLine(executablePath: string, port: number): string {
-        let command = `${executablePath} --port ${port} --nogrids`;
+        let command = `"${executablePath}" --port ${port} --nogrids`;
         return command;
     }
 

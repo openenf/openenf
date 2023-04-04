@@ -41,7 +41,8 @@ export class GoertzelAnalyzeProcessor {
         this.cursor += this.context.windowSize / this.oFactor;
     }
 
-    constructor(context: GoertzelFilterStore, harmonic: number, oFactor: OverlapFactor, analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>) {
+    constructor(context: GoertzelFilterStore, harmonic: number, oFactor: OverlapFactor, analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>, totalSamples:number) {
+        this.totalSamples = totalSamples;
         this.context = context
         this.oFactor = oFactor
         this.bufferedProcessor = new BufferedAudioProcessor<number>(this.context.windowSize, window => this.bufferHandler(window), oFactor);
@@ -50,8 +51,6 @@ export class GoertzelAnalyzeProcessor {
     }
 
     process(input: ArrayLike<number>) {
-        this.samplesProcessed = 0;
-        this.totalSamples = input.length;
         this.bufferedProcessor.addChunk(Array.from(input))
     }
 

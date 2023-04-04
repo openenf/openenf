@@ -35,6 +35,12 @@ export interface ENFProcessor {
     readonly analysisProgressEvent: ENFEventBase<number>
 
     /**
+     Fires logging information.
+     @eventProperty
+     */
+    readonly logEvent: ENFEventBase<string>
+
+    /**
      * Fired whenever a full ENF Analysis of a file is completed
      * @eventProperty
      */

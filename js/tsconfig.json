@@ -11,9 +11,12 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "strict": true,
-    "target": "es2021"
+    "target": "es2021",
+    "rootDir": "src"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "dist/index.d.ts",
+    "dist/index.d.ts"
   ]
 }

@@ -6,21 +6,7 @@ import path from "path";
 import {TcpRequestClient} from "./tcpRequestClient";
 import {getENFDataDirectory} from "../dataDownloader/ENFDataDirectory";
 import os from "os";
-
-const getDefaultExecutablePath = () => {
-    let executablePath = path.join(getENFDataDirectory(),"serverExecutable");
-    switch (os.platform()) {
-        case "win32":
-            executablePath = path.join(executablePath,"windows","ENFLookupServer.exe");
-            break;
-        case "darwin":
-            executablePath = path.join(executablePath,"macos","ENFLookupServer");
-            break;
-        default:
-            executablePath = path.join(executablePath,"linux","ENFLookupServer");
-    }
-    return path.resolve(executablePath.replace(' ','\\ '));
-}
+import {getDefaultExecutablePath} from "./tcpClientUtils";
 
 const keypress = async () => {
     process.stdin.setRawMode(true)

@@ -13,7 +13,7 @@ describe("TcpServerLookupComponent", () => {
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
         let errorThrown = false;
         const response = await tcpServerLookupComponent.lookup([1,2,3,4],["XX"]).catch((e:Error) => {
-            expect(e.message).toBe('Cannot reach server at port 49177');
+            expect(e.message).toBe('No TCP Lookup executable found at /this/does/not/exist');
             errorThrown = true;
         })
         expect(response).toBeUndefined();

@@ -76,15 +76,15 @@ export class BaseENFProcessor implements ENFProcessor {
         return enfAnalysis;
     }
 
-    private toIsoDate(date: (Date | undefined)):string {
-        if (date === undefined) {
+    private toIsoDate(date: (Date | undefined | null)):string {
+        if (date === undefined || date === null) {
             return 'unspecified'
         }
+        console.log('date', date);
         return new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
             .toISOString()
             .split("T")[0];
     }
-
 
     async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?:50|60): Promise<ENFAnalysis> {
         this.logEvent.trigger(`Starting analysis for resource: ${resourceUri}, grids: [${gridIds.join(',')}], from ${this.toIsoDate(from)} to ${this.toIsoDate(to)}`);
