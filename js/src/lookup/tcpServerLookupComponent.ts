@@ -2,14 +2,14 @@ import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {LookupResult} from "../model/lookupResult";
 import {LookupComponent} from "./lookupComponent";
 import {TcpServerComponentOptions} from "./tcpServerComponentOptions";
-import {TcpRequestClient} from "../tcpClient/tcpRequestClient";
+import {TcpClient} from "../tcpClient/tcpClient";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 import {LookupCommand} from "./lookupCommand";
 import {getStrongestSubsequence} from "./lookupComponentUtils";
 
 export class TcpServerLookupComponent implements LookupComponent {
     private options: TcpServerComponentOptions;
-    private client: TcpRequestClient;
+    private client: TcpClient;
 
     /**
      * The contiguousSearchLimit is the longest sequence of frequencies that can be searched in a single pass.
@@ -22,7 +22,10 @@ export class TcpServerLookupComponent implements LookupComponent {
 
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpRequestClient(this.options.port, this.options.host);
+        this.client = new TcpClient(this.options.port, this.options.host);
+        if (tcpServerComponentOptions?.stdOutHandler) {
+            this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler)
+        }
     }
 
     readonly implementationId: string = "TcpServerLookupComponent0.0.1";
@@ -63,6 +66,8 @@ export class TcpServerLookupComponent implements LookupComponent {
         r.forEach((r1:any) => {
             r1.position = r1.position - position;
         })
+        await this.client.stop();
+        //this.lookupProgressEvent.trigger(1);
         return r;
     }
 }

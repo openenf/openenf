@@ -15,9 +15,11 @@ const baseENFProcessor_1 = require("./baseENFProcessor");
 const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
 const path_1 = __importDefault(require("path"));
 const ENFDataDirectory_1 = require("../dataDownloader/ENFDataDirectory");
+const tcpLookupServer_1 = require("../tcpClient/tcpLookupServer");
 class ENFProcessorFactory {
     constructor() {
         this.executablePath = (0, tcpClientUtils_1.getDefaultExecutablePath)();
+        this.tcpPort = 49170;
     }
     static ExecutablePath(path) {
         const factory = new ENFProcessorFactory();
@@ -28,12 +30,12 @@ class ENFProcessorFactory {
         this.executablePath = path;
         return this;
     }
-    static Build() {
+    static async Build() {
         const factory = new ENFProcessorFactory();
-        return factory.Build();
+        return await factory.Build();
     }
-    Build() {
-        const overlapFactor = 4;
+    async Build() {
+        const overlapFactor = 16;
         const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
         const preScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
         const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
@@ -42,10 +44,22 @@ class ENFProcessorFactory {
         tcpServerComponentOptions.executablePath = this.executablePath;
         tcpServerComponentOptions.grids["GB"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "GB.freqdb");
         tcpServerComponentOptions.grids["DE"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "DE.freqdb");
+        tcpServerComponentOptions.port = this.tcpPort;
+        const tcpServer = new tcpLookupServer_1.TcpLookupServer(tcpServerComponentOptions.port, tcpServerComponentOptions.executablePath);
+        await tcpServer.start().catch(e => {
+            console.error(e);
+        });
         const lookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpServerComponentOptions);
         const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpServerComponentOptions);
         const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
+        baseENFProcessor.fullAnalysisCompleteEvent.addHandler(async () => {
+            await tcpServer.stop();
+        });
         return baseENFProcessor;
+    }
+    TcpPort(tcpPort) {
+        this.tcpPort = tcpPort;
+        return this;
     }
 }
 exports.ENFProcessorFactory = ENFProcessorFactory;

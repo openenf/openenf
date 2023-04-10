@@ -3,7 +3,7 @@
  * an overlap factor of 4 and a windowSize of 1000, {@link onWindowFull} would fire on samples 0-999, then on samples 500-1599, then on
  * samples 1000-1999, etc. The overlap factor is used with the Goertzel frequency analysis to get frequency readings every quarter-second
  */
-export type OverlapFactor = 1 | 2 | 4 | 8 | 16;
+export type OverlapFactor = 1 | 2 | 4 | 8 | 16 | 32 | 64;
 /**
  * BufferedAudioProcessor accepts variable size arrays of data of type {@link T} and appends them to a buffer array of the same type.
  * When the number of items in the buffer array exceeds the {@link windowSize} the {@link onWindowFull} function is executed for the first

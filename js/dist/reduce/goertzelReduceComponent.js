@@ -46,6 +46,10 @@ const transformWindowsToStreams = (windows) => {
     };
     windows.forEach(w => {
         w.data.forEach((d) => {
+            const t = d.target.toString();
+            if (!returnDict[t]) {
+                throw new Error(`Unable to find Goertzel dict for '${t}'. Result: ${JSON.stringify(d, null, 2)}`);
+            }
             returnDict[d.target.toString()].push(d);
         });
     });

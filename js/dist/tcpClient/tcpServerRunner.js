@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-const tcpRequestClient_1 = require("./tcpRequestClient");
+const tcpClient_1 = require("./tcpClient");
 const ENFDataDirectory_1 = require("../dataDownloader/ENFDataDirectory");
 const tcpClientUtils_1 = require("./tcpClientUtils");
 const keypress = async () => {
@@ -16,7 +16,7 @@ const keypress = async () => {
         resolve();
     }));
 };
-const client = new tcpRequestClient_1.TcpRequestClient(49170, '127.0.0.1');
+const client = new tcpClient_1.TcpClient(49170, '127.0.0.1');
 console.log('Starting server');
 client.fireExecutable((0, tcpClientUtils_1.getDefaultExecutablePath)(), 49170).then(async () => {
     console.log('Loading grids');

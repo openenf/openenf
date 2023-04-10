@@ -18,4 +18,20 @@ describe('validatePreScanResult', () => {
         const result = (0, validatePrescanResult_1.validatePreScanResult)(preScanResult);
         expect(result).toStrictEqual([50]);
     });
+    it('returns 100 target for dominate 100HZ result', () => {
+        const preScanResult = {
+            duration: 256.40290249433104,
+            durationSamples: 11307368,
+            h100: 0.05514567991874277,
+            h120: 0.0004897763528248434,
+            h200: 0.00021586038986000033,
+            h240: 0.00017863239783691908,
+            h50: 0.00042946929630745365,
+            h60: 0.0007291119766316747,
+            numChannels: 2,
+            sampleRate: 44100
+        };
+        const result = (0, validatePrescanResult_1.validatePreScanResult)(preScanResult);
+        expect(result).toStrictEqual([100]);
+    });
 });

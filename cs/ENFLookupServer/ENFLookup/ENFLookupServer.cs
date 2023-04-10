@@ -64,6 +64,7 @@ public class ENFLookupServer : IDisposable
                     iCanAddDbReader.AddFreqDbReader(new FsFreqDbReader(freqDbFilePath));
                 }
 
+                responseString = "Ok";
                 break;
             case ENFLookupServerCommands.Lookup:
                 var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);

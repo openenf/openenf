@@ -6,6 +6,7 @@ import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
 export declare class AudioContextPreScanComponent implements PreScanComponent {
     readonly implementationId: string;
     preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>;
+    audioLoadedEvent: ENFEventBase<ArrayLike<number>>;
     private goertzelFilterCache;
     constructor(goertzelFilterCache: GoertzelFilterCache);
     preScan(resourceUri: string): Promise<PreScanResultLike>;

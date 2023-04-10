@@ -5,4 +5,5 @@ export class TcpServerComponentOptions {
     executablePath: string = "";
     host: string = "127.0.0.1";
     grids: { [gridId: string]: string; } = {};
+    stdOutHandler: ((m: string|undefined) => void) | undefined;
 }

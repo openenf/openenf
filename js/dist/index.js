@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ENFProcessorFactory_1 = require("./ENFProcessor/ENFProcessorFactory");
 const fs = __importStar(require("fs"));
 const cliProgress = __importStar(require("cli-progress"));
+const downloadData_1 = require("./dataDownloader/downloadData");
 const parseDateWithError = (opt) => {
     const result = Date.parse(opt);
     if (isNaN(result)) {
@@ -49,28 +50,42 @@ if (!fs.existsSync(filepath)) {
     console.error(`Unable to find file at ${filepath}`);
 }
 else {
-    const enfProcessor = ENFProcessorFactory_1.ENFProcessorFactory.Build();
-    let progress = 0;
-    const progressBar = new cliProgress.SingleBar({
-        format: 'ENF Analysis |{bar}| {percentage}% || {log}',
-        barCompleteChar: '\u2588',
-        barIncompleteChar: '\u2591',
-        hideCursor: false
-    });
-    progressBar.start(100, 0, { log: "Start" });
-    enfProcessor.analysisProgressEvent.addHandler(p => {
-        if (p) {
-            progressBar.update(Math.round(p * 10000) / 100);
-        }
-    });
-    enfProcessor.logEvent.addHandler(l => {
-        if (l) {
-            progressBar.update({ log: l });
-        }
-    });
-    enfProcessor.performFullAnalysis(filepath, argv.grids, argv.start, argv.end).then((result) => {
-        progressBar.stop();
-        console.log('result', result);
-        process.exit();
+    console.log(`Running from: ${__filename}`);
+    (0, downloadData_1.verifyApplicationData)().then(() => {
+        ENFProcessorFactory_1.ENFProcessorFactory.Build().then((enfProcessor) => {
+            const progressBar = new cliProgress.SingleBar({
+                format: 'ENF Analysis |{bar}| {percentage}% || {log}',
+                barCompleteChar: '\u2588',
+                barIncompleteChar: '\u2591',
+                hideCursor: false
+            });
+            progressBar.start(100, 0, { log: "Start" });
+            enfProcessor.progressEvent.addHandler(p => {
+                if (p) {
+                    progressBar.update(Math.round(p * 10000) / 100);
+                }
+            });
+            enfProcessor.logEvent.addHandler(l => {
+                if (l) {
+                    progressBar.update({ log: l });
+                }
+            });
+            enfProcessor.performFullAnalysis(filepath, argv.grids, argv.start, argv.end).then((result) => {
+                progressBar.stop();
+                const noMatchReason = result.noMatchReason;
+                if (noMatchReason) {
+                    console.log(`Unable to find a match. NoMatchReason: ${noMatchReason}`);
+                }
+                else {
+                    if (result.ENFAnalysisResults) {
+                        const r = result.ENFAnalysisResults[0];
+                        console.log(`Match found.\nBest guess for when this audio was recorded:\n${r.time}.\nScore: ${r.normalisedScore}\nGrid: ${r.gridId}`);
+                    }
+                }
+                process.exit();
+            });
+        });
+    }).catch(p => {
+        console.error(p);
     });
 }

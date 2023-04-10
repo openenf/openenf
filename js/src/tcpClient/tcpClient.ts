@@ -1,14 +1,18 @@
 import net from "net";
-import fs from "fs";
-import {exec} from "child_process";
 import {LookupCommand} from "../lookup/lookupCommand";
+import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
+import {TcpLookupServer} from "./tcpLookupServer";
+import fs from "fs";
 
-export class TcpRequestClient {
+export class TcpClient {
     private readonly host: string;
     private readonly socket: net.Socket
     private readonly port: number;
     private readonly timeout: number = 2000;
     private connected: boolean = false;
+    private tcpServer:TcpLookupServer | undefined;
+    
+    public serverMessageEvent:ENFEventBase<string> = new ENFEventBase<string>();
 
     constructor(port: number, host: string) {
         this.port = port;
@@ -24,20 +28,20 @@ export class TcpRequestClient {
         return new Promise(async (resolve, reject) => {
             const {response, error} = await this.request(this.buildPingCommand());
             if (error || response !== "pong") {
-                //We can't ping the server, so we'll try to fire up the executable:
-                if (fs.existsSync(executablePath)) {
-                    const fireExecutableResponse = await this.fireExecutable(executablePath,port).catch(e => {
-                        if (!e) {
-                            reject(new Error(`Cannot reach server at port ${port} - no error defined`));
-                        }
-                        reject(new Error(`Cannot reach server at port ${port} because ${e.message || e.toString()}`))
-                    });
-                    if (fireExecutableResponse) {
+                this.tcpServer = new TcpLookupServer(port, executablePath);
+                this.tcpServer.serverMessageEvent.addHandler(s => {
+                    this.serverMessageEvent.trigger(s);
+                })
+                this.tcpServer.start().then(async () => {
+                    const {response, error} = await this.request(this.buildPingCommand());
+                    if (error || response !== "pong") {
+                        reject(new Error("Unable to ping spawned server"));
+                    } else {
                         resolve();
                     }
-                } else {
-                    reject(new Error(`No TCP Lookup executable found at ${executablePath}`))
-                }
+                }).catch(e => {
+                    reject(e);
+                });
             } else {
                 resolve();
             }
@@ -52,51 +56,24 @@ export class TcpRequestClient {
         return `${LookupCommand.loadGrid.toString()}${JSON.stringify(path)}`;
     }
 
-    async loadGrids(grids: { [p: string]: string }) {
+    async loadGrids(grids: { [p: string]: string }):Promise<void> {
         const optionsGridIds = Object.keys(grids);
         if (optionsGridIds.length) {
             for (const id of optionsGridIds) {
+                const filepath = grids[id];
+                if (!fs.existsSync(filepath)) {
+                    throw new Error(`Unable to find freqdb file at '${filepath}'`)
+                }
                 const loadGridCommand = this.buildLoadGridCommand(id, grids[id]);
-                const {error} = await this.request(loadGridCommand);
+                const {response, error} = await this.request(loadGridCommand);
                 if (error) {
                     throw error;
                 }
+                if (response !== "Ok") {
+                    throw new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
+                }
             }
         }
-    }
-
-    private buildCommandLine(executablePath: string, port: number): string {
-        let command = `"${executablePath}" --port ${port} --nogrids`;
-        return command;
-    }
-
-    fireExecutable = (executablePath: string, port:number): Promise<boolean> => {
-        const command = this.buildCommandLine(executablePath, port);
-        return new Promise((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`Error: ${error.message}`);
-                    reject(error)
-                    return;
-                }
-                if (stderr) {
-                    console.error(`stderr: ${stderr}`);
-                    reject(new Error(stderr))
-                    return;
-                }
-                if (stdout) {
-                    console.log('stdout', stdout);
-                }
-            })
-            setTimeout(async () => {
-                const {response, error} =await this.request(this.buildPingCommand());
-                if (error || response !== "pong") {
-                    reject(new Error('Timeout pinging server'));
-                } else {
-                    resolve(true);
-                }
-            }, 500)
-        })
     }
 
     request(message: string, onUpdate?: (buffer: Buffer) => void): Promise<{ response: string, responses: string[], error: Error | null }> {
@@ -135,5 +112,11 @@ export class TcpRequestClient {
             };
             socket.on('close', closeHandler);
         })
+    }
+
+    async stop():Promise<void> {
+        if (this.tcpServer) {
+            await this.tcpServer.stop();
+        }
     }
 }

@@ -5,4 +5,5 @@ export declare class TcpServerComponentOptions {
     grids: {
         [gridId: string]: string;
     };
+    stdOutHandler: ((m: string | undefined) => void) | undefined;
 }

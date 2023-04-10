@@ -22,6 +22,7 @@ describe("TcpServerRefineComponent", () => {
         ];
         const tcpServerComponentOptions = new tcpServerComponentOptions_1.TcpServerComponentOptions();
         tcpServerComponentOptions.executablePath = (0, testUtils_1.getTestExecutablePath)();
+        tcpServerComponentOptions.port = 50010;
         const dbPath = path_1.default.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath;
         const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpServerComponentOptions);

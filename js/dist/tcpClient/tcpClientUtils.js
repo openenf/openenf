@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDefaultExecutablePath = exports.toPascalCase = void 0;
 const path_1 = __importDefault(require("path"));
-const ENFDataDirectory_1 = require("../dataDownloader/ENFDataDirectory");
 const os_1 = __importDefault(require("os"));
 const toPascalCase = (key, value) => {
     if (value && typeof value === 'object') {
@@ -20,7 +19,7 @@ const toPascalCase = (key, value) => {
 };
 exports.toPascalCase = toPascalCase;
 const getDefaultExecutablePath = () => {
-    let executablePath = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "serverExecutable");
+    let executablePath = path_1.default.join(__filename, "../../../test", "serverExecutable");
     switch (os_1.default.platform()) {
         case "win32":
             executablePath = path_1.default.join(executablePath, "windows", "ENFLookupServer.exe");

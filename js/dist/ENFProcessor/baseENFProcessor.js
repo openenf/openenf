@@ -7,7 +7,7 @@ const fullAnalysisErrorHandler_1 = require("./fullAnalysisErrorHandler");
 const StageDurations_1 = require("../model/StageDurations");
 class BaseENFProcessor {
     constructor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent) {
-        this.analysisProgressEvent = new ENFEventBase_1.ENFEventBase();
+        this.progressEvent = new ENFEventBase_1.ENFEventBase();
         this.fullAnalysisCompleteEvent = new ENFEventBase_1.ENFEventBase();
         this.onPreScanProgressEvent = new ENFEventBase_1.ENFEventBase();
         this.onPreScanCompleteEvent = new ENFEventBase_1.ENFEventBase();
@@ -22,14 +22,14 @@ class BaseENFProcessor {
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent;
         this.onPreScanProgressEvent.addHandler(data => {
             if (data != undefined) {
-                this.analysisProgressEvent.trigger(data[1] / 3);
+                this.progressEvent.trigger(data[1] / 3);
             }
         });
         this.analyzeComponent = analyzeComponent;
         this.analyzeComponent.analyzeProgressEvent = this.onAnalyzeProgressEvent;
         this.onAnalyzeProgressEvent.addHandler(data => {
             if (data != undefined) {
-                this.analysisProgressEvent.trigger((1 / 3) + (data[1] / 3));
+                this.progressEvent.trigger((1 / 3) + (data[1] / 3));
             }
         });
         this.reduceComponent = reduceComponent;
@@ -37,7 +37,7 @@ class BaseENFProcessor {
         this.lookupComponent.lookupProgressEvent = this.lookupProgressEvent;
         this.lookupProgressEvent.addHandler(progress => {
             if (progress !== undefined) {
-                this.analysisProgressEvent.trigger((2 / 3) + (progress / 3));
+                this.progressEvent.trigger((2 / 3) + (progress / 3));
             }
         });
         this.refineComponent = refineComponent;
@@ -60,7 +60,6 @@ class BaseENFProcessor {
         if (date === undefined || date === null) {
             return 'unspecified';
         }
-        console.log('date', date);
         return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
             .toISOString()
             .split("T")[0];

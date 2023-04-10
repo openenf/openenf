@@ -18,7 +18,6 @@ const noMatchReason_1 = require("../model/noMatchReason");
  *   only analyze one harmonic but it's likely we'll get more accurate results if we analyze multiple harmonics and combine the results
  */
 const validatePreScanResult = (preScanResult, expectedFrequency) => {
-    const minimumRelativeStrength = 5;
     const fifties = [preScanResult.h50, preScanResult.h100, preScanResult.h200];
     const sixties = [preScanResult.h60, preScanResult.h120, preScanResult.h240];
     const fiftyStrength = (fifties[0] + fifties[1] + fifties[2]) / preScanResult.durationSamples;
@@ -27,9 +26,6 @@ const validatePreScanResult = (preScanResult, expectedFrequency) => {
         throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);
     }
     const relativeStrength = fiftyStrength / sixtyStrength > 1 ? fiftyStrength / sixtyStrength : sixtyStrength / fiftyStrength;
-    if (relativeStrength < minimumRelativeStrength) {
-        throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);
-    }
     if (fiftyStrength > sixtyStrength && expectedFrequency == 60) {
         throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.DominantFifty);
     }
@@ -39,14 +35,30 @@ const validatePreScanResult = (preScanResult, expectedFrequency) => {
     if (fiftyStrength > sixtyStrength) {
         const max = Math.max(...fifties);
         const index = fifties.indexOf(max);
-        const harmonic = ((index + 1) * (index + 1)) * 50;
-        return [harmonic];
+        switch (index) {
+            case 0:
+                return [50];
+            case 1:
+                return [100];
+            case 2:
+                return [200];
+            default:
+                throw new Error("Unknown harmonic.");
+        }
     }
     else {
         const max = Math.max(...sixties);
         const index = sixties.indexOf(max);
-        const harmonic = ((index + 1) * (index + 1)) * 60;
-        return [harmonic];
+        switch (index) {
+            case 0:
+                return [60];
+            case 1:
+                return [120];
+            case 2:
+                return [240];
+            default:
+                throw new Error("Unknown harmonic.");
+        }
     }
 };
 exports.validatePreScanResult = validatePreScanResult;

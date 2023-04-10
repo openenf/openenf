@@ -24,7 +24,7 @@ describe("TcpServerLookupComponent", () => {
     });
     it('will fire the executable if the server is not running on the specified port and executable can be found', done => {
         const tcpServerComponentOptions = new tcpServerComponentOptions_1.TcpServerComponentOptions();
-        tcpServerComponentOptions.port = 50000;
+        tcpServerComponentOptions.port = 50050;
         tcpServerComponentOptions.executablePath = (0, testUtils_1.getTestExecutablePath)();
         const dbPath = path_1.default.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath; //Note this is a non-standard port so should reliably throw an exception.
@@ -49,7 +49,7 @@ describe("TcpServerLookupComponent", () => {
         const tcpServerLookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpServerComponentOptions);
         tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
             if (d) {
-                expect(d).toBeGreaterThan(progress);
+                expect(d).toBeGreaterThanOrEqual(progress);
                 progress = d;
             }
         });

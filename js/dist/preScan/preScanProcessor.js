@@ -26,8 +26,10 @@ class PreScanProcessor {
             const update = {};
             this.harmonics.forEach(h => {
                 const harmonicStrength = goertzelRequestCache.analyze(h);
-                update['f' + h.toString()] = harmonicStrength;
-                this.harmonicStrengths[h] += harmonicStrength;
+                if (!isNaN(harmonicStrength)) {
+                    update['f' + h.toString()] = harmonicStrength;
+                    this.harmonicStrengths[h] += harmonicStrength;
+                }
             });
             this.samplesProcessed += window.length;
             update.endSamples = this.samplesProcessed;

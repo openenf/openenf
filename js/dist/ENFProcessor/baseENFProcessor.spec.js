@@ -308,7 +308,7 @@ describe('BaseAnalyzer', () => {
             mockLookupComponentFiresProgressFourTimes.lookupProgressEvent.trigger(1);
         });
         const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(mockPreScanComponentFiresProgressTwice, mockAnalyzeComponentFiresProgressThreeTimes, new mockReduceComponent_mock_1.MockReduceComponent(), mockLookupComponentFiresProgressFourTimes, new mockRefineComponent_mock_1.MockRefineComponent());
-        baseAnalyzer.analysisProgressEvent.addHandler(progress => {
+        baseAnalyzer.progressEvent.addHandler(progress => {
             eventCount++;
             switch (eventCount) {
                 case 1:

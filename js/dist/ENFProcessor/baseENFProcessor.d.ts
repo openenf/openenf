@@ -26,7 +26,7 @@ export declare class BaseENFProcessor implements ENFProcessor {
     closeOutENFAnalysis(enfAnalysis: ENFAnalysis): ENFAnalysis;
     private toIsoDate;
     performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?: 50 | 60): Promise<ENFAnalysis>;
-    analysisProgressEvent: ENFEventBase<number>;
+    progressEvent: ENFEventBase<number>;
     fullAnalysisCompleteEvent: ENFEventBase<ENFAnalysis>;
     preScan(resourceUri: string): Promise<PreScanResultLike>;
     onPreScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>;

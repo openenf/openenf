@@ -29,7 +29,7 @@ const audioContextPreScanComponent_1 = require("./audioContextPreScanComponent")
 describe('audioContextPreScanComponent', () => {
     it('can pre-scan local wav file at 50hz', async () => {
         //This is a saw wave with no added noise based on real-world frequency data from the Central European Grid:
-        const filepath = "test/testAudio/DE_2013-02-05T17:46:39_saw_9_D_secs_05amp_8Harmonics.wav";
+        const filepath = "test/testAudio/DE_2013-02-05T174639_saw_9_D_secs_05amp_8Harmonics.wav";
         const absPath = path.resolve(filepath);
         const goertzelContext = new GoertzelFilterCache_1.GoertzelFilterCache();
         const preScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelContext);
@@ -89,7 +89,7 @@ describe('audioContextPreScanComponent', () => {
     });
     it('fires progress event', async () => {
         //This is a saw wave with no added noise based on real-world frequency data from the Central European Grid:
-        const filepath = "test/testAudio/DE_2013-02-05T17:46:39_saw_9_D_secs_05amp_8Harmonics.wav";
+        const filepath = "test/testAudio/DE_2013-02-05T174639_saw_9_D_secs_05amp_8Harmonics.wav";
         const absPath = path.resolve(filepath);
         const goertzelContext = new GoertzelFilterCache_1.GoertzelFilterCache();
         const preScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelContext);

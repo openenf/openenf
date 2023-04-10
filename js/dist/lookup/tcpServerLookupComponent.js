@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TcpServerLookupComponent = void 0;
 const ENFEventBase_1 = require("../ENFProcessor/events/ENFEventBase");
 const tcpServerComponentOptions_1 = require("./tcpServerComponentOptions");
-const tcpRequestClient_1 = require("../tcpClient/tcpRequestClient");
+const tcpClient_1 = require("../tcpClient/tcpClient");
 const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
 const lookupCommand_1 = require("./lookupCommand");
 const lookupComponentUtils_1 = require("./lookupComponentUtils");
@@ -20,7 +20,10 @@ class TcpServerLookupComponent {
         this.implementationId = "TcpServerLookupComponent0.0.1";
         this.lookupProgressEvent = new ENFEventBase_1.ENFEventBase();
         this.options = tcpServerComponentOptions || new tcpServerComponentOptions_1.TcpServerComponentOptions();
-        this.client = new tcpRequestClient_1.TcpRequestClient(this.options.port, this.options.host);
+        this.client = new tcpClient_1.TcpClient(this.options.port, this.options.host);
+        if (tcpServerComponentOptions?.stdOutHandler) {
+            this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler);
+        }
     }
     buildLookupCommand(freqs, gridIds, startTime, endTime) {
         const request = {
@@ -57,6 +60,8 @@ class TcpServerLookupComponent {
         r.forEach((r1) => {
             r1.position = r1.position - position;
         });
+        await this.client.stop();
+        //this.lookupProgressEvent.trigger(1);
         return r;
     }
 }

@@ -32,7 +32,7 @@ export interface ENFProcessor {
      approximate progress of the entire analysis.
      @eventProperty
      */
-    readonly analysisProgressEvent: ENFEventBase<number>
+    readonly progressEvent: ENFEventBase<number>
 
     /**
      Fires logging information.

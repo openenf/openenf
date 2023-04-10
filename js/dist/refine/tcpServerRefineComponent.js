@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TcpServerRefineComponent = void 0;
 const tcpServerComponentOptions_1 = require("../lookup/tcpServerComponentOptions");
-const tcpRequestClient_1 = require("../tcpClient/tcpRequestClient");
+const tcpClient_1 = require("../tcpClient/tcpClient");
 const lookupCommand_1 = require("../lookup/lookupCommand");
 const refineComponentUtils_1 = require("./refineComponentUtils");
 const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
@@ -49,6 +49,7 @@ class TcpServerRefineComponent {
             };
             results.push(result);
         }
+        await this.client.stop();
         return results.sort((a, b) => a.score - b.score);
     }
     buildComprehensiveLookupCommand(freqs, gridId, range, around) {
@@ -63,7 +64,7 @@ class TcpServerRefineComponent {
     constructor(tcpServerComponentOptions) {
         this.implementationId = "TcpServerRefineComponentv0.0.1";
         this.options = tcpServerComponentOptions || new tcpServerComponentOptions_1.TcpServerComponentOptions();
-        this.client = new tcpRequestClient_1.TcpRequestClient(this.options.port, this.options.host);
+        this.client = new tcpClient_1.TcpClient(this.options.port, this.options.host);
     }
 }
 exports.TcpServerRefineComponent = TcpServerRefineComponent;
