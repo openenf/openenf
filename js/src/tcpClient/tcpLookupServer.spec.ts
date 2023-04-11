@@ -35,12 +35,41 @@ describe('tcpLookupServer', () => {
         })
     })
 
-    it('Fires server message event', (done) => {
+    it('Fires server message event', async () => {
         const port = 50004;
         const tcpLookupServer = new TcpLookupServer(port, getTestExecutablePath());
-        tcpLookupServer.serverMessageEvent.addHandler(s => {
-            done();
-        })
-        tcpLookupServer.start()
+        try {
+            let serverMessageReceived = false;
+            tcpLookupServer.serverMessageEvent.addHandler(async () => {
+                if (!serverMessageReceived) {
+                    serverMessageReceived = true;
+                    await tcpLookupServer.stop()
+                }
+            })
+            await tcpLookupServer.start()
+            expect(serverMessageReceived).toBe(true);
+        }
+        finally {
+            await tcpLookupServer.stop()
+        }
+    })
+
+    it('Fires server message event', async () => {
+        const port = 50004;
+        const tcpLookupServer = new TcpLookupServer(port, getTestExecutablePath());
+        try {
+            let serverMessageReceived = false;
+            tcpLookupServer.serverMessageEvent.addHandler(async () => {
+                if (!serverMessageReceived) {
+                    serverMessageReceived = true;
+                    await tcpLookupServer.stop()
+                }
+            })
+            await tcpLookupServer.start()
+            expect(serverMessageReceived).toBe(true);
+        }
+        finally {
+            await tcpLookupServer.stop()
+        }
     })
 })

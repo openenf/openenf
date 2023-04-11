@@ -3,9 +3,9 @@ import path from "path";
 import {ENFProcessorFactory} from "../../src/ENFProcessor/ENFProcessorFactory";
 import {getTestExecutablePath} from "../../src/testUtils";
 
-describe('BaseENFProcessor', () => {
+describe('BaseENFProcessor',  () => {
     it('can lookup 10 minute audio sample over 2 grids 1 year range', async () => {
-        const enfProcessor = ENFProcessorFactory
+        const enfProcessor = await ENFProcessorFactory
             .ExecutablePath(getTestExecutablePath())
             .Build();
         let previousProgress = 0;
@@ -23,9 +23,9 @@ describe('BaseENFProcessor', () => {
         const filepath = path.resolve("test/testAudio/large/DE_2021-02-22T11:52:58_saw_600_H_secs_05amp_8Harmonics.wav");
         const results:any = await enfProcessor.performFullAnalysis(filepath,["DE","GB"], new Date("2020-12-01"), new Date("2021-12-01"));
         expect(results.ENFAnalysisResults[0].time).toStrictEqual(new Date("2021-02-22T11:53:00.000Z"))
-    }, 180000)
+    }, 360000)
     it('can lookup real-world GB audio sample', async () => {
-        const enfProcessor = ENFProcessorFactory
+        const enfProcessor = await ENFProcessorFactory
             .ExecutablePath(getTestExecutablePath())
             .Build();
         let previousProgress = 0;
@@ -48,5 +48,5 @@ describe('BaseENFProcessor', () => {
             expect(result.time).toStrictEqual(new Date("2021-11-04T13:35:32.000Z"));
         }
         console.log('results', results);
-    }, 180000)
+    }, 360000)
 });

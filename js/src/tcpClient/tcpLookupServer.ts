@@ -51,12 +51,17 @@ export class TcpLookupServer {
     }
 
     stop():Promise<void> {
-        return new Promise(resolve => {
+        return new Promise(async resolve => {
             if (this.childProcess) {
                 this.childProcess.on('close', () => {
                     resolve();
                 })
-                this.childProcess?.kill()
+                if (this.childProcess.stdin) {
+                    this.childProcess.stdin.write('\n');
+                } else {
+                    console.warn('Unable to cleanly terminate TCP server. Killing process.')
+                    this.childProcess?.kill()
+                }
             } else {
                 resolve();
             }

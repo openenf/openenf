@@ -117,6 +117,8 @@ export class TcpClient {
     async stop():Promise<void> {
         if (this.tcpServer) {
             await this.tcpServer.stop();
+        } else {
+            console.warn('No attached TCP server');
         }
     }
 }

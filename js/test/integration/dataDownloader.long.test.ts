@@ -1,7 +1,6 @@
 import path from "path";
 import {getENFDataDirectory} from "../../src/dataDownloader/ENFDataDirectory";
 import fs from "fs";
-import {downloadData} from "../../src/dataDownloader/downloadData";
 import crypto from "crypto";
 
 describe('downloadData (long-running)', () => {

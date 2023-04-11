@@ -16,8 +16,21 @@ describe('goertzelReduceComponent',  () => {
         const analysisWindows:AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
         const goertzelReduceComponent = new GoertzelReduceComponent(16);
         const result = await goertzelReduceComponent.reduce(analysisWindows);
-        console.log('result', result);
-        console.log('result.length', result.length);
+        expect(result).toStrictEqual([
+                50.017, 50.033, 50.004,  50.01,  50.01,  50.01, 50.046,
+                50.024, 50.033, 50.008, 50.045, 50.033, 50.006, 50.027,
+                50.039, 50.013, 50.042, 50.018, 50.022, 50.034,     50,
+                50.05, 50.026, 49.997, 50.026, 50.032, 50.024, 50.029,
+                50.04, 50.031, 50.011, 50.026, 50.034, 50.022, 50.013,
+                50.026, 50.036, 50.028, 50.016, 50.026,  50.09, 50.029,
+                50.018, 50.021, 50.038, 50.047, 50.041, 50.044, 50.022,
+                50.048, 50.044, 50.034, 50.003, 50.017,  50.04, 50.037,
+                50.061, 50.057, 50.044, 50.072, 50.059,  50.07, 50.072,
+                50.046, 50.055, 50.051, 50.054, 50.037, 50.058,  50.05,
+                50.053,  50.05,  50.04, 50.044,  50.05, 50.038, 50.057,
+                50.032, 50.034, 50.052, 50.032
+            ]
+        );
     })
     it('reduces an array of AnalysisWindowResults with GoertzelHarmonicResult data to a stream of frequencies (and possibly nulls)', async () => {
         const goertzelReduceComponent = new GoertzelReduceComponent(1);

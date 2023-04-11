@@ -36,10 +36,10 @@ class Program
             {
                 Thread.Sleep(1000);
                 if (!Console.IsInputRedirected && Console.KeyAvailable)
-                {
+                //{
                     Console.ReadKey();
                     keepRunning = false;
-                }
+                //}
             }
         }
         catch (Exception e)

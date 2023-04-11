@@ -13,7 +13,7 @@ describe("TcpServerLookupComponent", () => {
         tcpServerComponentOptions.stdOutHandler = (m?:string) => {
             console.log('m',m);
         }
-        tcpServerComponentOptions.executablePath = getTestExecutablePath();
+        tcpServerComponentOptions.executablePath = getDefaultExecutablePath();
         const dbPath = path.resolve(getENFDataDirectory(),"GB.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath;
         let progress = 0;

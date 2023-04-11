@@ -57,7 +57,6 @@ export class TcpServerRefineComponent implements RefineComponent {
             }
             results.push(result);
         }
-        await this.client.stop();
         return results.sort((a,b) => a.score - b.score);
     }
 
@@ -74,5 +73,13 @@ export class TcpServerRefineComponent implements RefineComponent {
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
         this.client = new TcpClient(this.options.port, this.options.host);
+    }
+
+    async stopServer() {
+        if (this.client) {
+            await this.client.stop()
+        } else {
+            console.warn('No attached TCP client')
+        }
     }
 }

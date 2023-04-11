@@ -66,9 +66,15 @@ export class TcpServerLookupComponent implements LookupComponent {
         r.forEach((r1:any) => {
             r1.position = r1.position - position;
         })
-        await this.client.stop();
-        //this.lookupProgressEvent.trigger(1);
         return r;
+    }
+
+    async stopServer() {
+        if (this.client) {
+            await this.client.stop()
+        } else {
+            console.warn('No attached TCP client')
+        }
     }
 }
 

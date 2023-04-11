@@ -39,5 +39,6 @@ describe("TcpServerRefineComponent", () => {
                 time: new Date("2014-01-15T08:13:17.000Z"),
             }
         ])
+        await refineComponent.stopServer();
     })
 })
