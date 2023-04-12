@@ -171,4 +171,9 @@ export class BaseENFProcessor implements ENFProcessor {
         return result;
     }
     onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]> = new ENFEventBase<ENFAnalysisResult[]>()
+
+    async dispose() {
+        await this.lookupComponent.dispose();
+        await this.refineComponent.dispose();
+    }
 }

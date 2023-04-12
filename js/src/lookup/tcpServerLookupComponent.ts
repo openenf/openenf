@@ -6,8 +6,13 @@ import {TcpClient} from "../tcpClient/tcpClient";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 import {LookupCommand} from "./lookupCommand";
 import {getStrongestSubsequence} from "./lookupComponentUtils";
+import {NoMatch} from "../ENFProcessor/noMatch";
+import {NoMatchReason} from "../model/noMatchReason";
 
 export class TcpServerLookupComponent implements LookupComponent {
+    async dispose(): Promise<void> {
+        await this.stopServer();
+    }
     private options: TcpServerComponentOptions;
     private client: TcpClient;
 
@@ -61,6 +66,9 @@ export class TcpServerLookupComponent implements LookupComponent {
                 this.lookupProgressEvent.trigger(progress);
             }
         });
+        if (responses.length === 0) {
+            throw new NoMatch(NoMatchReason.NoResultsOnLookup);
+        }
         const response = responses[responses.length - 1]
         const r = JSON.parse(response, toPascalCase);
         r.forEach((r1:any) => {

@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.LookupResult = void 0;
 /**
  * The result of comparing an array of frequencies to a point in time on a grid. A LookupResult array is the result of the
  * lookup stage. This array as past to the final refine stage of analysis to produce an {@link ENFAnalysisResult}
  */
-class LookupResult {
+export class LookupResult {
     constructor() {
         /**
          * The position in the grid data stream of this result. 0 denotes a result at the beginning of the stream so this value
@@ -27,4 +24,3 @@ class LookupResult {
         this.gridId = "";
     }
 }
-exports.LookupResult = LookupResult;

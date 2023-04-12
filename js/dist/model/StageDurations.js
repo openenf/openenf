@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StageDurations = void 0;
-class StageDurations {
+export class StageDurations {
     constructor(startTime, completionTimes) {
         if (completionTimes.preScan) {
             this.preScan = completionTimes.preScan?.getTime() - startTime.getTime();
@@ -20,4 +17,3 @@ class StageDurations {
         }
     }
 }
-exports.StageDurations = StageDurations;

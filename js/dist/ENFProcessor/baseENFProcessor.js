@@ -1,23 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BaseENFProcessor = void 0;
-const ENFAnalysis_1 = require("../model/ENFAnalysis");
-const ENFEventBase_1 = require("./events/ENFEventBase");
-const fullAnalysisErrorHandler_1 = require("./fullAnalysisErrorHandler");
-const StageDurations_1 = require("../model/StageDurations");
-class BaseENFProcessor {
+import { ENFAnalysis } from "../model/ENFAnalysis";
+import { ENFEventBase } from "./events/ENFEventBase";
+import { FullAnalysisErrorHandler } from "./fullAnalysisErrorHandler";
+import { StageDurations } from "../model/StageDurations";
+export class BaseENFProcessor {
     constructor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent) {
-        this.progressEvent = new ENFEventBase_1.ENFEventBase();
-        this.fullAnalysisCompleteEvent = new ENFEventBase_1.ENFEventBase();
-        this.onPreScanProgressEvent = new ENFEventBase_1.ENFEventBase();
-        this.onPreScanCompleteEvent = new ENFEventBase_1.ENFEventBase();
-        this.onAnalyzeProgressEvent = new ENFEventBase_1.ENFEventBase();
-        this.onAnalyzeCompleteEvent = new ENFEventBase_1.ENFEventBase();
-        this.onReduceCompleteEvent = new ENFEventBase_1.ENFEventBase();
-        this.lookupProgressEvent = new ENFEventBase_1.ENFEventBase();
-        this.logEvent = new ENFEventBase_1.ENFEventBase();
-        this.onLookupCompleteEvent = new ENFEventBase_1.ENFEventBase();
-        this.onRefineCompleteEvent = new ENFEventBase_1.ENFEventBase();
+        this.progressEvent = new ENFEventBase();
+        this.fullAnalysisCompleteEvent = new ENFEventBase();
+        this.onPreScanProgressEvent = new ENFEventBase();
+        this.onPreScanCompleteEvent = new ENFEventBase();
+        this.onAnalyzeProgressEvent = new ENFEventBase();
+        this.onAnalyzeCompleteEvent = new ENFEventBase();
+        this.onReduceCompleteEvent = new ENFEventBase();
+        this.lookupProgressEvent = new ENFEventBase();
+        this.logEvent = new ENFEventBase();
+        this.onLookupCompleteEvent = new ENFEventBase();
+        this.onRefineCompleteEvent = new ENFEventBase();
         this.preScanComponent = preScanComponent;
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent;
         this.onPreScanProgressEvent.addHandler(data => {
@@ -50,7 +47,7 @@ class BaseENFProcessor {
         enfAnalysis.lookupImplementationId = this.lookupComponent.implementationId;
         enfAnalysis.refineImplementationId = this.refineComponent.implementationId;
         this.fullAnalysisCompleteEvent.trigger(enfAnalysis);
-        enfAnalysis.durations = new StageDurations_1.StageDurations(enfAnalysis.analysisStartTime, enfAnalysis.completionTimes);
+        enfAnalysis.durations = new StageDurations(enfAnalysis.analysisStartTime, enfAnalysis.completionTimes);
         if (enfAnalysis.noMatchReason) {
             this.logEvent.trigger(`Ending ENF analysis early because: ${enfAnalysis.noMatchReason}`);
         }
@@ -66,11 +63,11 @@ class BaseENFProcessor {
     }
     async performFullAnalysis(resourceUri, gridIds, from, to, expectedFrequency) {
         this.logEvent.trigger(`Starting analysis for resource: ${resourceUri}, grids: [${gridIds.join(',')}], from ${this.toIsoDate(from)} to ${this.toIsoDate(to)}`);
-        const enfAnalysis = new ENFAnalysis_1.ENFAnalysis(resourceUri);
+        const enfAnalysis = new ENFAnalysis(resourceUri);
         enfAnalysis.start = from || null;
         enfAnalysis.end = to || null;
         enfAnalysis.gridIds = gridIds;
-        const errorHandler = new fullAnalysisErrorHandler_1.FullAnalysisErrorHandler(enfAnalysis);
+        const errorHandler = new FullAnalysisErrorHandler(enfAnalysis);
         this.logEvent.trigger(`Pre-scanning resource...`);
         enfAnalysis.preScanResult = await this.preScan(resourceUri);
         this.logEvent.trigger(`Pre-scan complete.`);
@@ -134,4 +131,3 @@ class BaseENFProcessor {
         return result;
     }
 }
-exports.BaseENFProcessor = BaseENFProcessor;

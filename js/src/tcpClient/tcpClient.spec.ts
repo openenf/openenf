@@ -4,25 +4,23 @@ import net from "net";
 import {LookupCommand} from "../lookup/lookupCommand";
 import path from "path";
 
-const sleep = async (ms:number):Promise<void> => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve();
-        },ms)
-    })
-}
-
 describe('tcpClient', () => {
     it('Can load grids', async () => {
         const port = 50020;
         const tcpClient = new TcpClient(port,"127.0.0.1");
         const executablePath = getTestExecutablePath();
-        await tcpClient.activateServer(executablePath, port);
-        const grids = {
-            "GB":path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb")
+        let loadedGrids = false;
+        try {
+            await tcpClient.activateServer(executablePath, port);
+            const grids = {
+                "GB": path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb")
+            }
+            await tcpClient.loadGrids(grids);
+            loadedGrids = true;
+        } finally {
+            await tcpClient.stop();
         }
-        await tcpClient.loadGrids(grids);
-        //Nothing to assert here. If the method completes ok we assume the grid is loaded
+        expect(loadedGrids).toBe(true);
     })
     it('Can spawn a server', (done) => {
         const port = 50001;
@@ -60,6 +58,7 @@ describe('tcpClient', () => {
         let serverMessageEventFired = false;
         try {
             tcpClient.serverMessageEvent.addHandler(s => {
+                console.log('s', s);
                 serverMessageEventFired = true;
             })
             await tcpClient.activateServer(getTestExecutablePath(), port);

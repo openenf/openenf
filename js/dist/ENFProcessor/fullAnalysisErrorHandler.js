@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FullAnalysisErrorHandler = void 0;
-const noMatch_1 = require("./noMatch");
-class FullAnalysisErrorHandler {
+import { NoMatch } from "./noMatch";
+export class FullAnalysisErrorHandler {
     constructor(analysis) {
         this.analysis = analysis;
     }
     handleError(e) {
-        if (e instanceof noMatch_1.NoMatch) {
+        if (e instanceof NoMatch) {
             this.analysis.noMatchReason = e.noMatchReason;
         }
         else {
@@ -16,4 +13,3 @@ class FullAnalysisErrorHandler {
         }
     }
 }
-exports.FullAnalysisErrorHandler = FullAnalysisErrorHandler;

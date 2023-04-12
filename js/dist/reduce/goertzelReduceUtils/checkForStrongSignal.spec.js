@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const checkForStrongSignal_1 = require("./checkForStrongSignal");
+import { checkForStrongSignal } from "./checkForStrongSignal";
 describe('checkForStrongSignal', () => {
     it('returns true for a series of 9 non-null frequencies', () => {
         const frequencies = [
@@ -8,7 +6,7 @@ describe('checkForStrongSignal', () => {
             59.99, 60, 60.01,
             60.02, 60.03, 60.04
         ];
-        const result = (0, checkForStrongSignal_1.checkForStrongSignal)(frequencies);
+        const result = checkForStrongSignal(frequencies);
         expect(result).toBe(true);
     });
     it('returns true for a series two sets of 4 non-null frequencies separated by null', () => {
@@ -17,7 +15,7 @@ describe('checkForStrongSignal', () => {
             59.99, null, 60.01,
             60.02, 60.03, 60.04
         ];
-        const result = (0, checkForStrongSignal_1.checkForStrongSignal)(frequencies);
+        const result = checkForStrongSignal(frequencies);
         expect(result).toBe(false);
     });
 });

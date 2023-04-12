@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GoertzelFilterCache = void 0;
-const GoertzelFilterStore_1 = require("./GoertzelFilterStore");
+import { GoertzelFilterStore } from "./GoertzelFilterStore";
 /**
  * A {@link GoertzelFilter} is created for a given sample rate and chunk size. The {@GoertzelFilterCache}
  * caches a set of {@link GoertzelFilterStore}s, one for each sample rate and chunk size.
  */
-class GoertzelFilterCache {
+export class GoertzelFilterCache {
     constructor() {
         this.goertzelStores = {};
     }
@@ -21,8 +18,7 @@ class GoertzelFilterCache {
         if (this.goertzelStores[key]) {
             return this.goertzelStores[key];
         }
-        this.goertzelStores[key] = new GoertzelFilterStore_1.GoertzelFilterStore(sampleRate, chunkSize);
+        this.goertzelStores[key] = new GoertzelFilterStore(sampleRate, chunkSize);
         return this.goertzelStores[key];
     }
 }
-exports.GoertzelFilterCache = GoertzelFilterCache;

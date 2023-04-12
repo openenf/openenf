@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TcpServerLookupComponent = void 0;
-const ENFEventBase_1 = require("../ENFProcessor/events/ENFEventBase");
-const tcpServerComponentOptions_1 = require("./tcpServerComponentOptions");
-const tcpClient_1 = require("../tcpClient/tcpClient");
-const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
-const lookupCommand_1 = require("./lookupCommand");
-const lookupComponentUtils_1 = require("./lookupComponentUtils");
-class TcpServerLookupComponent {
+import { ENFEventBase } from "../ENFProcessor/events/ENFEventBase";
+import { TcpServerComponentOptions } from "./tcpServerComponentOptions";
+import { TcpClient } from "../tcpClient/tcpClient";
+import { toPascalCase } from "../tcpClient/tcpClientUtils";
+import { LookupCommand } from "./lookupCommand";
+import { getStrongestSubsequence } from "./lookupComponentUtils";
+export class TcpServerLookupComponent {
     constructor(tcpServerComponentOptions) {
         /**
          * The contiguousSearchLimit is the longest sequence of frequencies that can be searched in a single pass.
@@ -18,9 +15,9 @@ class TcpServerLookupComponent {
          */
         this.contiguousSearchLimit = 10000;
         this.implementationId = "TcpServerLookupComponent0.0.1";
-        this.lookupProgressEvent = new ENFEventBase_1.ENFEventBase();
-        this.options = tcpServerComponentOptions || new tcpServerComponentOptions_1.TcpServerComponentOptions();
-        this.client = new tcpClient_1.TcpClient(this.options.port, this.options.host);
+        this.lookupProgressEvent = new ENFEventBase();
+        this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
+        this.client = new TcpClient(this.options.port, this.options.host);
         if (tcpServerComponentOptions?.stdOutHandler) {
             this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler);
         }
@@ -32,7 +29,7 @@ class TcpServerLookupComponent {
             startTime,
             endTime
         };
-        return `${lookupCommand_1.LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
+        return `${LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
     }
     async lookup(freqs, gridIds, from, to) {
         await this.client.activateServer(this.options.executablePath, this.options.port);
@@ -46,7 +43,7 @@ class TcpServerLookupComponent {
         else {
             //Otherwise we need to
             // 1: find the longest non-null section:
-            ({ position, sequence } = (0, lookupComponentUtils_1.getStrongestSubsequence)(freqs, this.contiguousSearchLimit));
+            ({ position, sequence } = getStrongestSubsequence(freqs, this.contiguousSearchLimit));
         }
         const lookupCommand = this.buildLookupCommand(sequence, gridIds, from, to);
         const { responses } = await this.client.request(lookupCommand, (buffer) => {
@@ -56,13 +53,18 @@ class TcpServerLookupComponent {
             }
         });
         const response = responses[responses.length - 1];
-        const r = JSON.parse(response, tcpClientUtils_1.toPascalCase);
+        const r = JSON.parse(response, toPascalCase);
         r.forEach((r1) => {
             r1.position = r1.position - position;
         });
-        await this.client.stop();
-        //this.lookupProgressEvent.trigger(1);
         return r;
     }
+    async stopServer() {
+        if (this.client) {
+            await this.client.stop();
+        }
+        else {
+            console.warn('No attached TCP client');
+        }
+    }
 }
-exports.TcpServerLookupComponent = TcpServerLookupComponent;

@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NoMatchReason = void 0;
 /**
  * Reasons why an analysis fails to find a timestamp
  */
-var NoMatchReason;
+export var NoMatchReason;
 (function (NoMatchReason) {
     /**
      * The sample rate or number of channels cannot be determined from the audio resource.
@@ -29,4 +26,4 @@ var NoMatchReason;
      * caused by audio where a lot of non-mains noise is present.
      */
     NoMatchReason["NoResultsOnLookup"] = "NoResultsOnLookup";
-})(NoMatchReason = exports.NoMatchReason || (exports.NoMatchReason = {}));
+})(NoMatchReason || (NoMatchReason = {}));

@@ -183,4 +183,6 @@ export interface ENFProcessor {
      @eventProperty
      */
     readonly onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]>
+
+    dispose(): Promise<void>;
 }

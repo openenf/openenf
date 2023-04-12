@@ -18,7 +18,7 @@ describe("BaseENFProcessor", () => {
     const reduceComponent = new GoertzelReduceComponent(overlapFactor);
 
     const tcpServerComponentOptions = new TcpServerComponentOptions();
-    tcpServerComponentOptions.port = 50000;
+    tcpServerComponentOptions.port = 50020;
     tcpServerComponentOptions.executablePath = getTestExecutablePath();
     const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
     tcpServerComponentOptions.grids["GB"] = dbPath;
@@ -30,7 +30,13 @@ describe("BaseENFProcessor", () => {
 
     it("Can perform lookup for real-world data on truncated Jan 2014 GB grid data", async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
-        const result = await baseENFProcessor.performFullAnalysis(filepath, ["GB"]);
+        let result:any;
+        try {
+            result = await baseENFProcessor.performFullAnalysis(filepath, ["GB"]);
+        }
+        finally {
+            await baseENFProcessor.dispose();
+        }
         expect(result.analysisEndTime?.getTime()).toBeGreaterThan(result.analysisStartTime.getTime())
         expect(result.error).toBeNull();
         expect(result.noMatchReason).toBeNull();

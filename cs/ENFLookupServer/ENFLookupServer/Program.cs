@@ -35,9 +35,9 @@ class Program
             while (keepRunning)
             {
                 Thread.Sleep(1000);
-                if (!Console.IsInputRedirected && Console.KeyAvailable)
+                //if (!Console.IsInputRedirected && Console.KeyAvailable)
                 //{
-                    Console.ReadKey();
+                    Console.Read();
                     keepRunning = false;
                 //}
             }

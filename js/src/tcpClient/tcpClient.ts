@@ -70,7 +70,7 @@ export class TcpClient {
                     throw error;
                 }
                 if (response !== "Ok") {
-                    throw new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
+                    //throw new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
                 }
             }
         }

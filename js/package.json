@@ -12,7 +12,8 @@
 		"node": ">=12"
 	},
 	"scripts": {
-		"testWithoutBuild": "jest --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long",
+		"testWithoutBuild": "jest --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long --testPathIgnorePatterns puppeteer",
+		"chromeEngineTest": "jest --testMatch \"**/?(*.)+(puppeteer\\.spec|puppeteer\\.test).[jt]s?(x)\" --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long --config jest.browser.config.js",
 		"buildExecutable": "dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/macos --no-incremental --runtime osx-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/linux --no-incremental --runtime linux-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/windows --no-incremental --runtime win-x64 --self-contained",
 		"test": "npm run buildExecutable && npm run testWithoutBuild",
 		"longRunningTest": "node --max-old-space-size=32768 --experimental-wasm-eh node_modules/jest/bin/jest.js --forceExit --testPathIgnorePatterns /dist --testMatch \"**/?(*.)+(long\\.spec|long\\.test).[jt]s?(x)\" --silent"

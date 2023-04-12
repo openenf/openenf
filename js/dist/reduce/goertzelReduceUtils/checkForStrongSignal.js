@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkForStrongSignal = void 0;
-const checkForStrongSignal = (downSampledStream) => {
+export const checkForStrongSignal = (downSampledStream) => {
     const numberOfNonNullSamplesRequired = 5;
     let nonNullCount = 0;
     for (let i = 0; i < (downSampledStream.length); i++) {
@@ -17,4 +14,3 @@ const checkForStrongSignal = (downSampledStream) => {
     }
     return false;
 };
-exports.checkForStrongSignal = checkForStrongSignal;

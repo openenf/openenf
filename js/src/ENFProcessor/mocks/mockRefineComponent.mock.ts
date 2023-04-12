@@ -3,6 +3,9 @@ import {LookupResult} from "../../model/lookupResult";
 import {RefineComponent} from "../../refine/refineComponent";
 
 export class MockRefineComponent implements RefineComponent {
+    dispose(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
     readonly implementationId: string = "MockRefineComponent";
 
     private readonly onRefine: any;

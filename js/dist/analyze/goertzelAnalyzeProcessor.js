@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GoertzelAnalyzeProcessor = void 0;
-const windowing_1 = require("../windowing/windowing");
-const bufferedAudioProcessor_1 = require("../bufferedAudioProcessor/bufferedAudioProcessor");
-const GoertzelAnalyze_1 = require("../goertzel/GoertzelAnalyze");
-class GoertzelAnalyzeProcessor {
+import { hann } from "../windowing/windowing";
+import { BufferedAudioProcessor } from "../bufferedAudioProcessor/bufferedAudioProcessor";
+import { getDataForWindow } from "../goertzel/GoertzelAnalyze";
+export class GoertzelAnalyzeProcessor {
     bufferHandler(window) {
-        const windowedSamples = (0, windowing_1.hann)(window, 0);
+        const windowedSamples = hann(window, 0);
         const sampleRate = this.context.sampleRate;
         const windowSize = this.context.windowSize;
         const requestCache = this.context.createRequestCache(windowedSamples);
@@ -20,7 +17,7 @@ class GoertzelAnalyzeProcessor {
             data: data
         };
         this.harmonics.forEach(h => {
-            const result = (0, GoertzelAnalyze_1.getDataForWindow)(h, requestCache);
+            const result = getDataForWindow(h, requestCache);
             result.target = h;
             windowResult.data.push(result);
         });
@@ -37,7 +34,7 @@ class GoertzelAnalyzeProcessor {
         this.totalSamples = totalSamples;
         this.context = context;
         this.oFactor = oFactor;
-        this.bufferedProcessor = new bufferedAudioProcessor_1.BufferedAudioProcessor(this.context.windowSize, window => this.bufferHandler(window), oFactor);
+        this.bufferedProcessor = new BufferedAudioProcessor(this.context.windowSize, window => this.bufferHandler(window), oFactor);
         this.harmonics = [harmonic];
         this.analyzeProgressEvent = analyzeProgressEvent;
     }
@@ -48,4 +45,3 @@ class GoertzelAnalyzeProcessor {
         return this.results;
     }
 }
-exports.GoertzelAnalyzeProcessor = GoertzelAnalyzeProcessor;

@@ -1,24 +1,18 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ENFProcessorFactory = void 0;
-const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
-const audioContextPreScanComponent_1 = require("../preScan/audioContextPreScanComponent");
-const audioContextAnalyzeComponent_1 = require("../analyze/audioContextAnalyzeComponent");
-const goertzelReduceComponent_1 = require("../reduce/goertzelReduceComponent");
-const tcpServerComponentOptions_1 = require("../lookup/tcpServerComponentOptions");
-const tcpServerLookupComponent_1 = require("../lookup/tcpServerLookupComponent");
-const tcpServerRefineComponent_1 = require("../refine/tcpServerRefineComponent");
-const baseENFProcessor_1 = require("./baseENFProcessor");
-const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
-const path_1 = __importDefault(require("path"));
-const ENFDataDirectory_1 = require("../dataDownloader/ENFDataDirectory");
-const tcpLookupServer_1 = require("../tcpClient/tcpLookupServer");
-class ENFProcessorFactory {
+import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
+import { AudioContextPreScanComponent } from "../preScan/audioContextPreScanComponent";
+import { AudioContextAnalyzeComponent } from "../analyze/audioContextAnalyzeComponent";
+import { GoertzelReduceComponent } from "../reduce/goertzelReduceComponent";
+import { TcpServerComponentOptions } from "../lookup/tcpServerComponentOptions";
+import { TcpServerLookupComponent } from "../lookup/tcpServerLookupComponent";
+import { TcpServerRefineComponent } from "../refine/tcpServerRefineComponent";
+import { BaseENFProcessor } from "./baseENFProcessor";
+import { getDefaultExecutablePath } from "../tcpClient/tcpClientUtils";
+import path from "path";
+import { getENFDataDirectory } from "../dataDownloader/ENFDataDirectory";
+import { TcpLookupServer } from "../tcpClient/tcpLookupServer";
+export class ENFProcessorFactory {
     constructor() {
-        this.executablePath = (0, tcpClientUtils_1.getDefaultExecutablePath)();
+        this.executablePath = getDefaultExecutablePath();
         this.tcpPort = 49170;
     }
     static ExecutablePath(path) {
@@ -36,22 +30,22 @@ class ENFProcessorFactory {
     }
     async Build() {
         const overlapFactor = 16;
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const preScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
-        const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
-        const reduceComponent = new goertzelReduceComponent_1.GoertzelReduceComponent(overlapFactor);
-        const tcpServerComponentOptions = new tcpServerComponentOptions_1.TcpServerComponentOptions();
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
+        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
+        const reduceComponent = new GoertzelReduceComponent(overlapFactor);
+        const tcpServerComponentOptions = new TcpServerComponentOptions();
         tcpServerComponentOptions.executablePath = this.executablePath;
-        tcpServerComponentOptions.grids["GB"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "GB.freqdb");
-        tcpServerComponentOptions.grids["DE"] = path_1.default.join((0, ENFDataDirectory_1.getENFDataDirectory)(), "DE.freqdb");
+        tcpServerComponentOptions.grids["GB"] = path.join(getENFDataDirectory(), "GB.freqdb");
+        tcpServerComponentOptions.grids["DE"] = path.join(getENFDataDirectory(), "DE.freqdb");
         tcpServerComponentOptions.port = this.tcpPort;
-        const tcpServer = new tcpLookupServer_1.TcpLookupServer(tcpServerComponentOptions.port, tcpServerComponentOptions.executablePath);
+        const tcpServer = new TcpLookupServer(tcpServerComponentOptions.port, tcpServerComponentOptions.executablePath);
         await tcpServer.start().catch(e => {
             console.error(e);
         });
-        const lookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpServerComponentOptions);
-        const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpServerComponentOptions);
-        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
+        const lookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
+        const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
+        const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
         baseENFProcessor.fullAnalysisCompleteEvent.addHandler(async () => {
             await tcpServer.stop();
         });
@@ -62,4 +56,3 @@ class ENFProcessorFactory {
         return this;
     }
 }
-exports.ENFProcessorFactory = ENFProcessorFactory;

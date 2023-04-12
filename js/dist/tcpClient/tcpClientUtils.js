@@ -1,12 +1,6 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDefaultExecutablePath = exports.toPascalCase = void 0;
-const path_1 = __importDefault(require("path"));
-const os_1 = __importDefault(require("os"));
-const toPascalCase = (key, value) => {
+import path from "path";
+import os from "os";
+export const toPascalCase = (key, value) => {
     if (value && typeof value === 'object') {
         for (var k in value) {
             if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
@@ -17,19 +11,17 @@ const toPascalCase = (key, value) => {
     }
     return value;
 };
-exports.toPascalCase = toPascalCase;
-const getDefaultExecutablePath = () => {
-    let executablePath = path_1.default.join(__filename, "../../../test", "serverExecutable");
-    switch (os_1.default.platform()) {
+export const getDefaultExecutablePath = () => {
+    let executablePath = path.join(__filename, "../../../test", "serverExecutable");
+    switch (os.platform()) {
         case "win32":
-            executablePath = path_1.default.join(executablePath, "windows", "ENFLookupServer.exe");
+            executablePath = path.join(executablePath, "windows", "ENFLookupServer.exe");
             break;
         case "darwin":
-            executablePath = path_1.default.join(executablePath, "macos", "ENFLookupServer");
+            executablePath = path.join(executablePath, "macos", "ENFLookupServer");
             break;
         default:
-            executablePath = path_1.default.join(executablePath, "linux", "ENFLookupServer");
+            executablePath = path.join(executablePath, "linux", "ENFLookupServer");
     }
-    return path_1.default.resolve(executablePath);
+    return path.resolve(executablePath);
 };
-exports.getDefaultExecutablePath = getDefaultExecutablePath;

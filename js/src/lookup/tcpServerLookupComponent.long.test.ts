@@ -25,8 +25,14 @@ describe("TcpServerLookupComponent", () => {
                 progress = d;
             }
         })
-        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
-        const r = response[0];
+        let r:any;
+        try {
+            const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
+            r = response[0];
+        }
+        finally {
+            await tcpServerLookupComponent.stopServer();
+        }
         expect(r).toStrictEqual({ gridId: 'GB', position: 218063344, score: 0 });
         expect(progress).toBeGreaterThanOrEqual(1);
     }, 3000000)

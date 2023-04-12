@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDataForWindow = void 0;
 const detectPeakAround = (goertzelRequestCache, target) => {
     const min = target - 2;
     const max = target + 2;
@@ -47,10 +44,9 @@ const detectDeviationAround = (goertzelRequestCache, peak) => {
  * @param freq The target frequency to analyse, e.g. 50Hz, 120Hz, etc. This function will return the peak frequency within +-0.5HZ of the target
  * @param requestCache The frequency request cache for the audio window you want to analyse
  */
-const getDataForWindow = (freq, requestCache) => {
+export const getDataForWindow = (freq, requestCache) => {
     const { amp, hz } = detectPeakAround(requestCache, freq);
     const deviation = detectDeviationAround(requestCache, hz);
     const confidence = deviation / amp;
     return { amp, hz, standardDev: deviation, confidence, target: freq };
 };
-exports.getDataForWindow = getDataForWindow;

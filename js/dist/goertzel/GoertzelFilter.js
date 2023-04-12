@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GoertzelFilter = void 0;
 /**
  * Retrieves the relative strength of a specified frequency for a given sample window. Each {@link GoertzelFilter} is created for a specific
  * frequency.
  * This code is adapted from: {@link https://github.com/notthetup/goertzel-filter}.
  * The Goertzel Algorithm is general is described at: {@link https://en.wikipedia.org/wiki/Goertzel_algorithm}
  */
-class GoertzelFilter {
+export class GoertzelFilter {
     constructor() {
         this.targetFrequency = 0;
         const heap = new ArrayBuffer(524288);
@@ -26,7 +23,6 @@ class GoertzelFilter {
         return this.targetFrequency;
     }
 }
-exports.GoertzelFilter = GoertzelFilter;
 function GoertzelFilterASM(heap) {
     const cos = Math.cos;
     const PI = Math.PI;
@@ -59,3 +55,4 @@ function GoertzelFilterASM(heap) {
         run: run
     };
 }
+window.GoertzelFilter = GoertzelFilter;

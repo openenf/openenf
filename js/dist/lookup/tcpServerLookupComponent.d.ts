@@ -18,4 +18,5 @@ export declare class TcpServerLookupComponent implements LookupComponent {
     lookupProgressEvent: ENFEventBase<number>;
     private buildLookupCommand;
     lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]>;
+    stopServer(): Promise<void>;
 }

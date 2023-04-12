@@ -1,14 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
-const path_1 = __importDefault(require("path"));
-const audioContextAnalyzeComponent_1 = require("./audioContextAnalyzeComponent");
+import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
+import path from "path";
+import { AudioContextAnalyzeComponent } from "./audioContextAnalyzeComponent";
 describe('audioContextAnalyzeComponent', () => {
     it('reports progress correctly for large file', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/DE_2021-12-30T040946_saw_3600_D_secs_05amp_8Harmonics.wav");
+        const filepath = path.resolve("test/testAudio/large/DE_2021-12-30T040946_saw_3600_D_secs_05amp_8Harmonics.wav");
         const preScanResult = {
             duration: 3599,
             durationSamples: 158715900,
@@ -21,8 +16,8 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         };
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 2);
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 2);
         let prevProgress = 0;
         let preScanProgressEventCalled = false;
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event) => {
@@ -36,7 +31,7 @@ describe('audioContextAnalyzeComponent', () => {
         expect(preScanProgressEventCalled).toBe(true);
     });
     it('returns correct frequencies for real-world data', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/608774__theplax__downstairs-in-boots-library_TRIM.wav");
+        const filepath = path.resolve("test/testAudio/large/608774__theplax__downstairs-in-boots-library_TRIM.wav");
         const preScanResult = {
             duration: 256.40290249433104,
             durationSamples: 11307368,
@@ -49,8 +44,8 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         };
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 2);
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 2);
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event) => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
@@ -59,7 +54,7 @@ describe('audioContextAnalyzeComponent', () => {
         console.log('result', JSON.stringify(result, null, 2));
     });
     it('returns correct frequencies for real-world data 2', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/656618__theplax__cafe-weekday-afternoon.wav");
+        const filepath = path.resolve("test/testAudio/large/656618__theplax__cafe-weekday-afternoon.wav");
         const preScanResult = {
             duration: 413.94,
             durationSamples: 18254754,
@@ -72,8 +67,8 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         };
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 2);
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 2);
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event) => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
@@ -82,7 +77,7 @@ describe('audioContextAnalyzeComponent', () => {
         console.log('result', JSON.stringify(result, null, 2));
     });
     it('returns correct frequencies for real-world data 3', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
+        const filepath = path.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
         const preScanResult = {
             duration: 83.28448979591836,
             durationSamples: 3672846,
@@ -95,8 +90,8 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         };
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 16);
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 16);
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event) => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);

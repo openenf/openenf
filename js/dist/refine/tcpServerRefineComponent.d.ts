@@ -14,4 +14,5 @@ export declare class TcpServerRefineComponent implements RefineComponent {
     refine(lookupFrequencies: (number | null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]>;
     private buildComprehensiveLookupCommand;
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions);
+    stopServer(): Promise<void>;
 }

@@ -9,7 +9,7 @@ export class NoMatch extends Error {
     private cause: any;
 
     constructor(noMatchReason: NoMatchReason, cause?: any) {
-        super();
+        super(noMatchReason);
         this.cause = cause;
         this.noMatchReason = noMatchReason;
     }

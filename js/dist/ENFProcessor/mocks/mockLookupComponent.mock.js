@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MockLookupComponent = void 0;
-const ENFEventBase_1 = require("../events/ENFEventBase");
-class MockLookupComponent {
+import { ENFEventBase } from "../events/ENFEventBase";
+export class MockLookupComponent {
     constructor(onLookup, result) {
         this.implementationId = "MockLookupComponent";
-        this.lookupProgressEvent = new ENFEventBase_1.ENFEventBase();
+        this.lookupProgressEvent = new ENFEventBase();
         this.onLookup = onLookup;
         this.result = result || [];
     }
@@ -16,4 +13,3 @@ class MockLookupComponent {
         return Promise.resolve(this.result);
     }
 }
-exports.MockLookupComponent = MockLookupComponent;

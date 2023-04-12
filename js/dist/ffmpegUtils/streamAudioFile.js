@@ -1,10 +1,4 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.streamAudioFile = void 0;
-const fluent_ffmpeg_1 = __importDefault(require("fluent-ffmpeg"));
+import ffmpeg from "fluent-ffmpeg";
 const convertChunkToFloats = (chunk) => {
     const floats = [];
     for (let i = 0; i < chunk.length; i = i + 4) {
@@ -19,7 +13,7 @@ const convertChunkToFloats = (chunk) => {
     return Float32Array.from(floats);
 };
 const buildCommand = (path, onComplete) => {
-    const command = (0, fluent_ffmpeg_1.default)(path)
+    const command = ffmpeg(path)
         .noVideo()
         .format('f32be')
         .audioCodec('pcm_f32be')
@@ -52,7 +46,7 @@ function getFirstChannel(chunk, numChannels) {
  * @param numChannels The number of channels in the audio
  * @param onProgress The function to fire when a chunk of audio has been read and converted to PCM.]
  */
-const streamAudioFile = async (path, numChannels, onProgress) => {
+export const streamAudioFile = async (path, numChannels, onProgress) => {
     return new Promise(resolve => {
         const command = buildCommand(path, () => {
             resolve();
@@ -63,4 +57,3 @@ const streamAudioFile = async (path, numChannels, onProgress) => {
         });
     });
 };
-exports.streamAudioFile = streamAudioFile;

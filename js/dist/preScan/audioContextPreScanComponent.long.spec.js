@@ -1,16 +1,11 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const audioContextPreScanComponent_1 = require("./audioContextPreScanComponent");
-const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
-const path_1 = __importDefault(require("path"));
+import { AudioContextPreScanComponent } from "./audioContextPreScanComponent";
+import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
+import path from "path";
 describe('audioContextPreScanComponent', () => {
     it('reports progress correctly for large file', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/DE_2021-12-30T040946_saw_3600_D_secs_05amp_8Harmonics.wav");
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
+        const filepath = path.resolve("test/testAudio/large/DE_2021-12-30T040946_saw_3600_D_secs_05amp_8Harmonics.wav");
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         let prevProgress = 0;
         let preScanProgressEventCalled = false;
         audioContextPreScanComponent.preScanProgressEvent.addHandler((event) => {
@@ -24,9 +19,9 @@ describe('audioContextPreScanComponent', () => {
         expect(preScanProgressEventCalled).toBe(true);
     });
     it('reads audio data correctly for real-world file', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/608774__theplax__downstairs-in-boots-library_TRIM.wav");
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
+        const filepath = path.resolve("test/testAudio/large/608774__theplax__downstairs-in-boots-library_TRIM.wav");
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         audioContextPreScanComponent.preScanProgressEvent.addHandler((e) => {
             console.log('e', e);
         });
@@ -47,9 +42,9 @@ describe('audioContextPreScanComponent', () => {
         }));
     });
     it('reads audio data correctly for real-world file 2', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/656618__theplax__cafe-weekday-afternoon.wav");
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
+        const filepath = path.resolve("test/testAudio/large/656618__theplax__cafe-weekday-afternoon.wav");
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         const result = await audioContextPreScanComponent.preScan(filepath);
         console.log('result', result);
         //We're stringifying the result here because rounding errors were causing
@@ -68,9 +63,9 @@ describe('audioContextPreScanComponent', () => {
         }));
     });
     it('reads audio data correctly for real-world file 3', async () => {
-        const filepath = path_1.default.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
-        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
-        const audioContextPreScanComponent = new audioContextPreScanComponent_1.AudioContextPreScanComponent(goertzelFilterCache);
+        const filepath = path.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
         const result = await audioContextPreScanComponent.preScan(filepath);
         console.log('result', result);
         //We're stringifying the result here because rounding errors were causing

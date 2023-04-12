@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.validatePreScanResult = void 0;
-const noMatch_1 = require("../ENFProcessor/noMatch");
-const noMatchReason_1 = require("../model/noMatchReason");
+import { NoMatch } from "../ENFProcessor/noMatch";
+import { NoMatchReason } from "../model/noMatchReason";
 /**
  * ValidatePreScanResult analyses a preScanResult and either returns a non-zero length array of frequencies to be scanned
  * by an analyzeComponent, or throws {@link NoMatch} error if a dominant fundamental mains frequency cannot be determined,
@@ -17,20 +14,20 @@ const noMatchReason_1 = require("../model/noMatchReason");
  * @todo return more than one value from the validation. At the time of writing (March 2023) implementations of AnalyzeComponent
  *   only analyze one harmonic but it's likely we'll get more accurate results if we analyze multiple harmonics and combine the results
  */
-const validatePreScanResult = (preScanResult, expectedFrequency) => {
+export const validatePreScanResult = (preScanResult, expectedFrequency) => {
     const fifties = [preScanResult.h50, preScanResult.h100, preScanResult.h200];
     const sixties = [preScanResult.h60, preScanResult.h120, preScanResult.h240];
     const fiftyStrength = (fifties[0] + fifties[1] + fifties[2]) / preScanResult.durationSamples;
     const sixtyStrength = (sixties[0] + sixties[1] + sixties[2]) / preScanResult.durationSamples;
     if (fiftyStrength === 0 || sixtyStrength === 0) {
-        throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);
+        throw new NoMatch(NoMatchReason.NoStrongSignal);
     }
     const relativeStrength = fiftyStrength / sixtyStrength > 1 ? fiftyStrength / sixtyStrength : sixtyStrength / fiftyStrength;
     if (fiftyStrength > sixtyStrength && expectedFrequency == 60) {
-        throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.DominantFifty);
+        throw new NoMatch(NoMatchReason.DominantFifty);
     }
     if (sixtyStrength > fiftyStrength && expectedFrequency == 50) {
-        throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.DominantSixty);
+        throw new NoMatch(NoMatchReason.DominantSixty);
     }
     if (fiftyStrength > sixtyStrength) {
         const max = Math.max(...fifties);
@@ -61,4 +58,3 @@ const validatePreScanResult = (preScanResult, expectedFrequency) => {
         }
     }
 };
-exports.validatePreScanResult = validatePreScanResult;

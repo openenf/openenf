@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const interpolateUnconfidentSamples_1 = require("./interpolateUnconfidentSamples");
+import { interpolateUnconfidentSamples } from "./interpolateUnconfidentSamples";
 describe("interpolateUnconfidentSamples", () => {
     it("interpolates unconfident samples for series of 4 or less samples", () => {
         const data = [{ hz: 100, confidence: 0.03161632674873657 },
@@ -16,7 +14,7 @@ describe("interpolateUnconfidentSamples", () => {
             { hz: 100, confidence: 0.05163447383242176 },
             { hz: 100, confidence: 0.04314449986795531 },];
         const confidence = 0.006;
-        const result = (0, interpolateUnconfidentSamples_1.interpolateUnconfidentSamples)(data, confidence, 1);
+        const result = interpolateUnconfidentSamples(data, confidence, 1);
         expect(result[0].hz).toBe(100.21240234375);
         expect(result[1].hz).toBe(100.21240234375);
         expect(result[6].hz).toBe(100.22666666666666);

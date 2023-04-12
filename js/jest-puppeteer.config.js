@@ -1,7 +1,7 @@
 module.exports = {
     launch: {
-        dumpio: true,
-        headless: false,
+        dumpio: false,
+        headless: true,
         args: ['--disable-infobars'],
     },
     browserContext: 'default'

@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.flat_top = exports.blackman_nuttall = exports.blackman_harris = exports.nuttall = exports.kaiser = exports.exact_blackman = exports.blackman = exports.tukey = exports.gaussian = exports.lanczos = exports.cosine = exports.hamming = exports.hann = void 0;
 const sinc = (n) => Math.sin(Math.PI * n) / (Math.PI * n);
 const bessi0 = (x) => {
     /* Evaluate modified Bessel function In(x) and n=0. */
@@ -119,28 +116,19 @@ const create_window_function = (win) => (array, alpha) => applyWindowFunction(ar
  * Adds a function for each window to the module exports.
  */
 const hann = create_window_function("hann");
-exports.hann = hann;
 const hamming = create_window_function("hamming");
-exports.hamming = hamming;
 const cosine = create_window_function("cosine");
-exports.cosine = cosine;
 const lanczos = create_window_function("lanczos");
-exports.lanczos = lanczos;
 const gaussian = create_window_function("gaussian");
-exports.gaussian = gaussian;
 const tukey = create_window_function("tukey");
-exports.tukey = tukey;
 const blackman = create_window_function("blackman");
-exports.blackman = blackman;
 const exact_blackman = create_window_function("exact_blackman");
-exports.exact_blackman = exact_blackman;
 const kaiser = create_window_function("kaiser");
-exports.kaiser = kaiser;
 const nuttall = create_window_function("nuttall");
-exports.nuttall = nuttall;
 const blackman_harris = create_window_function("blackman_harris");
-exports.blackman_harris = blackman_harris;
 const blackman_nuttall = create_window_function("blackman_nuttall");
-exports.blackman_nuttall = blackman_nuttall;
 const flat_top = create_window_function("flat_top");
-exports.flat_top = flat_top;
+/**
+ * Adapted from {@link https://github.com/scijs/window-function}. Various windowing functions. At the time of writing (March 2023) we're only using Hann.
+ */
+export { hann, hamming, cosine, lanczos, gaussian, tukey, blackman, exact_blackman, kaiser, nuttall, blackman_harris, blackman_nuttall, flat_top, };

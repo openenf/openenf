@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PreScanResult = void 0;
-class PreScanResult {
+export class PreScanResult {
     constructor(preScanProcessorResult, metaData) {
         this.duration = metaData.duration;
         this.durationSamples = metaData.durationSamples;
@@ -15,4 +12,3 @@ class PreScanResult {
         this.sampleRate = metaData.sampleRate;
     }
 }
-exports.PreScanResult = PreScanResult;

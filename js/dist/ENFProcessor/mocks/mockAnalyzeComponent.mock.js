@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MockAnalyzeComponent = void 0;
-const ENFEventBase_1 = require("../events/ENFEventBase");
-class MockAnalyzeComponent {
+import { ENFEventBase } from "../events/ENFEventBase";
+export class MockAnalyzeComponent {
     constructor(onAnalyze, result) {
-        this.analyzeProgressEvent = new ENFEventBase_1.ENFEventBase();
+        this.analyzeProgressEvent = new ENFEventBase();
         this.implementationId = "MockAnalyzeComponent";
         this.onAnalyze = onAnalyze;
         this.result = result || [];
@@ -16,4 +13,3 @@ class MockAnalyzeComponent {
         return Promise.resolve(this.result);
     }
 }
-exports.MockAnalyzeComponent = MockAnalyzeComponent;

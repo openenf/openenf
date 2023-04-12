@@ -9,6 +9,9 @@ import {FreqDbMetaData} from "./freqDbMetaData";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 
 export class TcpServerRefineComponent implements RefineComponent {
+    async dispose(): Promise<void> {
+        await this.stopServer();
+    }
     readonly implementationId: string = "TcpServerRefineComponentv0.0.1"
     private options: TcpServerComponentOptions;
     private client: TcpClient;

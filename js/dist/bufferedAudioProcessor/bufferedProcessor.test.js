@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const bufferedAudioProcessor_1 = require("./bufferedAudioProcessor");
+import { BufferedAudioProcessor } from "./bufferedAudioProcessor";
 describe('BufferedProcessor', () => {
     it('Executes processor when window size is exceeded', () => {
         const windowSize = 11;
         let executed = false;
-        const subject = new bufferedAudioProcessor_1.BufferedAudioProcessor(windowSize, (window) => {
+        const subject = new BufferedAudioProcessor(windowSize, (window) => {
             executed = true;
             expect(window).toStrictEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         });
@@ -17,7 +15,7 @@ describe('BufferedProcessor', () => {
     it('Includes remainder in subsequent processor execution', () => {
         const windowSize = 5;
         let processorExecutionCount = 0;
-        const subject = new bufferedAudioProcessor_1.BufferedAudioProcessor(windowSize, (window) => {
+        const subject = new BufferedAudioProcessor(windowSize, (window) => {
             processorExecutionCount++;
             switch (processorExecutionCount) {
                 case 1:
@@ -35,7 +33,7 @@ describe('BufferedProcessor', () => {
     it('Fires twice consecutively if chunk is twice as big as the buffer', () => {
         const windowSize = 2;
         let processorExecutionCount = 0;
-        const subject = new bufferedAudioProcessor_1.BufferedAudioProcessor(windowSize, (window) => {
+        const subject = new BufferedAudioProcessor(windowSize, (window) => {
             processorExecutionCount++;
             switch (processorExecutionCount) {
                 case 1:
@@ -57,7 +55,7 @@ describe('BufferedProcessor', () => {
     it('Flushes remainder on flush()', () => {
         const windowSize = 2;
         let processorExecutionCount = 0;
-        const subject = new bufferedAudioProcessor_1.BufferedAudioProcessor(windowSize, (window) => {
+        const subject = new BufferedAudioProcessor(windowSize, (window) => {
             processorExecutionCount++;
             switch (processorExecutionCount) {
                 case 1:
@@ -102,7 +100,7 @@ describe('BufferedProcessor', () => {
                     break;
             }
         };
-        const subject = new bufferedAudioProcessor_1.BufferedAudioProcessor(windowSize, onWindowFull, overlapFactor);
+        const subject = new BufferedAudioProcessor(windowSize, onWindowFull, overlapFactor);
         subject.addChunk([0, 1, 2, 3, 4, 5, 6]);
         expect(processorExecutionCount).toBe(0);
         subject.addChunk([7, 8]);

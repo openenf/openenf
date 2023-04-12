@@ -75,3 +75,6 @@ export interface GoertzelFilterASMFunctions {
     run: () => number;
 }
 
+if (typeof window !== 'undefined') {
+    (window as any).GoertzelFilter = GoertzelFilter;
+}

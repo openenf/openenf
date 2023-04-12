@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.interpolateUnconfidentSamples = void 0;
 const fixChunk = (s, chunk) => {
     function fixStart(s, right) {
         const targetHz = s[right + 1].hz;
@@ -47,7 +44,7 @@ const fixChunk = (s, chunk) => {
     else
         fixMid(s, start, end);
 };
-const interpolateUnconfidentSamples = (samples, confidence, windowSize) => {
+export const interpolateUnconfidentSamples = (samples, confidence, windowSize) => {
     if (!samples.length) {
         return samples;
     }
@@ -70,4 +67,3 @@ const interpolateUnconfidentSamples = (samples, confidence, windowSize) => {
     }
     return samples;
 };
-exports.interpolateUnconfidentSamples = interpolateUnconfidentSamples;
