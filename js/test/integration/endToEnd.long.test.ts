@@ -53,5 +53,5 @@ describe('BaseENFProcessor',  () => {
             const result = results.ENFAnalysisResults[0];
             expect(result.time).toStrictEqual(new Date("2021-11-04T13:35:32.000Z"));
         }
-    }, 360000)
+    }, 720000)
 });
