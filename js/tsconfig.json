@@ -7,11 +7,12 @@
       "es2021",
       "dom"
     ],
-    "module": "CommonJS",
+    "module": "es6",
     "moduleResolution": "node",
     "outDir": "dist",
     "strict": true,
-    "target": "es2021"
+    "target": "es2021",
+    "rootDir": "src"
   },
   "include": [
     "src/**/*"

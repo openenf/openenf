@@ -18,7 +18,8 @@ export class PreScanProcessor {
     private totalSamples: number = 0;
     private preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>;
 
-    constructor(context: GoertzelFilterStore, preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>) {
+    constructor(context: GoertzelFilterStore, preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]>, totalSamples: number) {
+        this.totalSamples = totalSamples;
         this.preScanProgressEvent = preScanProgressEvent;
         this.context = context
         this.harmonics.forEach(h => {
@@ -30,8 +31,10 @@ export class PreScanProcessor {
             const update:any = {}
             this.harmonics.forEach(h => {
                 const harmonicStrength = goertzelRequestCache.analyze(h);
-                update['f' + h.toString()] = harmonicStrength;
-                this.harmonicStrengths[h] += harmonicStrength;
+                if (!isNaN(harmonicStrength)) {
+                    update['f' + h.toString()] = harmonicStrength;
+                    this.harmonicStrengths[h] += harmonicStrength;
+                }
             })
             this.samplesProcessed += window.length
             update.endSamples = this.samplesProcessed;
@@ -43,8 +46,6 @@ export class PreScanProcessor {
      * @param input a window of audio of a known size
      */
     process(input: ArrayLike<number>) {
-        this.samplesProcessed = 0;
-        this.totalSamples = input.length;
         this.bufferedProcessor.addChunk(Array.from(input))
     }
 

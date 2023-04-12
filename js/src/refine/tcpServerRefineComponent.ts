@@ -2,16 +2,19 @@ import {LookupResult} from "../model/lookupResult";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
 import {RefineComponent} from "./refineComponent";
 import {TcpServerComponentOptions} from "../lookup/tcpServerComponentOptions";
-import {TcpRequestClient} from "../tcpClient/tcpRequestClient";
+import {TcpClient} from "../tcpClient/tcpClient";
 import {LookupCommand} from "../lookup/lookupCommand";
 import {computeKurtosis, convertPositionToGridDate, getPeaks} from "./refineComponentUtils";
 import {FreqDbMetaData} from "./freqDbMetaData";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 
 export class TcpServerRefineComponent implements RefineComponent {
+    async dispose(): Promise<void> {
+        await this.stopServer();
+    }
     readonly implementationId: string = "TcpServerRefineComponentv0.0.1"
     private options: TcpServerComponentOptions;
-    private client: TcpRequestClient;
+    private client: TcpClient;
 
     private buildGetMetaDataCommand(gridId:string) {
         return `${LookupCommand.getMetaData.toString()}${JSON.stringify(gridId)}`;
@@ -72,6 +75,14 @@ export class TcpServerRefineComponent implements RefineComponent {
 
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpRequestClient(this.options.port, this.options.host);
+        this.client = new TcpClient(this.options.port, this.options.host);
+    }
+
+    async stopServer() {
+        if (this.client) {
+            await this.client.stop()
+        } else {
+            console.warn('No attached TCP client')
+        }
     }
 }

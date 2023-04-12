@@ -51,6 +51,10 @@ const transformWindowsToStreams = (windows:AnalysisWindowResult[]):{[id:string]:
     };
     windows.forEach(w => {
         w.data.forEach((d:GoertzelHarmonicResult) => {
+            const t = d.target.toString();
+            if (!returnDict[t]) {
+                throw new Error(`Unable to find Goertzel dict for '${t}'. Result: ${JSON.stringify(d, null, 2)}`);
+            }
             returnDict[d.target.toString()].push(d);
         })
     })

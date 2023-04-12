@@ -7,7 +7,7 @@ import {ENFComponent} from "../ENFProcessor/ENFComponent";
  */
 export interface LookupComponent extends ENFComponent {
     lookupProgressEvent: ENFEventBase<number>;
-
+    dispose(): Promise<void>;
     /**
      *
      * @param freqs

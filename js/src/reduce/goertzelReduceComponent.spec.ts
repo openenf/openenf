@@ -11,6 +11,27 @@ describe('goertzelReduceComponent',  () => {
         const expectedResult = [49.94, 49.98, 49.98, 50.01, 50.02, 50.05, 50.01, 50.01, 50.03, 50.04, 50.04, 50.05, 50.05, 50.06, 50.04, 50.02, 50.01, 49.96, 49.95, 49.91, 49.89, 49.86, 49.87, 49.85, 49.85, 49.81, 49.75, 49.74, 49.69, 49.65, 49.62, 49.61, 49.61, 49.62,  49.6,  49.6, 49.62, 49.63, 49.62, 49.62,  49.6, 49.59, 49.59, 49.56, 49.54, 49.54, 49.56, 49.53, 49.54, 49.52, 49.51, 49.52, 49.52, 49.52, 49.54, 49.55, 49.53, 49.53, 49.51, 49.51,  49.5,  49.5, 49.48, 49.47, 49.49, 49.47, 49.49, 49.51, 49.54, 49.54, 49.56, 49.56, 49.58, 49.61,  49.6, 49.61, 49.63, 49.61, 49.64, 49.64, 49.63, 49.64, 49.63, 49.64, 49.63, 49.63, 49.64, 49.67, 49.69, 49.71, 49.71, 49.72, 49.74, 49.75, 49.77, 49.77, 49.78, 49.78];
         expect(result).toStrictEqual(expectedResult);
     })
+    it('reduces a real-world sample correctly', async () => {
+        const analysisWindowJsonFile = "test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json";
+        const analysisWindows:AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
+        const goertzelReduceComponent = new GoertzelReduceComponent(16);
+        const result = await goertzelReduceComponent.reduce(analysisWindows);
+        expect(result).toStrictEqual([
+                50.017, 50.033, 50.004,  50.01,  50.01,  50.01, 50.046,
+                50.024, 50.033, 50.008, 50.045, 50.033, 50.006, 50.027,
+                50.039, 50.013, 50.042, 50.018, 50.022, 50.034,     50,
+                50.05, 50.026, 49.997, 50.026, 50.032, 50.024, 50.029,
+                50.04, 50.031, 50.011, 50.026, 50.034, 50.022, 50.013,
+                50.026, 50.036, 50.028, 50.016, 50.026,  50.09, 50.029,
+                50.018, 50.021, 50.038, 50.047, 50.041, 50.044, 50.022,
+                50.048, 50.044, 50.034, 50.003, 50.017,  50.04, 50.037,
+                50.061, 50.057, 50.044, 50.072, 50.059,  50.07, 50.072,
+                50.046, 50.055, 50.051, 50.054, 50.037, 50.058,  50.05,
+                50.053,  50.05,  50.04, 50.044,  50.05, 50.038, 50.057,
+                50.032, 50.034, 50.052, 50.032
+            ]
+        );
+    })
     it('reduces an array of AnalysisWindowResults with GoertzelHarmonicResult data to a stream of frequencies (and possibly nulls)', async () => {
         const goertzelReduceComponent = new GoertzelReduceComponent(1);
         const result = await goertzelReduceComponent.reduce(analyzeOutput);

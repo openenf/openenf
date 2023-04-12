@@ -32,7 +32,13 @@ export interface ENFProcessor {
      approximate progress of the entire analysis.
      @eventProperty
      */
-    readonly analysisProgressEvent: ENFEventBase<number>
+    readonly progressEvent: ENFEventBase<number>
+
+    /**
+     Fires logging information.
+     @eventProperty
+     */
+    readonly logEvent: ENFEventBase<string>
 
     /**
      * Fired whenever a full ENF Analysis of a file is completed
@@ -177,4 +183,6 @@ export interface ENFProcessor {
      @eventProperty
      */
     readonly onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]>
+
+    dispose(): Promise<void>;
 }

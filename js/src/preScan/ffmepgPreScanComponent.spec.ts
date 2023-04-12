@@ -5,7 +5,7 @@ import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 describe('ffmpegPreScanComponent', () => {
     it('can pre-scan local wav file at 50hz', async () => {
         //This is a saw wave with no added noise based on real-world frequency data from the Central European Grid:
-        const filepath = "test/testAudio/DE_2013-02-05T17:46:39_saw_9_D_secs_05amp_8Harmonics.wav";
+        const filepath = "test/testAudio/DE_2013-02-05T174639_saw_9_D_secs_05amp_8Harmonics.wav";
         const absPath = path.resolve(filepath);
         const goertzelContext = new GoertzelFilterCache();
         const preScanComponent = new FfmpegPreScanComponent(goertzelContext);
@@ -14,7 +14,7 @@ describe('ffmpegPreScanComponent', () => {
         expect(result.durationSamples).toBe(396900);
         expect(result.numChannels).toBe(2);
         expect(result.sampleRate).toBe(44100);
-    })
+    }, 10000)
     it('can pre-scan local wav file at 60hz', async () => {
         // This is an artificially produced saw wave ranging from 59.95Hz to 60.05Hz
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";

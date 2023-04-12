@@ -40,14 +40,14 @@ export class BaseENFProcessor implements ENFProcessor {
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent
         this.onPreScanProgressEvent.addHandler(data => {
             if (data != undefined) {
-                this.analysisProgressEvent.trigger(data[1] / 3)
+                this.progressEvent.trigger(data[1] / 3)
             }
         })
         this.analyzeComponent = analyzeComponent
         this.analyzeComponent.analyzeProgressEvent = this.onAnalyzeProgressEvent
         this.onAnalyzeProgressEvent.addHandler(data => {
             if (data != undefined) {
-                this.analysisProgressEvent.trigger((1/3) + (data[1] / 3));
+                this.progressEvent.trigger((1/3) + (data[1] / 3));
             }
         })
         this.reduceComponent = reduceComponent
@@ -55,7 +55,7 @@ export class BaseENFProcessor implements ENFProcessor {
         this.lookupComponent.lookupProgressEvent = this.lookupProgressEvent
         this.lookupProgressEvent.addHandler(progress => {
             if (progress !== undefined) {
-                this.analysisProgressEvent.trigger((2/3) + (progress / 3));
+                this.progressEvent.trigger((2/3) + (progress / 3));
             }
         })
         this.refineComponent = refineComponent
@@ -76,15 +76,14 @@ export class BaseENFProcessor implements ENFProcessor {
         return enfAnalysis;
     }
 
-    private toIsoDate(date: (Date | undefined)):string {
-        if (date === undefined) {
+    private toIsoDate(date: (Date | undefined | null)):string {
+        if (date === undefined || date === null) {
             return 'unspecified'
         }
         return new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
             .toISOString()
             .split("T")[0];
     }
-
 
     async performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?:50|60): Promise<ENFAnalysis> {
         this.logEvent.trigger(`Starting analysis for resource: ${resourceUri}, grids: [${gridIds.join(',')}], from ${this.toIsoDate(from)} to ${this.toIsoDate(to)}`);
@@ -126,7 +125,7 @@ export class BaseENFProcessor implements ENFProcessor {
         return this.closeOutENFAnalysis(enfAnalysis);
     }
 
-    analysisProgressEvent: ENFEventBase<number> = new ENFEventBase<number>();
+    progressEvent: ENFEventBase<number> = new ENFEventBase<number>();
     fullAnalysisCompleteEvent: ENFEventBase<ENFAnalysis> = new ENFEventBase<ENFAnalysis>();
 
     /*PreScan*/
@@ -172,4 +171,9 @@ export class BaseENFProcessor implements ENFProcessor {
         return result;
     }
     onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]> = new ENFEventBase<ENFAnalysisResult[]>()
+
+    async dispose() {
+        await this.lookupComponent.dispose();
+        await this.refineComponent.dispose();
+    }
 }

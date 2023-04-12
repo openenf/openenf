@@ -3,6 +3,9 @@ import {ENFEventBase} from "../events/ENFEventBase";
 import {LookupResult} from "../../model/lookupResult";
 
 export class MockLookupComponent implements LookupComponent {
+    dispose(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
 
     private readonly onLookup: any;
     private readonly result: LookupResult[];

@@ -7,5 +7,7 @@ import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
  */
 export interface RefineComponent extends ENFComponent {
     refine(freqs: (number|null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]>
+
+    dispose(): Promise<void>;
 }
 

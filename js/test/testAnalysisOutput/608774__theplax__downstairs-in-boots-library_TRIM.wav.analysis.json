@@ -1,0 +1,8178 @@
+[
+  {
+    "start": 0,
+    "end": 1,
+    "startSamples": 0,
+    "endSamples": 44099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.481227417250652e-7,
+        "hz": 200.406494140625,
+        "standardDev": 2.941721033438355e-9,
+        "confidence": 0.003468508611683908,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 0.5,
+    "end": 1.5,
+    "startSamples": 22050,
+    "endSamples": 66149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.907082814059053e-7,
+        "hz": 200,
+        "standardDev": 5.2319385655713967e-8,
+        "confidence": 0.07574744224757265,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 1,
+    "end": 2,
+    "startSamples": 44100,
+    "endSamples": 88199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.00000440889401318008,
+        "hz": 199.98248291015625,
+        "standardDev": 1.5509986829941053e-8,
+        "confidence": 0.0035178860692897207,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 1.5,
+    "end": 2.5,
+    "startSamples": 66150,
+    "endSamples": 110249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000005441705417252423,
+        "hz": 198.5615234375,
+        "standardDev": 1.792423637937127e-8,
+        "confidence": 0.0032938637807449363,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 2,
+    "end": 3,
+    "startSamples": 88200,
+    "endSamples": 132299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001775277455603548,
+        "hz": 201.75,
+        "standardDev": 5.103321361390701e-9,
+        "confidence": 0.002874661279160842,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 2.5,
+    "end": 3.5,
+    "startSamples": 110250,
+    "endSamples": 154349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014437362552124926,
+        "hz": 202,
+        "standardDev": 1.0264205004621423e-8,
+        "confidence": 0.007109473747412897,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 3,
+    "end": 4,
+    "startSamples": 132300,
+    "endSamples": 176399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001994059943220319,
+        "hz": 198.00048828125,
+        "standardDev": 1.295168529719952e-7,
+        "confidence": 0.0649513337913158,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 3.5,
+    "end": 4.5,
+    "startSamples": 154350,
+    "endSamples": 198449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015063177349019142,
+        "hz": 200,
+        "standardDev": 1.2388030824969353e-7,
+        "confidence": 0.08224048975813204,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 4,
+    "end": 5,
+    "startSamples": 176400,
+    "endSamples": 220499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002901939509997817,
+        "hz": 200,
+        "standardDev": 9.527765315183661e-8,
+        "confidence": 0.032832404956610654,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 4.5,
+    "end": 5.5,
+    "startSamples": 198450,
+    "endSamples": 242549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001217310613086583,
+        "hz": 202,
+        "standardDev": 2.7075933517731514e-9,
+        "confidence": 0.0022242419664015283,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 5,
+    "end": 6,
+    "startSamples": 220500,
+    "endSamples": 264599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003049757759304298,
+        "hz": 200.6220703125,
+        "standardDev": 1.3179642267990345e-8,
+        "confidence": 0.0043215374164657745,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 5.5,
+    "end": 6.5,
+    "startSamples": 242550,
+    "endSamples": 286649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001544917477670433,
+        "hz": 201.22412109375,
+        "standardDev": 7.611996853845376e-9,
+        "confidence": 0.004927121975034833,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 6,
+    "end": 7,
+    "startSamples": 264600,
+    "endSamples": 308699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002696499651062444,
+        "hz": 200.25732421875,
+        "standardDev": 8.159407808468076e-9,
+        "confidence": 0.003025925779464944,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 6.5,
+    "end": 7.5,
+    "startSamples": 286650,
+    "endSamples": 330749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.110961979093445e-7,
+        "hz": 198.494384765625,
+        "standardDev": 2.4724501221613748e-9,
+        "confidence": 0.004837543562787224,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 7,
+    "end": 8,
+    "startSamples": 308700,
+    "endSamples": 352799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014933568456893203,
+        "hz": 200.17578125,
+        "standardDev": 2.3434242214562043e-9,
+        "confidence": 0.0015692325837730367,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 7.5,
+    "end": 8.5,
+    "startSamples": 330750,
+    "endSamples": 374849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.420081782041667e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.0419278288452105e-8,
+        "confidence": 0.043053414003480624,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 8,
+    "end": 9,
+    "startSamples": 352800,
+    "endSamples": 396899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.409241862277179e-7,
+        "hz": 200,
+        "standardDev": 3.317033760782724e-8,
+        "confidence": 0.04476886869722534,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 8.5,
+    "end": 9.5,
+    "startSamples": 374850,
+    "endSamples": 418949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011039743095386738,
+        "hz": 198.00048828125,
+        "standardDev": 1.390409455123407e-8,
+        "confidence": 0.012594581623049073,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 9,
+    "end": 10,
+    "startSamples": 396900,
+    "endSamples": 440999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.090980268465851e-7,
+        "hz": 198.3896484375,
+        "standardDev": 1.5923724796291338e-9,
+        "confidence": 0.003127830782398592,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 9.5,
+    "end": 10.5,
+    "startSamples": 418950,
+    "endSamples": 463049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.899019670803165e-7,
+        "hz": 199.9169921875,
+        "standardDev": 1.9949414940568014e-9,
+        "confidence": 0.0025255557995767816,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 10,
+    "end": 11,
+    "startSamples": 441000,
+    "endSamples": 485099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.3159157366967543e-7,
+        "hz": 201.53515625,
+        "standardDev": 1.6422542242751006e-9,
+        "confidence": 0.004952641606963993,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 10.5,
+    "end": 11.5,
+    "startSamples": 463050,
+    "endSamples": 507149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.609511178380362e-7,
+        "hz": 200.908447265625,
+        "standardDev": 1.453941311567821e-9,
+        "confidence": 0.0021997713179208274,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 11,
+    "end": 12,
+    "startSamples": 485100,
+    "endSamples": 529199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.090043740390996e-7,
+        "hz": 201.00048828125,
+        "standardDev": 4.80750258694145e-9,
+        "confidence": 0.011754159349117051,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 11.5,
+    "end": 12.5,
+    "startSamples": 507150,
+    "endSamples": 551249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.9543976517133852e-7,
+        "hz": 199.9111328125,
+        "standardDev": 8.932254496854221e-10,
+        "confidence": 0.00457033628188382,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 12,
+    "end": 13,
+    "startSamples": 529200,
+    "endSamples": 573299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.921627392812464e-7,
+        "hz": 200.1494140625,
+        "standardDev": 2.7993851691895797e-9,
+        "confidence": 0.003137751719428285,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 12.5,
+    "end": 13.5,
+    "startSamples": 551250,
+    "endSamples": 595349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.0894814693028e-7,
+        "hz": 200.0185546875,
+        "standardDev": 4.255127931887063e-9,
+        "confidence": 0.004681375880744767,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 13,
+    "end": 14,
+    "startSamples": 573300,
+    "endSamples": 617399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.3643100051733297e-7,
+        "hz": 200,
+        "standardDev": 1.0955584519449037e-8,
+        "confidence": 0.03256413500124108,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 13.5,
+    "end": 14.5,
+    "startSamples": 595350,
+    "endSamples": 639449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.190575196600157e-8,
+        "hz": 200.361328125,
+        "standardDev": 5.823808970850588e-10,
+        "confidence": 0.009407540956854874,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 14,
+    "end": 15,
+    "startSamples": 617400,
+    "endSamples": 661499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.820862725964165e-7,
+        "hz": 202,
+        "standardDev": 1.723657495170779e-8,
+        "confidence": 0.025270373623112772,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 14.5,
+    "end": 15.5,
+    "startSamples": 639450,
+    "endSamples": 683549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.567816874199874e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.4385590189837176e-9,
+        "confidence": 0.001503539457222335,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 15,
+    "end": 16,
+    "startSamples": 661500,
+    "endSamples": 705599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8418040176897935e-7,
+        "hz": 199,
+        "standardDev": 7.952710968987456e-9,
+        "confidence": 0.020700459816192524,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 15.5,
+    "end": 16.5,
+    "startSamples": 683550,
+    "endSamples": 727649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.006769078251646e-7,
+        "hz": 199.618408203125,
+        "standardDev": 1.1899366807474894e-9,
+        "confidence": 0.0023766558076671134,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 16,
+    "end": 17,
+    "startSamples": 705600,
+    "endSamples": 749699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002005840007364798,
+        "hz": 202,
+        "standardDev": 6.986820096306266e-8,
+        "confidence": 0.034832389775121216,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 16.5,
+    "end": 17.5,
+    "startSamples": 727650,
+    "endSamples": 771749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.986245695062226e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.8470360403768312e-8,
+        "confidence": 0.04633522822400938,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 17,
+    "end": 18,
+    "startSamples": 749700,
+    "endSamples": 793799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.424208132551839e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.5300557423789324e-8,
+        "confidence": 0.04468349128178378,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 17.5,
+    "end": 18.5,
+    "startSamples": 771750,
+    "endSamples": 815849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.020529255103868e-7,
+        "hz": 198.00048828125,
+        "standardDev": 5.9923974718756525e-9,
+        "confidence": 0.05871852709666569,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 18,
+    "end": 19,
+    "startSamples": 793800,
+    "endSamples": 837899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.0940431554559196e-7,
+        "hz": 198.032470703125,
+        "standardDev": 1.0531360461442896e-9,
+        "confidence": 0.0034037535781853237,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 18.5,
+    "end": 19.5,
+    "startSamples": 815850,
+    "endSamples": 859949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.427555160624746e-7,
+        "hz": 200.10009765625,
+        "standardDev": 2.17667029070972e-9,
+        "confidence": 0.004916190113377567,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 19,
+    "end": 20,
+    "startSamples": 837900,
+    "endSamples": 881999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.372801191854679e-7,
+        "hz": 199.90234375,
+        "standardDev": 3.162680692713009e-9,
+        "confidence": 0.004962779470910456,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 19.5,
+    "end": 20.5,
+    "startSamples": 859950,
+    "endSamples": 904049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.403645120580414e-7,
+        "hz": 200.8154296875,
+        "standardDev": 3.4117498041062754e-9,
+        "confidence": 0.0036281141624958458,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 20,
+    "end": 21,
+    "startSamples": 882000,
+    "endSamples": 926099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.053658569342568e-7,
+        "hz": 200,
+        "standardDev": 2.5162123897726936e-8,
+        "confidence": 0.08239992561822054,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 20.5,
+    "end": 21.5,
+    "startSamples": 904050,
+    "endSamples": 948149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.7004423332303194e-7,
+        "hz": 200.35845947265625,
+        "standardDev": 2.005152258402294e-9,
+        "confidence": 0.004265879924165091,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 21,
+    "end": 22,
+    "startSamples": 926100,
+    "endSamples": 970199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.055830639670635e-7,
+        "hz": 200,
+        "standardDev": 3.837186969847304e-8,
+        "confidence": 0.05438320682292373,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 21.5,
+    "end": 22.5,
+    "startSamples": 948150,
+    "endSamples": 992249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.6786577662803644e-7,
+        "hz": 202,
+        "standardDev": 7.1201300069338195e-9,
+        "confidence": 0.019355238946658696,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 22,
+    "end": 23,
+    "startSamples": 970200,
+    "endSamples": 1014299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.032255297764067e-7,
+        "hz": 198.2784423828125,
+        "standardDev": 1.5138658678535483e-9,
+        "confidence": 0.002509618365148906,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 22.5,
+    "end": 23.5,
+    "startSamples": 992250,
+    "endSamples": 1036349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.0579415024869765e-7,
+        "hz": 200,
+        "standardDev": 2.8767694929618575e-8,
+        "confidence": 0.13978869124731416,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 23,
+    "end": 24,
+    "startSamples": 1014300,
+    "endSamples": 1058399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.216690705520378e-7,
+        "hz": 202,
+        "standardDev": 1.2531021691481233e-8,
+        "confidence": 0.029717668585642187,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 23.5,
+    "end": 24.5,
+    "startSamples": 1036350,
+    "endSamples": 1080449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2267296822864764e-7,
+        "hz": 199,
+        "standardDev": 1.922211202346895e-8,
+        "confidence": 0.08632440738711974,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 24,
+    "end": 25,
+    "startSamples": 1058400,
+    "endSamples": 1102499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.81143801324807e-7,
+        "hz": 202,
+        "standardDev": 3.173706178711533e-8,
+        "confidence": 0.11288551139155056,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 24.5,
+    "end": 25.5,
+    "startSamples": 1080450,
+    "endSamples": 1124549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011678754125062737,
+        "hz": 200,
+        "standardDev": 3.1896924662312514e-9,
+        "confidence": 0.0027311924132267973,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 25,
+    "end": 26,
+    "startSamples": 1102500,
+    "endSamples": 1146599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.127155553486738e-7,
+        "hz": 200.193359375,
+        "standardDev": 2.7711905431877785e-9,
+        "confidence": 0.003036203915829104,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 25.5,
+    "end": 26.5,
+    "startSamples": 1124550,
+    "endSamples": 1168649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.028784902609784e-7,
+        "hz": 198.109375,
+        "standardDev": 1.3763656720633913e-9,
+        "confidence": 0.002736974634467066,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 26,
+    "end": 27,
+    "startSamples": 1146600,
+    "endSamples": 1190699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.838749203805778e-7,
+        "hz": 200.80859375,
+        "standardDev": 2.335585649434907e-9,
+        "confidence": 0.002979538684948564,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 26.5,
+    "end": 27.5,
+    "startSamples": 1168650,
+    "endSamples": 1212749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.974181282236707e-7,
+        "hz": 198.618408203125,
+        "standardDev": 2.748576121649649e-9,
+        "confidence": 0.005525685465998366,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 27,
+    "end": 28,
+    "startSamples": 1190700,
+    "endSamples": 1234799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.1146210639707827e-7,
+        "hz": 198.5419921875,
+        "standardDev": 9.879533819829027e-10,
+        "confidence": 0.0024010798725399175,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 27.5,
+    "end": 28.5,
+    "startSamples": 1212750,
+    "endSamples": 1256849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.1443569866960261e-7,
+        "hz": 201,
+        "standardDev": 3.708838350864099e-10,
+        "confidence": 0.0032409802133267986,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 28,
+    "end": 29,
+    "startSamples": 1234800,
+    "endSamples": 1278899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.118058986950938e-7,
+        "hz": 200.412353515625,
+        "standardDev": 2.0737550299512092e-9,
+        "confidence": 0.004051838861643601,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 28.5,
+    "end": 29.5,
+    "startSamples": 1256850,
+    "endSamples": 1300949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016429986533780563,
+        "hz": 200.3125,
+        "standardDev": 4.971253010825215e-9,
+        "confidence": 0.003025719467635694,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 29,
+    "end": 30,
+    "startSamples": 1278900,
+    "endSamples": 1322999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000055103555807023335,
+        "hz": 198.00048828125,
+        "standardDev": 3.373645881476184e-7,
+        "confidence": 0.061223741953984556,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 29.5,
+    "end": 30.5,
+    "startSamples": 1300950,
+    "endSamples": 1345049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.945855381193528e-7,
+        "hz": 200,
+        "standardDev": 1.0390428945100873e-7,
+        "confidence": 0.13076539210231827,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 30,
+    "end": 31,
+    "startSamples": 1323000,
+    "endSamples": 1367099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.595217020452077e-7,
+        "hz": 200,
+        "standardDev": 1.0362094831484462e-8,
+        "confidence": 0.012055652355057643,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 30.5,
+    "end": 31.5,
+    "startSamples": 1345050,
+    "endSamples": 1389149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.2863293340608437e-7,
+        "hz": 200.408203125,
+        "standardDev": 1.740404028116721e-9,
+        "confidence": 0.004060360024804422,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 31,
+    "end": 32,
+    "startSamples": 1367100,
+    "endSamples": 1411199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013780898484110727,
+        "hz": 201.17919921875,
+        "standardDev": 2.2642433658323695e-9,
+        "confidence": 0.0016430302918514531,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 31.5,
+    "end": 32.5,
+    "startSamples": 1389150,
+    "endSamples": 1433249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.530856116146923e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.585563058678272e-8,
+        "confidence": 0.07913654653256709,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 32,
+    "end": 33,
+    "startSamples": 1411200,
+    "endSamples": 1455299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.4372037618229322e-7,
+        "hz": 200,
+        "standardDev": 8.06464236359244e-10,
+        "confidence": 0.005611342370384102,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 32.5,
+    "end": 33.5,
+    "startSamples": 1433250,
+    "endSamples": 1477349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.137506015794013e-7,
+        "hz": 200,
+        "standardDev": 1.5516385402859545e-8,
+        "confidence": 0.030202174664434832,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 33,
+    "end": 34,
+    "startSamples": 1455300,
+    "endSamples": 1499399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.3500564588168e-7,
+        "hz": 201.75341796875,
+        "standardDev": 3.3626684456792823e-10,
+        "confidence": 0.0007730171958719626,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 33.5,
+    "end": 34.5,
+    "startSamples": 1477350,
+    "endSamples": 1521449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000023918526652765893,
+        "hz": 200.83203125,
+        "standardDev": 8.437224553714586e-9,
+        "confidence": 0.003527485064695204,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 34,
+    "end": 35,
+    "startSamples": 1499400,
+    "endSamples": 1543499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000028902236177722635,
+        "hz": 200.00048828125,
+        "standardDev": 8.228232778480778e-8,
+        "confidence": 0.02846919085389996,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 34.5,
+    "end": 35.5,
+    "startSamples": 1521450,
+    "endSamples": 1565549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.9995763953260426e-7,
+        "hz": 198.5,
+        "standardDev": 3.3799621915263606e-10,
+        "confidence": 0.0008450800428455945,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 35,
+    "end": 36,
+    "startSamples": 1543500,
+    "endSamples": 1587599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.730243153658126e-7,
+        "hz": 200,
+        "standardDev": 1.0120246282476135e-8,
+        "confidence": 0.017661111424242926,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 35.5,
+    "end": 36.5,
+    "startSamples": 1565550,
+    "endSamples": 1609649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2101541851133378e-7,
+        "hz": 200.337890625,
+        "standardDev": 6.820495251091498e-10,
+        "confidence": 0.003085981646453204,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 36,
+    "end": 37,
+    "startSamples": 1587600,
+    "endSamples": 1631699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.592342516964638e-7,
+        "hz": 199.00048828125,
+        "standardDev": 1.2130030653154697e-9,
+        "confidence": 0.002641360179112289,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 36.5,
+    "end": 37.5,
+    "startSamples": 1609650,
+    "endSamples": 1653749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.78038801737924e-7,
+        "hz": 198.00048828125,
+        "standardDev": 6.624685431942883e-8,
+        "confidence": 0.07544866375871406,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 37,
+    "end": 38,
+    "startSamples": 1631700,
+    "endSamples": 1675799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.8980492537844825e-7,
+        "hz": 198.00048828125,
+        "standardDev": 7.20707206052198e-9,
+        "confidence": 0.03797094330482701,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 37.5,
+    "end": 38.5,
+    "startSamples": 1653750,
+    "endSamples": 1697849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8703254710353037e-7,
+        "hz": 201.1376953125,
+        "standardDev": 1.3968379694075217e-9,
+        "confidence": 0.0036090969089322368,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 38,
+    "end": 39,
+    "startSamples": 1675800,
+    "endSamples": 1719899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.74627711714022e-7,
+        "hz": 198.0684814453125,
+        "standardDev": 5.120691058379125e-9,
+        "confidence": 0.006610518809156144,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 38.5,
+    "end": 39.5,
+    "startSamples": 1697850,
+    "endSamples": 1741949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003744340219355217,
+        "hz": 200,
+        "standardDev": 8.730286812919228e-8,
+        "confidence": 0.023315955018699132,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 39,
+    "end": 40,
+    "startSamples": 1719900,
+    "endSamples": 1763999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.266602298075214e-7,
+        "hz": 200.59521484375,
+        "standardDev": 2.451364776818012e-9,
+        "confidence": 0.0033734676486524276,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 39.5,
+    "end": 40.5,
+    "startSamples": 1741950,
+    "endSamples": 1786049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.5879720841307264e-7,
+        "hz": 199.00048828125,
+        "standardDev": 5.908849986564709e-9,
+        "confidence": 0.03721003691194785,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 40,
+    "end": 41,
+    "startSamples": 1764000,
+    "endSamples": 1808099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.783273153896023e-7,
+        "hz": 199.00048828125,
+        "standardDev": 4.93348225715522e-8,
+        "confidence": 0.1304024863252263,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 40.5,
+    "end": 41.5,
+    "startSamples": 1786050,
+    "endSamples": 1830149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002129610433247664,
+        "hz": 200.035400390625,
+        "standardDev": 5.222436763083944e-9,
+        "confidence": 0.002452296758858243,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 41,
+    "end": 42,
+    "startSamples": 1808100,
+    "endSamples": 1852199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.6840777122917055e-7,
+        "hz": 202,
+        "standardDev": 1.7624449798291218e-8,
+        "confidence": 0.06566296392082925,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 41.5,
+    "end": 42.5,
+    "startSamples": 1830150,
+    "endSamples": 1874249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.857594669000707e-7,
+        "hz": 200,
+        "standardDev": 2.3160507209098437e-8,
+        "confidence": 0.039539279376340955,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 42,
+    "end": 43,
+    "startSamples": 1852200,
+    "endSamples": 1896299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.002206254166012e-7,
+        "hz": 202,
+        "standardDev": 9.784193392569343e-9,
+        "confidence": 0.0163009949646071,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 42.5,
+    "end": 43.5,
+    "startSamples": 1874250,
+    "endSamples": 1918349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.083874987782336e-7,
+        "hz": 201.00048828125,
+        "standardDev": 1.4551561017378039e-9,
+        "confidence": 0.0028622971753531753,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 43,
+    "end": 44,
+    "startSamples": 1896300,
+    "endSamples": 1940399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.9229353283144704e-7,
+        "hz": 200,
+        "standardDev": 1.5180026442855403e-8,
+        "confidence": 0.0386955816816324,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 43.5,
+    "end": 44.5,
+    "startSamples": 1918350,
+    "endSamples": 1962449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.738822824428519e-7,
+        "hz": 200,
+        "standardDev": 5.975497417586987e-8,
+        "confidence": 0.08867271886011834,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 44,
+    "end": 45,
+    "startSamples": 1940400,
+    "endSamples": 1984499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012692394240700972,
+        "hz": 202,
+        "standardDev": 3.031739319109229e-8,
+        "confidence": 0.02388626811943239,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 44.5,
+    "end": 45.5,
+    "startSamples": 1962450,
+    "endSamples": 2006549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.05024320531326e-7,
+        "hz": 199.909423828125,
+        "standardDev": 2.602222638437241e-9,
+        "confidence": 0.0028753068612670163,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 45,
+    "end": 46,
+    "startSamples": 1984500,
+    "endSamples": 2028599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.916658137064343e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.637979712217438e-8,
+        "confidence": 0.06735282018242945,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 45.5,
+    "end": 46.5,
+    "startSamples": 2006550,
+    "endSamples": 2050649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2163373942638394e-7,
+        "hz": 201.00048828125,
+        "standardDev": 1.2926614666906259e-8,
+        "confidence": 0.058324218597592445,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 46,
+    "end": 47,
+    "startSamples": 2028600,
+    "endSamples": 2072699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.307489253607618e-7,
+        "hz": 198.00048828125,
+        "standardDev": 6.493677442614809e-9,
+        "confidence": 0.01223493281347845,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 46.5,
+    "end": 47.5,
+    "startSamples": 2050650,
+    "endSamples": 2094749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.269324812356848e-7,
+        "hz": 200,
+        "standardDev": 3.1756619370876953e-9,
+        "confidence": 0.005065397043758941,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 47,
+    "end": 48,
+    "startSamples": 2072700,
+    "endSamples": 2116799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.717605167043999e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.9771006035649454e-8,
+        "confidence": 0.029431628599793765,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 47.5,
+    "end": 48.5,
+    "startSamples": 2094750,
+    "endSamples": 2138849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001907534794313562,
+        "hz": 200.00048828125,
+        "standardDev": 1.1371436588291321e-8,
+        "confidence": 0.005961325907233792,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 48,
+    "end": 49,
+    "startSamples": 2116800,
+    "endSamples": 2160899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017605880767360893,
+        "hz": 200.87646484375,
+        "standardDev": 4.56206459240074e-9,
+        "confidence": 0.002591216339973311,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 48.5,
+    "end": 49.5,
+    "startSamples": 2138850,
+    "endSamples": 2182949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.845131820321467e-7,
+        "hz": 198.361328125,
+        "standardDev": 1.8382492292627956e-9,
+        "confidence": 0.0026854840454722845,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 49,
+    "end": 50,
+    "startSamples": 2160900,
+    "endSamples": 2204999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.116404966660525e-7,
+        "hz": 200.00048828125,
+        "standardDev": 2.2654119343338814e-8,
+        "confidence": 0.03183365681052519,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 49.5,
+    "end": 50.5,
+    "startSamples": 2182950,
+    "endSamples": 2227049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017935622196985255,
+        "hz": 201.58447265625,
+        "standardDev": 6.124119022831334e-9,
+        "confidence": 0.003414500459237326,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 50,
+    "end": 51,
+    "startSamples": 2205000,
+    "endSamples": 2249099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.570732404763089e-7,
+        "hz": 202,
+        "standardDev": 1.7977038362598696e-8,
+        "confidence": 0.020974914993971996,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 50.5,
+    "end": 51.5,
+    "startSamples": 2227050,
+    "endSamples": 2271149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015246368193303058,
+        "hz": 200.791259765625,
+        "standardDev": 3.336334965795599e-9,
+        "confidence": 0.0021882817753680374,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 51,
+    "end": 52,
+    "startSamples": 2249100,
+    "endSamples": 2293199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.148650560764551e-7,
+        "hz": 200.1514892578125,
+        "standardDev": 3.2989330300414115e-9,
+        "confidence": 0.004614763306724828,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 51.5,
+    "end": 52.5,
+    "startSamples": 2271150,
+    "endSamples": 2315249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013745757753542044,
+        "hz": 199.829345703125,
+        "standardDev": 3.0573624121270342e-9,
+        "confidence": 0.002224222532467666,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 52,
+    "end": 53,
+    "startSamples": 2293200,
+    "endSamples": 2337299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.57456966801179e-7,
+        "hz": 201.1806640625,
+        "standardDev": 6.939722766059364e-10,
+        "confidence": 0.0015170219866988105,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 52.5,
+    "end": 53.5,
+    "startSamples": 2315250,
+    "endSamples": 2359349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.6219336630616014e-7,
+        "hz": 199.130859375,
+        "standardDev": 7.341384151981834e-10,
+        "confidence": 0.002026923967949264,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 53,
+    "end": 54,
+    "startSamples": 2337300,
+    "endSamples": 2381399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.999168212002217e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.817848900988776e-9,
+        "confidence": 0.006883459226950851,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 53.5,
+    "end": 54.5,
+    "startSamples": 2359350,
+    "endSamples": 2403449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.001590502906257e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.1315648894337607e-8,
+        "confidence": 0.05326794153188982,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 54,
+    "end": 55,
+    "startSamples": 2381400,
+    "endSamples": 2425499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.880726306401557e-7,
+        "hz": 202,
+        "standardDev": 3.301551981234952e-9,
+        "confidence": 0.008507562040097462,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 54.5,
+    "end": 55.5,
+    "startSamples": 2403450,
+    "endSamples": 2447549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.370005340886466e-7,
+        "hz": 201.60845947265625,
+        "standardDev": 1.7792158190850605e-9,
+        "confidence": 0.003313247764463773,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 55,
+    "end": 56,
+    "startSamples": 2425500,
+    "endSamples": 2469599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.7226346770632934e-7,
+        "hz": 200,
+        "standardDev": 4.164738186376392e-8,
+        "confidence": 0.08818675318257262,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 55.5,
+    "end": 56.5,
+    "startSamples": 2447550,
+    "endSamples": 2491649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015805334028256797,
+        "hz": 198.00048828125,
+        "standardDev": 5.8982363896630854e-8,
+        "confidence": 0.03731801162264721,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 56,
+    "end": 57,
+    "startSamples": 2469600,
+    "endSamples": 2513699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010273774098537652,
+        "hz": 200,
+        "standardDev": 5.431470714820801e-8,
+        "confidence": 0.052867336411396335,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 56.5,
+    "end": 57.5,
+    "startSamples": 2491650,
+    "endSamples": 2535749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2488531262777822e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.8477114357354423e-8,
+        "confidence": 0.08216238820334636,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 57,
+    "end": 58,
+    "startSamples": 2513700,
+    "endSamples": 2557799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.123369594847818e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.889212624496372e-8,
+        "confidence": 0.04718337803629141,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 57.5,
+    "end": 58.5,
+    "startSamples": 2535750,
+    "endSamples": 2579849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.532539961847966e-7,
+        "hz": 201.4404296875,
+        "standardDev": 3.055416975451271e-9,
+        "confidence": 0.0032052495847695894,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 58,
+    "end": 59,
+    "startSamples": 2557800,
+    "endSamples": 2601899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.355653099295439e-7,
+        "hz": 200,
+        "standardDev": 4.660854416349589e-8,
+        "confidence": 0.07333399642070257,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 58.5,
+    "end": 59.5,
+    "startSamples": 2579850,
+    "endSamples": 2623949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.123382912412761e-7,
+        "hz": 200,
+        "standardDev": 2.814585653966518e-9,
+        "confidence": 0.003951192415982577,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 59,
+    "end": 60,
+    "startSamples": 2601900,
+    "endSamples": 2645999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.985940695649243e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.3078415054789066e-8,
+        "confidence": 0.05526017836900961,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 59.5,
+    "end": 60.5,
+    "startSamples": 2623950,
+    "endSamples": 2668049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.2948272108644017e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.2714613677681604e-8,
+        "confidence": 0.03858962204681413,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 60,
+    "end": 61,
+    "startSamples": 2646000,
+    "endSamples": 2690099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.987564170442024e-7,
+        "hz": 198.8184814453125,
+        "standardDev": 1.881780242926628e-9,
+        "confidence": 0.002355887480554027,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 60.5,
+    "end": 61.5,
+    "startSamples": 2668050,
+    "endSamples": 2712149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.6312255776243156e-7,
+        "hz": 200,
+        "standardDev": 1.918546017957575e-8,
+        "confidence": 0.0528346690929832,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 61,
+    "end": 62,
+    "startSamples": 2690100,
+    "endSamples": 2734199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2512098547056986e-7,
+        "hz": 202,
+        "standardDev": 5.397409424928732e-9,
+        "confidence": 0.02397559433940172,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 61.5,
+    "end": 62.5,
+    "startSamples": 2712150,
+    "endSamples": 2756249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.604571778441467e-7,
+        "hz": 201.8623046875,
+        "standardDev": 9.756264480540547e-10,
+        "confidence": 0.0017407689411827985,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 62,
+    "end": 63,
+    "startSamples": 2734200,
+    "endSamples": 2778299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.2657676326364923e-7,
+        "hz": 199.919921875,
+        "standardDev": 1.2180453169053932e-9,
+        "confidence": 0.002855395374999764,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 62.5,
+    "end": 63.5,
+    "startSamples": 2756250,
+    "endSamples": 2800349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.300735084190992e-7,
+        "hz": 200.58544921875,
+        "standardDev": 3.1717103572773205e-9,
+        "confidence": 0.00434437124577406,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 63,
+    "end": 64,
+    "startSamples": 2778300,
+    "endSamples": 2822399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.46742331522574e-7,
+        "hz": 199.7470703125,
+        "standardDev": 1.6230162600521574e-9,
+        "confidence": 0.00250952532553609,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 63.5,
+    "end": 64.5,
+    "startSamples": 2800350,
+    "endSamples": 2844449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.8808334021035985e-7,
+        "hz": 199.1962890625,
+        "standardDev": 1.0176133525288539e-9,
+        "confidence": 0.0035323575177439543,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 64,
+    "end": 65,
+    "startSamples": 2822400,
+    "endSamples": 2866499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012080643655740539,
+        "hz": 200.68505859375,
+        "standardDev": 4.1465927741794214e-9,
+        "confidence": 0.003432427023214962,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 64.5,
+    "end": 65.5,
+    "startSamples": 2844450,
+    "endSamples": 2888549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.485211256684212e-7,
+        "hz": 201.00048828125,
+        "standardDev": 4.605814979234419e-9,
+        "confidence": 0.007102027670243236,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 65,
+    "end": 66,
+    "startSamples": 2866500,
+    "endSamples": 2910599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017438818725684633,
+        "hz": 200.13330078125,
+        "standardDev": 5.5420656858533805e-9,
+        "confidence": 0.0031780052152791693,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 65.5,
+    "end": 66.5,
+    "startSamples": 2888550,
+    "endSamples": 2932649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000019352303284621996,
+        "hz": 198.0341796875,
+        "standardDev": 7.67501709088359e-9,
+        "confidence": 0.0039659450237029,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 66,
+    "end": 67,
+    "startSamples": 2910600,
+    "endSamples": 2954699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.958385222324121e-7,
+        "hz": 201.8134765625,
+        "standardDev": 1.9404110130803756e-9,
+        "confidence": 0.0027885938347521847,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 66.5,
+    "end": 67.5,
+    "startSamples": 2932650,
+    "endSamples": 2976749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012867613552588709,
+        "hz": 200.35546875,
+        "standardDev": 5.910332740501303e-9,
+        "confidence": 0.004593184832872341,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 67,
+    "end": 68,
+    "startSamples": 2954700,
+    "endSamples": 2998799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.984257615568194e-7,
+        "hz": 200.115478515625,
+        "standardDev": 1.6949357738917892e-9,
+        "confidence": 0.002122847051661885,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 67.5,
+    "end": 68.5,
+    "startSamples": 2976750,
+    "endSamples": 3020849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2328893695004286e-7,
+        "hz": 198.0771484375,
+        "standardDev": 1.1725790407269406e-9,
+        "confidence": 0.005251397837902221,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 68,
+    "end": 69,
+    "startSamples": 2998800,
+    "endSamples": 3042899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.143579517202855e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.5943203907695255e-8,
+        "confidence": 0.1461493296297316,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 68.5,
+    "end": 69.5,
+    "startSamples": 3020850,
+    "endSamples": 3064949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001518970479662663,
+        "hz": 200.17724609375,
+        "standardDev": 4.439223702446674e-9,
+        "confidence": 0.00292252138002876,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 69,
+    "end": 70,
+    "startSamples": 3042900,
+    "endSamples": 3086999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.337368213442528e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.446619209931247e-8,
+        "confidence": 0.06457525642039648,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 69.5,
+    "end": 70.5,
+    "startSamples": 3064950,
+    "endSamples": 3109049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.951100868682452e-7,
+        "hz": 201.72021484375,
+        "standardDev": 1.4144453693456088e-9,
+        "confidence": 0.003579876637817335,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 70,
+    "end": 71,
+    "startSamples": 3087000,
+    "endSamples": 3131099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.819257965182633e-7,
+        "hz": 202,
+        "standardDev": 1.0287046312693172e-7,
+        "confidence": 0.13156039049356136,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 70.5,
+    "end": 71.5,
+    "startSamples": 3109050,
+    "endSamples": 3153149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.450845946816044e-7,
+        "hz": 200.27001953125,
+        "standardDev": 3.1322324332445476e-9,
+        "confidence": 0.004203861488483785,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 71,
+    "end": 72,
+    "startSamples": 3131100,
+    "endSamples": 3175199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.619389605785514e-7,
+        "hz": 200,
+        "standardDev": 2.0280462496183836e-8,
+        "confidence": 0.0439029054201961,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 71.5,
+    "end": 72.5,
+    "startSamples": 3153150,
+    "endSamples": 3197249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.4161167246613327e-7,
+        "hz": 200.302734375,
+        "standardDev": 1.3223439938600553e-9,
+        "confidence": 0.00299435924434598,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 72,
+    "end": 73,
+    "startSamples": 3175200,
+    "endSamples": 3219299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010370779152311456,
+        "hz": 200.73147583007812,
+        "standardDev": 2.377692271341779e-9,
+        "confidence": 0.0022926843165991394,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 72.5,
+    "end": 73.5,
+    "startSamples": 3197250,
+    "endSamples": 3241349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.3465287901145274e-7,
+        "hz": 200,
+        "standardDev": 3.8501998806486223e-8,
+        "confidence": 0.11505055303937362,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 73,
+    "end": 74,
+    "startSamples": 3219300,
+    "endSamples": 3263399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002295528898624193,
+        "hz": 199.00048828125,
+        "standardDev": 9.607485130724714e-9,
+        "confidence": 0.004185303498676442,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 73.5,
+    "end": 74.5,
+    "startSamples": 3241350,
+    "endSamples": 3285449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.078765303886987e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.3575877520305738e-8,
+        "confidence": 0.02233328125306108,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 74,
+    "end": 75,
+    "startSamples": 3263400,
+    "endSamples": 3307499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.919084758068869e-7,
+        "hz": 199.06448364257812,
+        "standardDev": 1.7871688586062702e-9,
+        "confidence": 0.003019333109177073,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 74.5,
+    "end": 75.5,
+    "startSamples": 3285450,
+    "endSamples": 3329549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.28767243466776e-7,
+        "hz": 200.00048828125,
+        "standardDev": 2.0992625921643677e-8,
+        "confidence": 0.03338695859201979,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 75,
+    "end": 76,
+    "startSamples": 3307500,
+    "endSamples": 3351599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.419720539584895e-7,
+        "hz": 200.68310546875,
+        "standardDev": 6.792165537970179e-10,
+        "confidence": 0.0012532316912580888,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 75.5,
+    "end": 76.5,
+    "startSamples": 3329550,
+    "endSamples": 3373649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.762658993463977e-7,
+        "hz": 202,
+        "standardDev": 2.5887594998192984e-8,
+        "confidence": 0.038280201653244694,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 76,
+    "end": 77,
+    "startSamples": 3351600,
+    "endSamples": 3395699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.291990974885315e-7,
+        "hz": 199.853515625,
+        "standardDev": 1.4184181484176272e-9,
+        "confidence": 0.002680310973977741,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 76.5,
+    "end": 77.5,
+    "startSamples": 3373650,
+    "endSamples": 3417749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016523795565833086,
+        "hz": 200,
+        "standardDev": 7.290999755658695e-9,
+        "confidence": 0.004412424328666101,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 77,
+    "end": 78,
+    "startSamples": 3395700,
+    "endSamples": 3439799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.432381379715473e-7,
+        "hz": 198.5,
+        "standardDev": 4.058828574737961e-9,
+        "confidence": 0.005461006866272169,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 77.5,
+    "end": 78.5,
+    "startSamples": 3417750,
+    "endSamples": 3461849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011966316187659954,
+        "hz": 200,
+        "standardDev": 5.59947499675575e-8,
+        "confidence": 0.046793640657181584,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 78,
+    "end": 79,
+    "startSamples": 3439800,
+    "endSamples": 3483899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.508875458686788e-8,
+        "hz": 198.00048828125,
+        "standardDev": 1.4027606931018845e-8,
+        "confidence": 0.14752119734835722,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 78.5,
+    "end": 79.5,
+    "startSamples": 3461850,
+    "endSamples": 3505949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.751122006778682e-7,
+        "hz": 202,
+        "standardDev": 2.5852541639793687e-8,
+        "confidence": 0.04495217039270257,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 79,
+    "end": 80,
+    "startSamples": 3483900,
+    "endSamples": 3527999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.64113791959764e-7,
+        "hz": 202,
+        "standardDev": 1.5165990141950513e-9,
+        "confidence": 0.0017550917810899484,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 79.5,
+    "end": 80.5,
+    "startSamples": 3505950,
+    "endSamples": 3550049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.740551181636816e-7,
+        "hz": 201.669921875,
+        "standardDev": 6.963406360835664e-10,
+        "confidence": 0.004000690375727573,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 80,
+    "end": 81,
+    "startSamples": 3528000,
+    "endSamples": 3572099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.536134229058085e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.3718297661178155e-8,
+        "confidence": 0.02477956114064846,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 80.5,
+    "end": 81.5,
+    "startSamples": 3550050,
+    "endSamples": 3594149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.5897932831686073e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.410799324388536e-8,
+        "confidence": 0.09501380874438323,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 81,
+    "end": 82,
+    "startSamples": 3572100,
+    "endSamples": 3616199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013689321537492356,
+        "hz": 202,
+        "standardDev": 1.5760276914960975e-8,
+        "confidence": 0.011512825432434091,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 81.5,
+    "end": 82.5,
+    "startSamples": 3594150,
+    "endSamples": 3638249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000032292228084772515,
+        "hz": 200,
+        "standardDev": 9.804510305493883e-8,
+        "confidence": 0.03036182662823822,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 82,
+    "end": 83,
+    "startSamples": 3616200,
+    "endSamples": 3660299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.09449024350651e-7,
+        "hz": 200,
+        "standardDev": 1.1209724970154608e-7,
+        "confidence": 0.1232584198785455,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 82.5,
+    "end": 83.5,
+    "startSamples": 3638250,
+    "endSamples": 3682349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.048154630626531e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.4457985781386755e-8,
+        "confidence": 0.015978933132341513,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 83,
+    "end": 84,
+    "startSamples": 3660300,
+    "endSamples": 3704399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.9866173805987745e-7,
+        "hz": 200,
+        "standardDev": 2.2691705616842047e-8,
+        "confidence": 0.07597794670401563,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 83.5,
+    "end": 84.5,
+    "startSamples": 3682350,
+    "endSamples": 3726449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.1569497209838703e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.8779912879731644e-8,
+        "confidence": 0.09116367197245802,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 84,
+    "end": 85,
+    "startSamples": 3704400,
+    "endSamples": 3748499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000037138234519367557,
+        "hz": 198.00048828125,
+        "standardDev": 5.631758618565905e-8,
+        "confidence": 0.015164314328482545,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 84.5,
+    "end": 85.5,
+    "startSamples": 3726450,
+    "endSamples": 3770549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.9641851621073096e-7,
+        "hz": 200.00048828125,
+        "standardDev": 2.5512667901805967e-8,
+        "confidence": 0.0643579117990638,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 85,
+    "end": 86,
+    "startSamples": 3748500,
+    "endSamples": 3792599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.7691678829089715e-7,
+        "hz": 199.7626953125,
+        "standardDev": 4.903271714379516e-10,
+        "confidence": 0.0027715129591417086,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 85.5,
+    "end": 86.5,
+    "startSamples": 3770550,
+    "endSamples": 3814649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018460027068935188,
+        "hz": 198.025390625,
+        "standardDev": 4.0060073759491996e-9,
+        "confidence": 0.002170098321627366,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 86,
+    "end": 87,
+    "startSamples": 3792600,
+    "endSamples": 3836699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001010975134331342,
+        "hz": 201.35009765625,
+        "standardDev": 1.8676358320475163e-9,
+        "confidence": 0.0018473607991187327,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 86.5,
+    "end": 87.5,
+    "startSamples": 3814650,
+    "endSamples": 3858749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.664844627977236e-8,
+        "hz": 202,
+        "standardDev": 3.6221503010310315e-9,
+        "confidence": 0.07764782302302882,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 87,
+    "end": 88,
+    "startSamples": 3836700,
+    "endSamples": 3880799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.214216718667263e-7,
+        "hz": 202,
+        "standardDev": 6.129841402799261e-9,
+        "confidence": 0.011756015780575436,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 87.5,
+    "end": 88.5,
+    "startSamples": 3858750,
+    "endSamples": 3902849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.136256458982841e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.27136226095692e-8,
+        "confidence": 0.06960860077326284,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 88,
+    "end": 89,
+    "startSamples": 3880800,
+    "endSamples": 3924899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.267529361393267e-7,
+        "hz": 201.00048828125,
+        "standardDev": 3.0067356649070802e-9,
+        "confidence": 0.013259963536082343,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 88.5,
+    "end": 89.5,
+    "startSamples": 3902850,
+    "endSamples": 3946949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.870878228332862e-7,
+        "hz": 198.00048828125,
+        "standardDev": 5.523317776159797e-8,
+        "confidence": 0.19239122445702703,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 89,
+    "end": 90,
+    "startSamples": 3924900,
+    "endSamples": 3968999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.288395522522825e-7,
+        "hz": 199.75,
+        "standardDev": 1.5372405494893087e-9,
+        "confidence": 0.002444567209526584,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 89.5,
+    "end": 90.5,
+    "startSamples": 3946950,
+    "endSamples": 3991049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.023085777183327e-7,
+        "hz": 200,
+        "standardDev": 1.2197343341987336e-8,
+        "confidence": 0.03031837752792592,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 90,
+    "end": 91,
+    "startSamples": 3969000,
+    "endSamples": 4013099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.810081726517307e-7,
+        "hz": 200,
+        "standardDev": 6.199785742656968e-9,
+        "confidence": 0.022062652783912846,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 90.5,
+    "end": 91.5,
+    "startSamples": 3991050,
+    "endSamples": 4035149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000030205811006759263,
+        "hz": 198.745361328125,
+        "standardDev": 6.614721357125435e-9,
+        "confidence": 0.0021898837133176906,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 91,
+    "end": 92,
+    "startSamples": 4013100,
+    "endSamples": 4057199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000030754979667478073,
+        "hz": 202,
+        "standardDev": 6.971780736461733e-8,
+        "confidence": 0.022668786687035463,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 91.5,
+    "end": 92.5,
+    "startSamples": 4035150,
+    "endSamples": 4079249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000016847057281845764,
+        "hz": 198.00048828125,
+        "standardDev": 3.200941496087885e-7,
+        "confidence": 0.019000003635870524,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 92,
+    "end": 93,
+    "startSamples": 4057200,
+    "endSamples": 4101299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000019293067767812654,
+        "hz": 200.00048828125,
+        "standardDev": 8.246400433062032e-8,
+        "confidence": 0.042742815877212695,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 92.5,
+    "end": 93.5,
+    "startSamples": 4079250,
+    "endSamples": 4123349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012601760229231175,
+        "hz": 202,
+        "standardDev": 1.9865119816546525e-8,
+        "confidence": 0.015763765898725152,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 93,
+    "end": 94,
+    "startSamples": 4101300,
+    "endSamples": 4145399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.178894106615419e-7,
+        "hz": 198.2021484375,
+        "standardDev": 1.1273115003788985e-9,
+        "confidence": 0.0015703135937610087,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 93.5,
+    "end": 94.5,
+    "startSamples": 4123350,
+    "endSamples": 4167449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010809341269559188,
+        "hz": 199.285400390625,
+        "standardDev": 1.1904411425665975e-9,
+        "confidence": 0.0011013077604636904,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 94,
+    "end": 95,
+    "startSamples": 4145400,
+    "endSamples": 4189499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.3625830892701184e-7,
+        "hz": 198.30126953125,
+        "standardDev": 3.439410006862052e-10,
+        "confidence": 0.0025241836875462818,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 94.5,
+    "end": 95.5,
+    "startSamples": 4167450,
+    "endSamples": 4211549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012467864059260537,
+        "hz": 202,
+        "standardDev": 5.0464566314948703e-8,
+        "confidence": 0.040475711056109906,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 95,
+    "end": 96,
+    "startSamples": 4189500,
+    "endSamples": 4233599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018408608581723129,
+        "hz": 201.579345703125,
+        "standardDev": 9.025397796869953e-10,
+        "confidence": 0.0004902813679155937,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 95.5,
+    "end": 96.5,
+    "startSamples": 4211550,
+    "endSamples": 4255649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.3360932376598636e-7,
+        "hz": 200.34423828125,
+        "standardDev": 1.0767467227812748e-9,
+        "confidence": 0.00460917700296879,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 96,
+    "end": 97,
+    "startSamples": 4233600,
+    "endSamples": 4277699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.7085601605961505e-7,
+        "hz": 201.8994140625,
+        "standardDev": 1.7741487057077407e-9,
+        "confidence": 0.0047839286107807045,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 96.5,
+    "end": 97.5,
+    "startSamples": 4255650,
+    "endSamples": 4299749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.1082417685284246e-7,
+        "hz": 200.96533203125,
+        "standardDev": 1.114554226376405e-9,
+        "confidence": 0.0027129713614095284,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 97,
+    "end": 98,
+    "startSamples": 4277700,
+    "endSamples": 4321799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011276369489879788,
+        "hz": 202,
+        "standardDev": 9.732523778164533e-8,
+        "confidence": 0.08630901804786717,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 97.5,
+    "end": 98.5,
+    "startSamples": 4299750,
+    "endSamples": 4343849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001253733239090712,
+        "hz": 198.159423828125,
+        "standardDev": 6.231412832635977e-9,
+        "confidence": 0.004970286053160239,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 98,
+    "end": 99,
+    "startSamples": 4321800,
+    "endSamples": 4365899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000010164230040439566,
+        "hz": 200.02001953125,
+        "standardDev": 1.3713234676163205e-8,
+        "confidence": 0.0013491661071820997,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 98.5,
+    "end": 99.5,
+    "startSamples": 4343850,
+    "endSamples": 4387949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.240304391974755e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.8075154934645623e-8,
+        "confidence": 0.038776208035900366,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 99,
+    "end": 100,
+    "startSamples": 4365900,
+    "endSamples": 4409999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.399664807509127e-7,
+        "hz": 202,
+        "standardDev": 2.0714058050288195e-8,
+        "confidence": 0.022037017781464205,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 99.5,
+    "end": 100.5,
+    "startSamples": 4387950,
+    "endSamples": 4432049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011019692185596645,
+        "hz": 200.00048828125,
+        "standardDev": 6.269421563761884e-9,
+        "confidence": 0.005689289190814576,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 100,
+    "end": 101,
+    "startSamples": 4410000,
+    "endSamples": 4454099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011185203640169696,
+        "hz": 198.45947265625,
+        "standardDev": 3.771112754837306e-9,
+        "confidence": 0.003371519085530116,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 100.5,
+    "end": 101.5,
+    "startSamples": 4432050,
+    "endSamples": 4476149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.754614052688257e-7,
+        "hz": 198.58203125,
+        "standardDev": 2.981656810295561e-9,
+        "confidence": 0.005181332376065577,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 101,
+    "end": 102,
+    "startSamples": 4454100,
+    "endSamples": 4498199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.753768576962577e-7,
+        "hz": 201.00048828125,
+        "standardDev": 1.9637928097055176e-8,
+        "confidence": 0.05231523386277991,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 101.5,
+    "end": 102.5,
+    "startSamples": 4476150,
+    "endSamples": 4520249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.463211653101397e-7,
+        "hz": 199.8505859375,
+        "standardDev": 2.7537789437521428e-9,
+        "confidence": 0.0029099834651269176,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 102,
+    "end": 103,
+    "startSamples": 4498200,
+    "endSamples": 4542299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.417777498138382e-7,
+        "hz": 200.30224609375,
+        "standardDev": 1.4109725540276356e-9,
+        "confidence": 0.004128333558273391,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 102.5,
+    "end": 103.5,
+    "startSamples": 4520250,
+    "endSamples": 4564349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.963998306755788e-7,
+        "hz": 200,
+        "standardDev": 1.1476461985697986e-9,
+        "confidence": 0.0016479702435545753,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 103,
+    "end": 104,
+    "startSamples": 4542300,
+    "endSamples": 4586399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004684554740688325,
+        "hz": 200.5341796875,
+        "standardDev": 6.371669673576734e-9,
+        "confidence": 0.00136014413883026,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 103.5,
+    "end": 104.5,
+    "startSamples": 4564350,
+    "endSamples": 4608449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.00000314877690540528,
+        "hz": 200.00048828125,
+        "standardDev": 7.59224725560619e-8,
+        "confidence": 0.024111734440674798,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 104,
+    "end": 105,
+    "startSamples": 4586400,
+    "endSamples": 4630499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000027484602312871144,
+        "hz": 201,
+        "standardDev": 6.568628553566306e-8,
+        "confidence": 0.023899303612954927,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 104.5,
+    "end": 105.5,
+    "startSamples": 4608450,
+    "endSamples": 4652549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.316283784328418e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.306308900865395e-8,
+        "confidence": 0.020681605600219068,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 105,
+    "end": 106,
+    "startSamples": 4630500,
+    "endSamples": 4674599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011522210849502606,
+        "hz": 200,
+        "standardDev": 3.668201377770766e-8,
+        "confidence": 0.03183591609008887,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 105.5,
+    "end": 106.5,
+    "startSamples": 4652550,
+    "endSamples": 4696649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.051777084813467e-7,
+        "hz": 200,
+        "standardDev": 2.122151888963964e-8,
+        "confidence": 0.04200802714243918,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 106,
+    "end": 107,
+    "startSamples": 4674600,
+    "endSamples": 4718699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015992094736318656,
+        "hz": 200.8271484375,
+        "standardDev": 5.61134781706818e-9,
+        "confidence": 0.0035088260228502747,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 106.5,
+    "end": 107.5,
+    "startSamples": 4696650,
+    "endSamples": 4740749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.843121894790219e-7,
+        "hz": 201.00048828125,
+        "standardDev": 1.953983794277568e-8,
+        "confidence": 0.03344075015822891,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 107,
+    "end": 108,
+    "startSamples": 4718700,
+    "endSamples": 4762799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016558447182947428,
+        "hz": 200.392578125,
+        "standardDev": 4.912377781239207e-9,
+        "confidence": 0.002966689887623144,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 107.5,
+    "end": 108.5,
+    "startSamples": 4740750,
+    "endSamples": 4784849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.051438881347312e-7,
+        "hz": 199.75,
+        "standardDev": 2.9420365330456467e-9,
+        "confidence": 0.004861714033193082,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 108,
+    "end": 109,
+    "startSamples": 4762800,
+    "endSamples": 4806899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.6717590384961226e-7,
+        "hz": 200.39404296875,
+        "standardDev": 1.230498859647084e-9,
+        "confidence": 0.0026339090897187873,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 108.5,
+    "end": 109.5,
+    "startSamples": 4784850,
+    "endSamples": 4828949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002418679026111377,
+        "hz": 202,
+        "standardDev": 2.8752494564472388e-8,
+        "confidence": 0.011887685076882282,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 109,
+    "end": 110,
+    "startSamples": 4806900,
+    "endSamples": 4850999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.027122883786099e-7,
+        "hz": 200.00048828125,
+        "standardDev": 5.0116258935032616e-8,
+        "confidence": 0.05551742186322512,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 109.5,
+    "end": 110.5,
+    "startSamples": 4828950,
+    "endSamples": 4873049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.192781252158251e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.0026369300323e-8,
+        "confidence": 0.09404455529180342,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 110,
+    "end": 111,
+    "startSamples": 4851000,
+    "endSamples": 4895099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010415728797235903,
+        "hz": 201.087890625,
+        "standardDev": 4.373279769248627e-9,
+        "confidence": 0.004198726612783156,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 110.5,
+    "end": 111.5,
+    "startSamples": 4873050,
+    "endSamples": 4917149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003817878804295631,
+        "hz": 200,
+        "standardDev": 2.0950651478506125e-7,
+        "confidence": 0.05487510880369959,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 111,
+    "end": 112,
+    "startSamples": 4895100,
+    "endSamples": 4939199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010936177200823897,
+        "hz": 200.166259765625,
+        "standardDev": 1.8206273979707048e-9,
+        "confidence": 0.0016647749616141411,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 111.5,
+    "end": 112.5,
+    "startSamples": 4917150,
+    "endSamples": 4961249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.231963948663746e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.2880853942909276e-8,
+        "confidence": 0.06880793004603912,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 112,
+    "end": 113,
+    "startSamples": 4939200,
+    "endSamples": 4983299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.402851454994757e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.941481539373708e-8,
+        "confidence": 0.09146062186857778,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 112.5,
+    "end": 113.5,
+    "startSamples": 4961250,
+    "endSamples": 5005349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.360345665340442e-7,
+        "hz": 201.71533203125,
+        "standardDev": 5.787729962614174e-10,
+        "confidence": 0.0006922835722700339,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 113,
+    "end": 114,
+    "startSamples": 4983300,
+    "endSamples": 5027399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.645413390121684e-7,
+        "hz": 201.16943359375,
+        "standardDev": 2.6866123965338614e-9,
+        "confidence": 0.0027853781770362956,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 113.5,
+    "end": 114.5,
+    "startSamples": 5005350,
+    "endSamples": 5049449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.42520237276841e-7,
+        "hz": 202,
+        "standardDev": 1.1168375017622623e-8,
+        "confidence": 0.017382137354858964,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 114,
+    "end": 115,
+    "startSamples": 5027400,
+    "endSamples": 5071499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.827659859064649e-7,
+        "hz": 201,
+        "standardDev": 8.469857249788572e-9,
+        "confidence": 0.017544436636075664,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 114.5,
+    "end": 115.5,
+    "startSamples": 5049450,
+    "endSamples": 5093549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011393327672055016,
+        "hz": 200.697265625,
+        "standardDev": 3.706535568351265e-9,
+        "confidence": 0.0032532510913755863,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 115,
+    "end": 116,
+    "startSamples": 5071500,
+    "endSamples": 5115599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000032290029436297073,
+        "hz": 200.2841796875,
+        "standardDev": 9.317510248999502e-9,
+        "confidence": 0.00288556883089296,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 115.5,
+    "end": 116.5,
+    "startSamples": 5093550,
+    "endSamples": 5137649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000021616319421988306,
+        "hz": 201.665283203125,
+        "standardDev": 1.3651692120735059e-8,
+        "confidence": 0.006315456324562099,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 116,
+    "end": 117,
+    "startSamples": 5115600,
+    "endSamples": 5159699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000038174292620567975,
+        "hz": 201.33447265625,
+        "standardDev": 8.819708025562148e-9,
+        "confidence": 0.0023103789016407773,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 116.5,
+    "end": 117.5,
+    "startSamples": 5137650,
+    "endSamples": 5181749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001832514824897325,
+        "hz": 200.33544921875,
+        "standardDev": 4.306471170534403e-9,
+        "confidence": 0.002350033468774635,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 117,
+    "end": 118,
+    "startSamples": 5159700,
+    "endSamples": 5203799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017396135337519909,
+        "hz": 199.8837890625,
+        "standardDev": 6.024600650716474e-9,
+        "confidence": 0.0034631833644813296,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 117.5,
+    "end": 118.5,
+    "startSamples": 5181750,
+    "endSamples": 5225849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003898019993266438,
+        "hz": 199.6796875,
+        "standardDev": 8.332119500953206e-9,
+        "confidence": 0.0021375261069328457,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 118,
+    "end": 119,
+    "startSamples": 5203800,
+    "endSamples": 5247899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001079093187185418,
+        "hz": 201.13623046875,
+        "standardDev": 4.318133312469763e-9,
+        "confidence": 0.00400163152149323,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 118.5,
+    "end": 119.5,
+    "startSamples": 5225850,
+    "endSamples": 5269949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012413395340671148,
+        "hz": 200.282470703125,
+        "standardDev": 6.8483113427142845e-9,
+        "confidence": 0.005516872019919105,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 119,
+    "end": 120,
+    "startSamples": 5247900,
+    "endSamples": 5291999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004539956983186327,
+        "hz": 200.732421875,
+        "standardDev": 1.079907967857738e-8,
+        "confidence": 0.0023786744496856766,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 119.5,
+    "end": 120.5,
+    "startSamples": 5269950,
+    "endSamples": 5314049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000028866039391817614,
+        "hz": 198.27001953125,
+        "standardDev": 7.812401577677318e-9,
+        "confidence": 0.002706433491493061,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 120,
+    "end": 121,
+    "startSamples": 5292000,
+    "endSamples": 5336099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012748356760264514,
+        "hz": 199.85205078125,
+        "standardDev": 3.972180515382941e-9,
+        "confidence": 0.0031158372722701576,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 120.5,
+    "end": 121.5,
+    "startSamples": 5314050,
+    "endSamples": 5358149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017127623002871382,
+        "hz": 200.76611328125,
+        "standardDev": 7.202057849245313e-9,
+        "confidence": 0.004204937163807211,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 121,
+    "end": 122,
+    "startSamples": 5336100,
+    "endSamples": 5380199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000034396545861557826,
+        "hz": 200,
+        "standardDev": 1.2911542244694376e-7,
+        "confidence": 0.0375373221970074,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 121.5,
+    "end": 122.5,
+    "startSamples": 5358150,
+    "endSamples": 5402249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001454123472047413,
+        "hz": 200,
+        "standardDev": 7.125095953084813e-8,
+        "confidence": 0.04899924999527476,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 122,
+    "end": 123,
+    "startSamples": 5380200,
+    "endSamples": 5424299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.043883957049781e-7,
+        "hz": 199.43212890625,
+        "standardDev": 1.5976844239386931e-9,
+        "confidence": 0.0017665910260749034,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 122.5,
+    "end": 123.5,
+    "startSamples": 5402250,
+    "endSamples": 5446349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.518941363733818e-7,
+        "hz": 200,
+        "standardDev": 6.902477827133765e-8,
+        "confidence": 0.09180119239161183,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 123,
+    "end": 124,
+    "startSamples": 5424300,
+    "endSamples": 5468399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.165371574260562e-7,
+        "hz": 200.42333984375,
+        "standardDev": 4.599150221123851e-9,
+        "confidence": 0.005017963738687702,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 123.5,
+    "end": 124.5,
+    "startSamples": 5446350,
+    "endSamples": 5490449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010657589016031276,
+        "hz": 200,
+        "standardDev": 2.9680652784107e-8,
+        "confidence": 0.02784931257854004,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 124,
+    "end": 125,
+    "startSamples": 5468400,
+    "endSamples": 5512499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.118968015286055e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.3531196935748202e-8,
+        "confidence": 0.03285093956916411,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 124.5,
+    "end": 125.5,
+    "startSamples": 5490450,
+    "endSamples": 5534549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000006455834407122932,
+        "hz": 200.08935546875,
+        "standardDev": 5.880170348994998e-9,
+        "confidence": 0.0009108304175998094,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 125,
+    "end": 126,
+    "startSamples": 5512500,
+    "endSamples": 5556599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018914357415443188,
+        "hz": 198.00048828125,
+        "standardDev": 8.576214860828401e-8,
+        "confidence": 0.04534235381333175,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 125.5,
+    "end": 126.5,
+    "startSamples": 5534550,
+    "endSamples": 5578649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.354641896745596e-7,
+        "hz": 200.00048828125,
+        "standardDev": 7.683029479986047e-9,
+        "confidence": 0.056716313724267844,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 126,
+    "end": 127,
+    "startSamples": 5556600,
+    "endSamples": 5600699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000019292585575989012,
+        "hz": 200.3408203125,
+        "standardDev": 9.61112867955584e-9,
+        "confidence": 0.0049817732525792545,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 126.5,
+    "end": 127.5,
+    "startSamples": 5578650,
+    "endSamples": 5622749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016725342108641365,
+        "hz": 200.2626953125,
+        "standardDev": 7.322900925388592e-9,
+        "confidence": 0.004378326540540609,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 127,
+    "end": 128,
+    "startSamples": 5600700,
+    "endSamples": 5644799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002324133606604128,
+        "hz": 200,
+        "standardDev": 1.149460873793423e-7,
+        "confidence": 0.04945760736504903,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 127.5,
+    "end": 128.5,
+    "startSamples": 5622750,
+    "endSamples": 5666849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012608809828695703,
+        "hz": 200,
+        "standardDev": 1.1764876222015092e-7,
+        "confidence": 0.09330679407377572,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 128,
+    "end": 129,
+    "startSamples": 5644800,
+    "endSamples": 5688899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016727808787635712,
+        "hz": 200,
+        "standardDev": 9.253567315295825e-8,
+        "confidence": 0.055318466589213765,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 128.5,
+    "end": 129.5,
+    "startSamples": 5666850,
+    "endSamples": 5710949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010147126887870508,
+        "hz": 200,
+        "standardDev": 6.266071058063096e-8,
+        "confidence": 0.061752170119734294,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 129,
+    "end": 130,
+    "startSamples": 5688900,
+    "endSamples": 5732999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014610066990253622,
+        "hz": 200,
+        "standardDev": 7.952509709768243e-8,
+        "confidence": 0.054431712839327594,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 129.5,
+    "end": 130.5,
+    "startSamples": 5710950,
+    "endSamples": 5755049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.911375495980347e-7,
+        "hz": 202,
+        "standardDev": 1.8915433104550213e-8,
+        "confidence": 0.023909158545389313,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 130,
+    "end": 131,
+    "startSamples": 5733000,
+    "endSamples": 5777099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.05204257454222e-7,
+        "hz": 200,
+        "standardDev": 5.0039476771366086e-8,
+        "confidence": 0.055279762947752914,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 130.5,
+    "end": 131.5,
+    "startSamples": 5755050,
+    "endSamples": 5799149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.7615865963602873e-7,
+        "hz": 202,
+        "standardDev": 1.4646236911638023e-8,
+        "confidence": 0.030759152679977447,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 131,
+    "end": 132,
+    "startSamples": 5777100,
+    "endSamples": 5821199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.687395271225195e-7,
+        "hz": 202,
+        "standardDev": 1.6307097591891472e-8,
+        "confidence": 0.02867234791011554,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 131.5,
+    "end": 132.5,
+    "startSamples": 5799150,
+    "endSamples": 5843249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.92580062499211e-7,
+        "hz": 200,
+        "standardDev": 3.053567103192436e-8,
+        "confidence": 0.06199128498420147,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 132,
+    "end": 133,
+    "startSamples": 5821200,
+    "endSamples": 5865299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011982328750044822,
+        "hz": 200.3369140625,
+        "standardDev": 3.246229497568685e-9,
+        "confidence": 0.002709180798896493,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 132.5,
+    "end": 133.5,
+    "startSamples": 5843250,
+    "endSamples": 5887349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8163243358689716e-7,
+        "hz": 200,
+        "standardDev": 4.1161687164687164e-8,
+        "confidence": 0.10785688935768796,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 133,
+    "end": 134,
+    "startSamples": 5865300,
+    "endSamples": 5909399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014279472401739632,
+        "hz": 201.5,
+        "standardDev": 4.4805682959786625e-9,
+        "confidence": 0.003137768798399587,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 133.5,
+    "end": 134.5,
+    "startSamples": 5887350,
+    "endSamples": 5931449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.39078570966489e-7,
+        "hz": 200,
+        "standardDev": 4.689121512714008e-8,
+        "confidence": 0.07337316138800544,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 134,
+    "end": 135,
+    "startSamples": 5909400,
+    "endSamples": 5953499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015717277417205153,
+        "hz": 198.05126953125,
+        "standardDev": 7.420439803429118e-9,
+        "confidence": 0.004721199229649165,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 134.5,
+    "end": 135.5,
+    "startSamples": 5931450,
+    "endSamples": 5975549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004917941957446838,
+        "hz": 200.5185546875,
+        "standardDev": 1.4968416890233605e-8,
+        "confidence": 0.003043634312838555,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 135,
+    "end": 136,
+    "startSamples": 5953500,
+    "endSamples": 5997599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010516509633571088,
+        "hz": 200.8642578125,
+        "standardDev": 3.645779888519727e-9,
+        "confidence": 0.00346672043819707,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 135.5,
+    "end": 136.5,
+    "startSamples": 5975550,
+    "endSamples": 6019649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.356674981300176e-7,
+        "hz": 200.26708984375,
+        "standardDev": 4.089938273176477e-9,
+        "confidence": 0.004894217236315374,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 136,
+    "end": 137,
+    "startSamples": 5997600,
+    "endSamples": 6041699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.185052264512522e-7,
+        "hz": 200,
+        "standardDev": 9.495981367787526e-9,
+        "confidence": 0.018314147829868208,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 136.5,
+    "end": 137.5,
+    "startSamples": 6019650,
+    "endSamples": 6063749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.770875922463059e-7,
+        "hz": 198.81640625,
+        "standardDev": 1.416410612042838e-9,
+        "confidence": 0.0029688691029960555,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 137,
+    "end": 138,
+    "startSamples": 6041700,
+    "endSamples": 6085799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.194607241085322e-7,
+        "hz": 200.00048828125,
+        "standardDev": 4.1785511498677336e-9,
+        "confidence": 0.008044017489558457,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 137.5,
+    "end": 138.5,
+    "startSamples": 6063750,
+    "endSamples": 6107849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.325993399287385e-7,
+        "hz": 202,
+        "standardDev": 3.440107898898633e-8,
+        "confidence": 0.10343098996034379,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 138,
+    "end": 139,
+    "startSamples": 6085800,
+    "endSamples": 6129899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.326425992448783e-7,
+        "hz": 200,
+        "standardDev": 7.340434914073035e-8,
+        "confidence": 0.10019121085285909,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 138.5,
+    "end": 139.5,
+    "startSamples": 6107850,
+    "endSamples": 6151949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000011636470179286542,
+        "hz": 199.37646484375,
+        "standardDev": 3.434616364512533e-8,
+        "confidence": 0.002951596413340456,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 139,
+    "end": 140,
+    "startSamples": 6129900,
+    "endSamples": 6173999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000022240734535561425,
+        "hz": 201.9794921875,
+        "standardDev": 6.696022323992701e-9,
+        "confidence": 0.003010701968177452,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 139.5,
+    "end": 140.5,
+    "startSamples": 6151950,
+    "endSamples": 6196049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.361402765468392e-7,
+        "hz": 200,
+        "standardDev": 9.662418737360177e-8,
+        "confidence": 0.11555978115615753,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 140,
+    "end": 141,
+    "startSamples": 6174000,
+    "endSamples": 6218099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.92745713783949e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.3034893848521154e-8,
+        "confidence": 0.07868567416676601,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 140.5,
+    "end": 141.5,
+    "startSamples": 6196050,
+    "endSamples": 6240149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001481926682672966,
+        "hz": 198.396484375,
+        "standardDev": 3.6369095504858618e-9,
+        "confidence": 0.0024541764400421834,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 141,
+    "end": 142,
+    "startSamples": 6218100,
+    "endSamples": 6262199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000026032758704889397,
+        "hz": 199.450439453125,
+        "standardDev": 5.7929462467644255e-9,
+        "confidence": 0.0022252525413975475,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 141.5,
+    "end": 142.5,
+    "startSamples": 6240150,
+    "endSamples": 6284249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.830676453365447e-7,
+        "hz": 200,
+        "standardDev": 3.462005501124836e-9,
+        "confidence": 0.004421081016106782,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 142,
+    "end": 143,
+    "startSamples": 6262200,
+    "endSamples": 6306299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.3364371147720124e-7,
+        "hz": 201.00048828125,
+        "standardDev": 7.95606891851354e-9,
+        "confidence": 0.01834701785807363,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 142.5,
+    "end": 143.5,
+    "startSamples": 6284250,
+    "endSamples": 6328349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017368240818954496,
+        "hz": 200.734375,
+        "standardDev": 6.99831216363875e-9,
+        "confidence": 0.004029373058900287,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 143,
+    "end": 144,
+    "startSamples": 6306300,
+    "endSamples": 6350399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000033645147100637874,
+        "hz": 198.8798828125,
+        "standardDev": 7.477743649739575e-9,
+        "confidence": 0.0022225326069677982,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 143.5,
+    "end": 144.5,
+    "startSamples": 6328350,
+    "endSamples": 6372449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.033298157946607e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.4172565034972486e-8,
+        "confidence": 0.03436874776545765,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 144,
+    "end": 145,
+    "startSamples": 6350400,
+    "endSamples": 6394499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.882353141493083e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.6643845876946412e-9,
+        "confidence": 0.0034089803409543045,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 144.5,
+    "end": 145.5,
+    "startSamples": 6372450,
+    "endSamples": 6416549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018501954339980019,
+        "hz": 199.912353515625,
+        "standardDev": 3.439484363869449e-9,
+        "confidence": 0.0018589843541215675,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 145,
+    "end": 146,
+    "startSamples": 6394500,
+    "endSamples": 6438599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.1936702274511935e-7,
+        "hz": 200,
+        "standardDev": 2.597065267536908e-8,
+        "confidence": 0.06192821864096211,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 145.5,
+    "end": 146.5,
+    "startSamples": 6416550,
+    "endSamples": 6460649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.53777478963209e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.0986028225526796e-7,
+        "confidence": 0.11518439539450032,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 146,
+    "end": 147,
+    "startSamples": 6438600,
+    "endSamples": 6482699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013275951705800702,
+        "hz": 200,
+        "standardDev": 1.1876112205378434e-8,
+        "confidence": 0.00894558256052511,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 146.5,
+    "end": 147.5,
+    "startSamples": 6460650,
+    "endSamples": 6504749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.181638132585445e-7,
+        "hz": 202,
+        "standardDev": 5.880686687543113e-8,
+        "confidence": 0.11349087946843692,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 147,
+    "end": 148,
+    "startSamples": 6482700,
+    "endSamples": 6526799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.904626921817595e-7,
+        "hz": 201.3447265625,
+        "standardDev": 9.852519446744568e-10,
+        "confidence": 0.0016686099862363041,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 147.5,
+    "end": 148.5,
+    "startSamples": 6504750,
+    "endSamples": 6548849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001931206859901764,
+        "hz": 198.9423828125,
+        "standardDev": 3.131767171912757e-9,
+        "confidence": 0.001621663239158162,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 148,
+    "end": 149,
+    "startSamples": 6526800,
+    "endSamples": 6570899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014663751096620955,
+        "hz": 200.4454345703125,
+        "standardDev": 5.101536500737022e-9,
+        "confidence": 0.003479011930250641,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 148.5,
+    "end": 149.5,
+    "startSamples": 6548850,
+    "endSamples": 6592949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012006770811854555,
+        "hz": 200.6748046875,
+        "standardDev": 3.7563707504134296e-9,
+        "confidence": 0.0031285437269317077,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 149,
+    "end": 150,
+    "startSamples": 6570900,
+    "endSamples": 6614999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.806992900042217e-7,
+        "hz": 200,
+        "standardDev": 1.2546861840122818e-8,
+        "confidence": 0.026101269756426366,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 149.5,
+    "end": 150.5,
+    "startSamples": 6592950,
+    "endSamples": 6637049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.149478398262764e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.8314665707193278e-8,
+        "confidence": 0.0200171691871208,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 150,
+    "end": 151,
+    "startSamples": 6615000,
+    "endSamples": 6659099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012969969991483136,
+        "hz": 198.00048828125,
+        "standardDev": 5.36736638794433e-9,
+        "confidence": 0.004138302857654155,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 150.5,
+    "end": 151.5,
+    "startSamples": 6637050,
+    "endSamples": 6681149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.391222251570919e-7,
+        "hz": 198.1884765625,
+        "standardDev": 1.0585940526778841e-9,
+        "confidence": 0.0014322313910299371,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 151,
+    "end": 152,
+    "startSamples": 6659100,
+    "endSamples": 6703199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.060790363442223e-7,
+        "hz": 200.080078125,
+        "standardDev": 1.1140386524487516e-9,
+        "confidence": 0.0027434035070562244,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 151.5,
+    "end": 152.5,
+    "startSamples": 6681150,
+    "endSamples": 6725249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.7530912166155796e-7,
+        "hz": 199.693359375,
+        "standardDev": 6.507725040995065e-10,
+        "confidence": 0.0013691563541313363,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 152,
+    "end": 153,
+    "startSamples": 6703200,
+    "endSamples": 6747299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.0812586835561035e-7,
+        "hz": 199.00048828125,
+        "standardDev": 2.5121612474084172e-9,
+        "confidence": 0.023233674657264086,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 152.5,
+    "end": 153.5,
+    "startSamples": 6725250,
+    "endSamples": 6769349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010157325715041408,
+        "hz": 198.00048828125,
+        "standardDev": 2.9152073148828307e-9,
+        "confidence": 0.00287005398533776,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 153,
+    "end": 154,
+    "startSamples": 6747300,
+    "endSamples": 6791399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.881189087008094e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.0419725784956942e-8,
+        "confidence": 0.02684673575898677,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 153.5,
+    "end": 154.5,
+    "startSamples": 6769350,
+    "endSamples": 6813449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.795502709458904e-7,
+        "hz": 201.7998046875,
+        "standardDev": 7.009032872923263e-10,
+        "confidence": 0.0025072531137986013,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 154,
+    "end": 155,
+    "startSamples": 6791400,
+    "endSamples": 6835499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.478448863821151e-7,
+        "hz": 200.044921875,
+        "standardDev": 2.2106108338167076e-9,
+        "confidence": 0.0034122532727885635,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 154.5,
+    "end": 155.5,
+    "startSamples": 6813450,
+    "endSamples": 6857549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001802038809033024,
+        "hz": 201.142578125,
+        "standardDev": 5.140236507420902e-9,
+        "confidence": 0.0028524560523639103,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 155,
+    "end": 156,
+    "startSamples": 6835500,
+    "endSamples": 6879599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.0301905748011137e-7,
+        "hz": 200.06744384765625,
+        "standardDev": 8.743743464628488e-10,
+        "confidence": 0.0043068584659768025,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 155.5,
+    "end": 156.5,
+    "startSamples": 6857550,
+    "endSamples": 6901649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.924916176416942e-7,
+        "hz": 198.333984375,
+        "standardDev": 2.9607232930157645e-9,
+        "confidence": 0.00601172321915497,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 156,
+    "end": 157,
+    "startSamples": 6879600,
+    "endSamples": 6923699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000019383055189744733,
+        "hz": 198.00048828125,
+        "standardDev": 1.7798800075252315e-8,
+        "confidence": 0.009182659751528426,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 156.5,
+    "end": 157.5,
+    "startSamples": 6901650,
+    "endSamples": 6945749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.355936882375622e-7,
+        "hz": 201.4267578125,
+        "standardDev": 1.4185636893808396e-9,
+        "confidence": 0.002231871894943411,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 157,
+    "end": 158,
+    "startSamples": 6923700,
+    "endSamples": 6967799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.2720753248966786e-7,
+        "hz": 200.870361328125,
+        "standardDev": 2.578301721391351e-9,
+        "confidence": 0.006035244056596095,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 157.5,
+    "end": 158.5,
+    "startSamples": 6945750,
+    "endSamples": 6989849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.385813646133847e-7,
+        "hz": 200,
+        "standardDev": 1.5115590291432068e-8,
+        "confidence": 0.03446473450771594,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 158,
+    "end": 159,
+    "startSamples": 6967800,
+    "endSamples": 7011899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010779887063875847,
+        "hz": 198.787353515625,
+        "standardDev": 3.4146156830253454e-9,
+        "confidence": 0.0031675802007870386,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 158.5,
+    "end": 159.5,
+    "startSamples": 6989850,
+    "endSamples": 7033949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004299139974415482,
+        "hz": 198.00048828125,
+        "standardDev": 3.468644138168671e-8,
+        "confidence": 0.008068227968409598,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 159,
+    "end": 160,
+    "startSamples": 7011900,
+    "endSamples": 7055999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000006123272802051737,
+        "hz": 199.560546875,
+        "standardDev": 2.1767400970767074e-8,
+        "confidence": 0.0035548638243707562,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 159.5,
+    "end": 160.5,
+    "startSamples": 7033950,
+    "endSamples": 7078049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.208805691679135e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.1030021307989356e-8,
+        "confidence": 0.037800896346520875,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 160,
+    "end": 161,
+    "startSamples": 7056000,
+    "endSamples": 7100099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000048328413273879515,
+        "hz": 201.26611328125,
+        "standardDev": 8.853618068979905e-9,
+        "confidence": 0.001831969532872104,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 160.5,
+    "end": 161.5,
+    "startSamples": 7078050,
+    "endSamples": 7122149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.748093279072838e-7,
+        "hz": 200.00048828125,
+        "standardDev": 5.194184966023977e-8,
+        "confidence": 0.05937505237226368,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 161,
+    "end": 162,
+    "startSamples": 7100100,
+    "endSamples": 7144199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.384224507192655e-7,
+        "hz": 200,
+        "standardDev": 3.488853869984181e-8,
+        "confidence": 0.05464804481818482,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 161.5,
+    "end": 162.5,
+    "startSamples": 7122150,
+    "endSamples": 7166249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.478208855283933e-7,
+        "hz": 200,
+        "standardDev": 2.85709188324879e-8,
+        "confidence": 0.038205564173699615,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 162,
+    "end": 163,
+    "startSamples": 7144200,
+    "endSamples": 7188299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016409856732130202,
+        "hz": 200.234375,
+        "standardDev": 2.6600182166144362e-9,
+        "confidence": 0.0016209880805395265,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 162.5,
+    "end": 163.5,
+    "startSamples": 7166250,
+    "endSamples": 7210349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.6113926221872465e-7,
+        "hz": 200.18212890625,
+        "standardDev": 5.750797217871254e-10,
+        "confidence": 0.0022021955522929025,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 163,
+    "end": 164,
+    "startSamples": 7188300,
+    "endSamples": 7232399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.219876877997204e-7,
+        "hz": 200,
+        "standardDev": 9.385820047561356e-9,
+        "confidence": 0.010179984149202868,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 163.5,
+    "end": 164.5,
+    "startSamples": 7210350,
+    "endSamples": 7254449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.763237930108639e-7,
+        "hz": 202,
+        "standardDev": 1.885673473275242e-8,
+        "confidence": 0.1069437902324991,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 164,
+    "end": 165,
+    "startSamples": 7232400,
+    "endSamples": 7276499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.5809217417339876e-7,
+        "hz": 200,
+        "standardDev": 1.7384416488727822e-8,
+        "confidence": 0.06735739487028435,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 164.5,
+    "end": 165.5,
+    "startSamples": 7254450,
+    "endSamples": 7298549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.293488345961062e-7,
+        "hz": 200.6201171875,
+        "standardDev": 2.588716732967755e-9,
+        "confidence": 0.004113325695802872,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 165,
+    "end": 166,
+    "startSamples": 7276500,
+    "endSamples": 7320599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.7732962574685e-7,
+        "hz": 200,
+        "standardDev": 6.674072513808365e-8,
+        "confidence": 0.07607257657721161,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 165.5,
+    "end": 166.5,
+    "startSamples": 7298550,
+    "endSamples": 7342649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.8945061408706926e-7,
+        "hz": 200.5,
+        "standardDev": 5.72933797668403e-9,
+        "confidence": 0.01979383597009953,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 166,
+    "end": 167,
+    "startSamples": 7320600,
+    "endSamples": 7364699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011295977713101443,
+        "hz": 198.660400390625,
+        "standardDev": 2.163897959904306e-9,
+        "confidence": 0.0019156358261884197,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 166.5,
+    "end": 167.5,
+    "startSamples": 7342650,
+    "endSamples": 7386749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.490384370174095e-7,
+        "hz": 200,
+        "standardDev": 6.287712266855828e-9,
+        "confidence": 0.042188527957531835,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 167,
+    "end": 168,
+    "startSamples": 7364700,
+    "endSamples": 7408799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.718024047629524e-7,
+        "hz": 202,
+        "standardDev": 2.7650094784109675e-8,
+        "confidence": 0.048356030953686444,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 167.5,
+    "end": 168.5,
+    "startSamples": 7386750,
+    "endSamples": 7430849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.893261641340798e-7,
+        "hz": 199.83740234375,
+        "standardDev": 1.5390097015065272e-9,
+        "confidence": 0.0031451612734217597,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 168,
+    "end": 169,
+    "startSamples": 7408800,
+    "endSamples": 7452899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003833991806098701,
+        "hz": 200.331298828125,
+        "standardDev": 1.4548344233888835e-8,
+        "confidence": 0.0037945684210245047,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 168.5,
+    "end": 169.5,
+    "startSamples": 7430850,
+    "endSamples": 7474949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.486752982404917e-7,
+        "hz": 200,
+        "standardDev": 1.2075270299751026e-7,
+        "confidence": 0.12728559837224634,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 169,
+    "end": 170,
+    "startSamples": 7452900,
+    "endSamples": 7496999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000027076517812122248,
+        "hz": 200,
+        "standardDev": 1.2443423713603212e-8,
+        "confidence": 0.004595651405378372,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 169.5,
+    "end": 170.5,
+    "startSamples": 7474950,
+    "endSamples": 7519049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010029592331419924,
+        "hz": 198.00048828125,
+        "standardDev": 4.2577121039913986e-8,
+        "confidence": 0.04245149716258328,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 170,
+    "end": 171,
+    "startSamples": 7497000,
+    "endSamples": 7541099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.607421909480307e-7,
+        "hz": 198.70849609375,
+        "standardDev": 3.5125624355666314e-9,
+        "confidence": 0.004617283591421825,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 170.5,
+    "end": 171.5,
+    "startSamples": 7519050,
+    "endSamples": 7563149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.59005993841026e-7,
+        "hz": 201.1124267578125,
+        "standardDev": 2.164755424899894e-9,
+        "confidence": 0.00225729081862104,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 171,
+    "end": 172,
+    "startSamples": 7541100,
+    "endSamples": 7585199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.117428394302073e-7,
+        "hz": 199.4296875,
+        "standardDev": 1.7518455911148547e-9,
+        "confidence": 0.0024613462813581825,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 171.5,
+    "end": 172.5,
+    "startSamples": 7563150,
+    "endSamples": 7607249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.2440325780294545e-7,
+        "hz": 198.00048828125,
+        "standardDev": 8.974184153970707e-9,
+        "confidence": 0.03999132740689166,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 172,
+    "end": 173,
+    "startSamples": 7585200,
+    "endSamples": 7629299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000020626428398852807,
+        "hz": 200.163330078125,
+        "standardDev": 4.779553927823436e-9,
+        "confidence": 0.0023171990009134415,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 172.5,
+    "end": 173.5,
+    "startSamples": 7607250,
+    "endSamples": 7651349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003122812025477524,
+        "hz": 200,
+        "standardDev": 1.6586257618684502e-7,
+        "confidence": 0.053113211693067625,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 173,
+    "end": 174,
+    "startSamples": 7629300,
+    "endSamples": 7673399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015423297718900734,
+        "hz": 198.1767578125,
+        "standardDev": 3.170609016570468e-9,
+        "confidence": 0.0020557270399345225,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 173.5,
+    "end": 174.5,
+    "startSamples": 7651350,
+    "endSamples": 7695449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.953563288746197e-7,
+        "hz": 200.077392578125,
+        "standardDev": 2.859794836063723e-9,
+        "confidence": 0.005773207425371504,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 174,
+    "end": 175,
+    "startSamples": 7673400,
+    "endSamples": 7717499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015894977202750483,
+        "hz": 200.240234375,
+        "standardDev": 5.8607627065190046e-9,
+        "confidence": 0.0036871790577370895,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 174.5,
+    "end": 175.5,
+    "startSamples": 7695450,
+    "endSamples": 7739549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.434984251645443e-7,
+        "hz": 200,
+        "standardDev": 9.496982037246588e-8,
+        "confidence": 0.12773372095771154,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 175,
+    "end": 176,
+    "startSamples": 7717500,
+    "endSamples": 7761599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000030625260505367683,
+        "hz": 199.88134765625,
+        "standardDev": 1.1620582578532122e-8,
+        "confidence": 0.0037944436673429715,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 175.5,
+    "end": 176.5,
+    "startSamples": 7739550,
+    "endSamples": 7783649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011489213207320823,
+        "hz": 201.00048828125,
+        "standardDev": 3.044666544528956e-8,
+        "confidence": 0.026500217983498834,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 176,
+    "end": 177,
+    "startSamples": 7761600,
+    "endSamples": 7805699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001269095996604561,
+        "hz": 200.5234375,
+        "standardDev": 3.5258871802976237e-9,
+        "confidence": 0.0027782667266550826,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 176.5,
+    "end": 177.5,
+    "startSamples": 7783650,
+    "endSamples": 7827749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.91934428302683e-7,
+        "hz": 200,
+        "standardDev": 1.213943689494103e-8,
+        "confidence": 0.024676941064738285,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 177,
+    "end": 178,
+    "startSamples": 7805700,
+    "endSamples": 7849799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.620592079887346e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.2616397885936665e-8,
+        "confidence": 0.02730472127339201,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 177.5,
+    "end": 178.5,
+    "startSamples": 7827750,
+    "endSamples": 7871849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010333463569022791,
+        "hz": 200.9189453125,
+        "standardDev": 3.777186251425098e-9,
+        "confidence": 0.003655295464289614,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 178,
+    "end": 179,
+    "startSamples": 7849800,
+    "endSamples": 7893899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015518669220126644,
+        "hz": 200.5654296875,
+        "standardDev": 6.260253140305875e-9,
+        "confidence": 0.004034014161592386,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 178.5,
+    "end": 179.5,
+    "startSamples": 7871850,
+    "endSamples": 7915949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.00000769792968036882,
+        "hz": 200,
+        "standardDev": 3.081693649178798e-7,
+        "confidence": 0.04003275915909833,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 179,
+    "end": 180,
+    "startSamples": 7893900,
+    "endSamples": 7937999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.904510349265851e-7,
+        "hz": 201.00048828125,
+        "standardDev": 3.7572802875730944e-8,
+        "confidence": 0.03793504327906118,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 179.5,
+    "end": 180.5,
+    "startSamples": 7915950,
+    "endSamples": 7960049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.11307663480998e-7,
+        "hz": 200,
+        "standardDev": 2.4205519728631063e-8,
+        "confidence": 0.05885015495158488,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 180,
+    "end": 181,
+    "startSamples": 7938000,
+    "endSamples": 7982099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.201111010048338e-7,
+        "hz": 202,
+        "standardDev": 2.2256168607514375e-8,
+        "confidence": 0.027137992133316087,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 180.5,
+    "end": 181.5,
+    "startSamples": 7960050,
+    "endSamples": 8004149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.46434845473028e-7,
+        "hz": 198.00048828125,
+        "standardDev": 4.0456372730911944e-8,
+        "confidence": 0.06258383658341937,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 181,
+    "end": 182,
+    "startSamples": 7982100,
+    "endSamples": 8026199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010276147145531895,
+        "hz": 198.44140625,
+        "standardDev": 1.7718031605329438e-9,
+        "confidence": 0.0017241901419281739,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 181.5,
+    "end": 182.5,
+    "startSamples": 8004150,
+    "endSamples": 8048249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001277891414272097,
+        "hz": 201.620361328125,
+        "standardDev": 3.146544410018011e-9,
+        "confidence": 0.0024622940375652515,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 182,
+    "end": 183,
+    "startSamples": 8026200,
+    "endSamples": 8070299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.329177243862726e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.633984989243064e-8,
+        "confidence": 0.025816704546037256,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 182.5,
+    "end": 183.5,
+    "startSamples": 8048250,
+    "endSamples": 8092349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011778431259067014,
+        "hz": 202,
+        "standardDev": 3.543272222153553e-8,
+        "confidence": 0.030082717674528595,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 183,
+    "end": 184,
+    "startSamples": 8070300,
+    "endSamples": 8114399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8152722792760166e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.7475026817923601e-9,
+        "confidence": 0.004580283014883449,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 183.5,
+    "end": 184.5,
+    "startSamples": 8092350,
+    "endSamples": 8136449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.158669925036973e-7,
+        "hz": 200,
+        "standardDev": 3.364692827320459e-9,
+        "confidence": 0.010652245746383503,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 184,
+    "end": 185,
+    "startSamples": 8114400,
+    "endSamples": 8158499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.54350491520332e-7,
+        "hz": 198.25,
+        "standardDev": 1.2812944416481346e-9,
+        "confidence": 0.001958116419644077,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 184.5,
+    "end": 185.5,
+    "startSamples": 8136450,
+    "endSamples": 8180549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015934094360439671,
+        "hz": 200,
+        "standardDev": 7.791037878497848e-8,
+        "confidence": 0.04889539187015878,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 185,
+    "end": 186,
+    "startSamples": 8158500,
+    "endSamples": 8202599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.527252464357357e-7,
+        "hz": 200,
+        "standardDev": 4.634128443884493e-8,
+        "confidence": 0.05434491899066503,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 185.5,
+    "end": 186.5,
+    "startSamples": 8180550,
+    "endSamples": 8224649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001340119766229937,
+        "hz": 200.34326171875,
+        "standardDev": 4.468549643280309e-9,
+        "confidence": 0.0033344405148588766,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 186,
+    "end": 187,
+    "startSamples": 8202600,
+    "endSamples": 8246699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011339101183396055,
+        "hz": 200.00048828125,
+        "standardDev": 2.2607317900804154e-8,
+        "confidence": 0.019937486697718377,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 186.5,
+    "end": 187.5,
+    "startSamples": 8224650,
+    "endSamples": 8268749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.447228178444135e-7,
+        "hz": 201.077392578125,
+        "standardDev": 1.787591688214174e-9,
+        "confidence": 0.002400344994649587,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 187,
+    "end": 188,
+    "startSamples": 8246700,
+    "endSamples": 8290799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.0291883896567679e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.3149954102375723e-8,
+        "confidence": 0.12777013649329258,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 187.5,
+    "end": 188.5,
+    "startSamples": 8268750,
+    "endSamples": 8312849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.8331009661704584e-7,
+        "hz": 200,
+        "standardDev": 8.821281881039638e-9,
+        "confidence": 0.048122182268378964,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 188,
+    "end": 189,
+    "startSamples": 8290800,
+    "endSamples": 8334899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.971003222648394e-7,
+        "hz": 200,
+        "standardDev": 1.873814813972837e-8,
+        "confidence": 0.03769490241799778,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 188.5,
+    "end": 189.5,
+    "startSamples": 8312850,
+    "endSamples": 8356949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.4819893885951024e-7,
+        "hz": 200.37939453125,
+        "standardDev": 7.0853405129481e-10,
+        "confidence": 0.0028547021778198107,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 189,
+    "end": 190,
+    "startSamples": 8334900,
+    "endSamples": 8378999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012619695402209847,
+        "hz": 198.118408203125,
+        "standardDev": 2.552807733267491e-9,
+        "confidence": 0.0020228758713308295,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 189.5,
+    "end": 190.5,
+    "startSamples": 8356950,
+    "endSamples": 8401049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.688092039366897e-7,
+        "hz": 201,
+        "standardDev": 1.6915461522092956e-9,
+        "confidence": 0.0019469708015806874,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 190,
+    "end": 191,
+    "startSamples": 8379000,
+    "endSamples": 8423099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.9742971642140557e-7,
+        "hz": 198.7099609375,
+        "standardDev": 2.7579356193472354e-9,
+        "confidence": 0.006939429804546676,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 190.5,
+    "end": 191.5,
+    "startSamples": 8401050,
+    "endSamples": 8445149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.026251406963387e-7,
+        "hz": 201.00048828125,
+        "standardDev": 1.4427060247353367e-8,
+        "confidence": 0.023940355742016955,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 191,
+    "end": 192,
+    "startSamples": 8423100,
+    "endSamples": 8467199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004919367416724066,
+        "hz": 200.5517578125,
+        "standardDev": 6.793145894947632e-9,
+        "confidence": 0.0013808982577421232,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 191.5,
+    "end": 192.5,
+    "startSamples": 8445150,
+    "endSamples": 8489249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010664009347795603,
+        "hz": 200.00048828125,
+        "standardDev": 4.0340630310736925e-9,
+        "confidence": 0.0037828764956095886,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 192,
+    "end": 193,
+    "startSamples": 8467200,
+    "endSamples": 8511299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.695863235696758e-7,
+        "hz": 200,
+        "standardDev": 2.4193549352883243e-8,
+        "confidence": 0.06546115970744838,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 192.5,
+    "end": 193.5,
+    "startSamples": 8489250,
+    "endSamples": 8533349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.871246640729061e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.7435726865607374e-8,
+        "confidence": 0.02537491051806778,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 193,
+    "end": 194,
+    "startSamples": 8511300,
+    "endSamples": 8555399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.392739189364944e-7,
+        "hz": 200.00048828125,
+        "standardDev": 7.388217579278491e-9,
+        "confidence": 0.030877655250171224,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 193.5,
+    "end": 194.5,
+    "startSamples": 8533350,
+    "endSamples": 8577449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.5466165875334496e-7,
+        "hz": 200,
+        "standardDev": 1.3521856897030176e-8,
+        "confidence": 0.029740482041319027,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 194,
+    "end": 195,
+    "startSamples": 8555400,
+    "endSamples": 8599499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.2121546892420746e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.5634489879581968e-8,
+        "confidence": 0.12898097922929097,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 194.5,
+    "end": 195.5,
+    "startSamples": 8577450,
+    "endSamples": 8621549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.293908955943033e-7,
+        "hz": 198.00048828125,
+        "standardDev": 8.43818915406292e-9,
+        "confidence": 0.02561755430075966,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 195,
+    "end": 196,
+    "startSamples": 8599500,
+    "endSamples": 8643599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.704696796547858e-7,
+        "hz": 201.84765625,
+        "standardDev": 1.3392223062650454e-9,
+        "confidence": 0.00495146926625699,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 195.5,
+    "end": 196.5,
+    "startSamples": 8621550,
+    "endSamples": 8665649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8186485504237636e-7,
+        "hz": 198.62939453125,
+        "standardDev": 1.4613362724284749e-9,
+        "confidence": 0.0038268414941362103,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 196,
+    "end": 197,
+    "startSamples": 8643600,
+    "endSamples": 8687699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.629818429054646e-7,
+        "hz": 200.00048828125,
+        "standardDev": 2.140665151584479e-8,
+        "confidence": 0.02805656742017271,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 196.5,
+    "end": 197.5,
+    "startSamples": 8665650,
+    "endSamples": 8709749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011184117730186074,
+        "hz": 198.6104736328125,
+        "standardDev": 4.99400126997195e-9,
+        "confidence": 0.004465261713485972,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 197,
+    "end": 198,
+    "startSamples": 8687700,
+    "endSamples": 8731799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.456891974313686e-7,
+        "hz": 201.1124267578125,
+        "standardDev": 2.103543971881119e-9,
+        "confidence": 0.002224350217380779,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 197.5,
+    "end": 198.5,
+    "startSamples": 8709750,
+    "endSamples": 8753849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.415481727028064e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.1023017024348165e-8,
+        "confidence": 0.032273681739002295,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 198,
+    "end": 199,
+    "startSamples": 8731800,
+    "endSamples": 8775899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012741277775474023,
+        "hz": 200,
+        "standardDev": 1.4985547242732005e-7,
+        "confidence": 0.11761416324803803,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 198.5,
+    "end": 199.5,
+    "startSamples": 8753850,
+    "endSamples": 8797949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014138038516506808,
+        "hz": 200.7890625,
+        "standardDev": 3.533793941082066e-9,
+        "confidence": 0.0024994937854754032,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 199,
+    "end": 200,
+    "startSamples": 8775900,
+    "endSamples": 8819999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 1.6083994147690046e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.3108065987938866e-8,
+        "confidence": 0.08149757993925547,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 199.5,
+    "end": 200.5,
+    "startSamples": 8797950,
+    "endSamples": 8842049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.862201366757652e-7,
+        "hz": 202,
+        "standardDev": 7.840998205764414e-8,
+        "confidence": 0.08847686800681603,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 200,
+    "end": 201,
+    "startSamples": 8820000,
+    "endSamples": 8864099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.8409784326270914e-7,
+        "hz": 200,
+        "standardDev": 3.043793594684169e-8,
+        "confidence": 0.10713891945563035,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 200.5,
+    "end": 201.5,
+    "startSamples": 8842050,
+    "endSamples": 8886149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018156913895026046,
+        "hz": 198.89849853515625,
+        "standardDev": 1.7185441271208208e-9,
+        "confidence": 0.0009464957189622425,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 201,
+    "end": 202,
+    "startSamples": 8864100,
+    "endSamples": 8908199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000035597459894242583,
+        "hz": 200,
+        "standardDev": 1.3087644042896694e-7,
+        "confidence": 0.03676566834200843,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 201.5,
+    "end": 202.5,
+    "startSamples": 8886150,
+    "endSamples": 8930249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.6115778750522e-7,
+        "hz": 198.788330078125,
+        "standardDev": 3.747775653787421e-9,
+        "confidence": 0.003899230389128036,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 202,
+    "end": 203,
+    "startSamples": 8908200,
+    "endSamples": 8952299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.606587178628711e-7,
+        "hz": 200,
+        "standardDev": 1.5732040092935864e-8,
+        "confidence": 0.0238126579844834,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 202.5,
+    "end": 203.5,
+    "startSamples": 8930250,
+    "endSamples": 8974349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.254498972594909e-7,
+        "hz": 200.6044921875,
+        "standardDev": 2.582912372419349e-9,
+        "confidence": 0.004129687100016794,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 203,
+    "end": 204,
+    "startSamples": 8952300,
+    "endSamples": 8996399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.349624268731646e-7,
+        "hz": 200,
+        "standardDev": 6.914931515328461e-8,
+        "confidence": 0.09408551053075533,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 203.5,
+    "end": 204.5,
+    "startSamples": 8974350,
+    "endSamples": 9018449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017974144290444515,
+        "hz": 201.00048828125,
+        "standardDev": 1.2310936449696308e-8,
+        "confidence": 0.006849247591853981,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 204,
+    "end": 205,
+    "startSamples": 8996400,
+    "endSamples": 9040499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010458442567787958,
+        "hz": 200.48046875,
+        "standardDev": 5.560824434604466e-9,
+        "confidence": 0.005317067430031911,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 204.5,
+    "end": 205.5,
+    "startSamples": 9018450,
+    "endSamples": 9062549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011225433557806979,
+        "hz": 199.4169921875,
+        "standardDev": 3.007212774371815e-9,
+        "confidence": 0.002678927953103764,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 205,
+    "end": 206,
+    "startSamples": 9040500,
+    "endSamples": 9084599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.799813101544171e-7,
+        "hz": 198.615234375,
+        "standardDev": 1.197938884532796e-9,
+        "confidence": 0.00249580318897709,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 205.5,
+    "end": 206.5,
+    "startSamples": 9062550,
+    "endSamples": 9106649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.383165985403023e-7,
+        "hz": 198.125,
+        "standardDev": 3.917647827290615e-10,
+        "confidence": 0.0007277590618445907,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 206,
+    "end": 207,
+    "startSamples": 9084600,
+    "endSamples": 9128699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016483800972321926,
+        "hz": 201.09619140625,
+        "standardDev": 3.329081130187885e-9,
+        "confidence": 0.002019607695929944,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 206.5,
+    "end": 207.5,
+    "startSamples": 9106650,
+    "endSamples": 9150749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001192230304845288,
+        "hz": 200.47021484375,
+        "standardDev": 9.924081639465597e-10,
+        "confidence": 0.0008323963582483683,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 207,
+    "end": 208,
+    "startSamples": 9128700,
+    "endSamples": 9172799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.957885288282951e-7,
+        "hz": 198.00048828125,
+        "standardDev": 7.322577768210812e-8,
+        "confidence": 0.14769558677600664,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 207.5,
+    "end": 208.5,
+    "startSamples": 9150750,
+    "endSamples": 9194849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013296910369401615,
+        "hz": 198.496337890625,
+        "standardDev": 3.3036826690414793e-9,
+        "confidence": 0.0024845490999501644,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 208,
+    "end": 209,
+    "startSamples": 9172800,
+    "endSamples": 9216899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.380826592342635e-7,
+        "hz": 200.282470703125,
+        "standardDev": 3.927559953841661e-9,
+        "confidence": 0.00615525261030438,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 208.5,
+    "end": 209.5,
+    "startSamples": 9194850,
+    "endSamples": 9238949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.321567966393648e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.481250933267556e-8,
+        "confidence": 0.0342757754774747,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 209,
+    "end": 210,
+    "startSamples": 9216900,
+    "endSamples": 9260999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.52053039187915e-7,
+        "hz": 201.032470703125,
+        "standardDev": 1.4730218231189565e-9,
+        "confidence": 0.0032585154736823538,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 209.5,
+    "end": 210.5,
+    "startSamples": 9238950,
+    "endSamples": 9283049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003947718245036154,
+        "hz": 200,
+        "standardDev": 5.604852138734367e-8,
+        "confidence": 0.014197700521768206,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 210,
+    "end": 211,
+    "startSamples": 9261000,
+    "endSamples": 9305099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000039175402128906254,
+        "hz": 201.00048828125,
+        "standardDev": 2.75661353157418e-8,
+        "confidence": 0.00703659281531705,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 210.5,
+    "end": 211.5,
+    "startSamples": 9283050,
+    "endSamples": 9327149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.612406006456966e-7,
+        "hz": 201.50048828125,
+        "standardDev": 2.9795318443453666e-9,
+        "confidence": 0.0039140474664883605,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 211,
+    "end": 212,
+    "startSamples": 9305100,
+    "endSamples": 9349199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.9018300103070187e-7,
+        "hz": 200.0263671875,
+        "standardDev": 1.0618807064995025e-9,
+        "confidence": 0.002721494026378529,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 211.5,
+    "end": 212.5,
+    "startSamples": 9327150,
+    "endSamples": 9371249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014849962381316502,
+        "hz": 200,
+        "standardDev": 2.8004420405137403e-8,
+        "confidence": 0.01885824333155968,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 212,
+    "end": 213,
+    "startSamples": 9349200,
+    "endSamples": 9393299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001200061507361762,
+        "hz": 199.579345703125,
+        "standardDev": 4.191714478787477e-9,
+        "confidence": 0.003492916365597478,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 212.5,
+    "end": 213.5,
+    "startSamples": 9371250,
+    "endSamples": 9415349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013247887363746416,
+        "hz": 198.48046875,
+        "standardDev": 2.5019982014714647e-9,
+        "confidence": 0.0018886016560786306,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 213,
+    "end": 214,
+    "startSamples": 9393300,
+    "endSamples": 9437399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.7880758856698605e-7,
+        "hz": 200.00048828125,
+        "standardDev": 3.616699246833992e-8,
+        "confidence": 0.12972025852750588,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 213.5,
+    "end": 214.5,
+    "startSamples": 9415350,
+    "endSamples": 9459449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000023527049057653953,
+        "hz": 200.42529296875,
+        "standardDev": 8.30216560204415e-9,
+        "confidence": 0.0035287747229579744,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 214,
+    "end": 215,
+    "startSamples": 9437400,
+    "endSamples": 9481499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000031701137969262754,
+        "hz": 200.3974609375,
+        "standardDev": 8.269260136860576e-9,
+        "confidence": 0.002608505771899546,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 214.5,
+    "end": 215.5,
+    "startSamples": 9459450,
+    "endSamples": 9503549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.079892367309266e-7,
+        "hz": 200.638671875,
+        "standardDev": 2.6979264783738494e-9,
+        "confidence": 0.00875980767058714,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 215,
+    "end": 216,
+    "startSamples": 9481500,
+    "endSamples": 9525599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015658882160317488,
+        "hz": 199.73248291015625,
+        "standardDev": 2.9242608064388502e-9,
+        "confidence": 0.001867477369393244,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 215.5,
+    "end": 216.5,
+    "startSamples": 9503550,
+    "endSamples": 9547649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.977387627946945e-7,
+        "hz": 202,
+        "standardDev": 3.761271397848749e-8,
+        "confidence": 0.12632790445368816,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 216,
+    "end": 217,
+    "startSamples": 9525600,
+    "endSamples": 9569699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.747671665318866e-7,
+        "hz": 198.00048828125,
+        "standardDev": 2.6635846891685268e-9,
+        "confidence": 0.0027325342713842788,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 216.5,
+    "end": 217.5,
+    "startSamples": 9547650,
+    "endSamples": 9591749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.00000144480248076547,
+        "hz": 201.60546875,
+        "standardDev": 6.953309762549957e-9,
+        "confidence": 0.004812636921045448,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 217,
+    "end": 218,
+    "startSamples": 9569700,
+    "endSamples": 9613799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000003218072408892909,
+        "hz": 201.01513671875,
+        "standardDev": 6.681489673726131e-9,
+        "confidence": 0.002076239694067268,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 217.5,
+    "end": 218.5,
+    "startSamples": 9591750,
+    "endSamples": 9635849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001521355280213925,
+        "hz": 198.7216796875,
+        "standardDev": 9.238360561877606e-10,
+        "confidence": 0.000607245439775156,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 218,
+    "end": 219,
+    "startSamples": 9613800,
+    "endSamples": 9657899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.961974596342616e-7,
+        "hz": 200,
+        "standardDev": 1.0068362589382967e-8,
+        "confidence": 0.02541248648761476,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 218.5,
+    "end": 219.5,
+    "startSamples": 9635850,
+    "endSamples": 9679949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.014916078645048e-7,
+        "hz": 200.44049072265625,
+        "standardDev": 7.895981088863914e-10,
+        "confidence": 0.0026189720983585373,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 219,
+    "end": 220,
+    "startSamples": 9657900,
+    "endSamples": 9701999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015435603037798057,
+        "hz": 198.00048828125,
+        "standardDev": 3.312901437645005e-8,
+        "confidence": 0.021462727627372325,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 219.5,
+    "end": 220.5,
+    "startSamples": 9679950,
+    "endSamples": 9724049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.176421517932207e-7,
+        "hz": 201.8681640625,
+        "standardDev": 4.144782241901072e-9,
+        "confidence": 0.005069188559825222,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 220,
+    "end": 221,
+    "startSamples": 9702000,
+    "endSamples": 9746099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000021572186742392924,
+        "hz": 200.56103515625,
+        "standardDev": 2.8033585633618514e-9,
+        "confidence": 0.0012995245205497813,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 220.5,
+    "end": 221.5,
+    "startSamples": 9724050,
+    "endSamples": 9768149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 4.4841976374724514e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.743330674181238e-9,
+        "confidence": 0.008347827140578915,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 221,
+    "end": 222,
+    "startSamples": 9746100,
+    "endSamples": 9790199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.2394392703510764e-7,
+        "hz": 201.25,
+        "standardDev": 1.1789665873832253e-9,
+        "confidence": 0.0036394156179240674,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 221.5,
+    "end": 222.5,
+    "startSamples": 9768150,
+    "endSamples": 9812249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.4370879778109887e-7,
+        "hz": 200.00048828125,
+        "standardDev": 1.1052418071485142e-8,
+        "confidence": 0.032156343226699136,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 222,
+    "end": 223,
+    "startSamples": 9790200,
+    "endSamples": 9834299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.546942857867632e-7,
+        "hz": 200,
+        "standardDev": 4.557877452866594e-8,
+        "confidence": 0.08216917984654962,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 222.5,
+    "end": 223.5,
+    "startSamples": 9812250,
+    "endSamples": 9856349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.752057608125478e-7,
+        "hz": 200.657470703125,
+        "standardDev": 1.4903431240458139e-9,
+        "confidence": 0.0022072429036332918,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 223,
+    "end": 224,
+    "startSamples": 9834300,
+    "endSamples": 9878399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.820283135591434e-7,
+        "hz": 200.9208984375,
+        "standardDev": 1.3840703398485985e-9,
+        "confidence": 0.0015691903746985457,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 223.5,
+    "end": 224.5,
+    "startSamples": 9856350,
+    "endSamples": 9900449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000016496584121837763,
+        "hz": 198.00048828125,
+        "standardDev": 4.6420782903090944e-8,
+        "confidence": 0.028139633369092622,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 224,
+    "end": 225,
+    "startSamples": 9878400,
+    "endSamples": 9922499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012874181866549463,
+        "hz": 200,
+        "standardDev": 7.527338546283195e-8,
+        "confidence": 0.05846848074937652,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 224.5,
+    "end": 225.5,
+    "startSamples": 9900450,
+    "endSamples": 9944549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000004413976497644294,
+        "hz": 200.00048828125,
+        "standardDev": 2.1313412321075387e-7,
+        "confidence": 0.048286193486644514,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 225,
+    "end": 226,
+    "startSamples": 9922500,
+    "endSamples": 9966599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.776333545656609e-7,
+        "hz": 202,
+        "standardDev": 4.2738115986038196e-8,
+        "confidence": 0.054959211478151075,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 225.5,
+    "end": 226.5,
+    "startSamples": 9944550,
+    "endSamples": 9988649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.092328959475476e-7,
+        "hz": 201.4111328125,
+        "standardDev": 1.0600262321216075e-9,
+        "confidence": 0.0017399359738658486,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 226,
+    "end": 227,
+    "startSamples": 9966600,
+    "endSamples": 10010699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.9006649882490575e-7,
+        "hz": 200.00048828125,
+        "standardDev": 5.143474966220651e-8,
+        "confidence": 0.17732054501493577,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 226.5,
+    "end": 227.5,
+    "startSamples": 9988650,
+    "endSamples": 10032749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012485724387326873,
+        "hz": 199.92626953125,
+        "standardDev": 4.779845193410911e-9,
+        "confidence": 0.003828248201812382,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 227,
+    "end": 228,
+    "startSamples": 10010700,
+    "endSamples": 10054799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000023747263144075523,
+        "hz": 202,
+        "standardDev": 1.686947328925387e-8,
+        "confidence": 0.007103754730347725,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 227.5,
+    "end": 228.5,
+    "startSamples": 10032750,
+    "endSamples": 10076849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002343530867767166,
+        "hz": 201,
+        "standardDev": 5.580442745642754e-9,
+        "confidence": 0.002381211539560221,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 228,
+    "end": 229,
+    "startSamples": 10054800,
+    "endSamples": 10098899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.450700945439911e-7,
+        "hz": 198.00048828125,
+        "standardDev": 8.185178491064823e-8,
+        "confidence": 0.10985783151146923,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 228.5,
+    "end": 229.5,
+    "startSamples": 10076850,
+    "endSamples": 10120949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.3929461474270223e-7,
+        "hz": 198.00048828125,
+        "standardDev": 1.3830584945561626e-8,
+        "confidence": 0.040762759986773714,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 229,
+    "end": 230,
+    "startSamples": 10098900,
+    "endSamples": 10142999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001433382686163199,
+        "hz": 200,
+        "standardDev": 5.251056866247447e-8,
+        "confidence": 0.03663401907206784,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 229.5,
+    "end": 230.5,
+    "startSamples": 10120950,
+    "endSamples": 10165049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013643950977634434,
+        "hz": 198.00048828125,
+        "standardDev": 3.621423823310039e-8,
+        "confidence": 0.02654233974635634,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 230,
+    "end": 231,
+    "startSamples": 10143000,
+    "endSamples": 10187099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.937402449507732e-7,
+        "hz": 200,
+        "standardDev": 8.128701207166541e-9,
+        "confidence": 0.011717211544709132,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 230.5,
+    "end": 231.5,
+    "startSamples": 10165050,
+    "endSamples": 10209149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013483180969073515,
+        "hz": 200.85549926757812,
+        "standardDev": 5.415737497662017e-9,
+        "confidence": 0.004016661580145026,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 231,
+    "end": 232,
+    "startSamples": 10187100,
+    "endSamples": 10231199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.314072464484179e-7,
+        "hz": 198.09228515625,
+        "standardDev": 2.624706187588043e-9,
+        "confidence": 0.003156944083420236,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 231.5,
+    "end": 232.5,
+    "startSamples": 10209150,
+    "endSamples": 10253249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.601559912439307e-7,
+        "hz": 198.50048828125,
+        "standardDev": 9.66566765345259e-10,
+        "confidence": 0.0010066768047690073,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 232,
+    "end": 233,
+    "startSamples": 10231200,
+    "endSamples": 10275299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 6.731931130936738e-7,
+        "hz": 199.7354736328125,
+        "standardDev": 1.429220535145453e-9,
+        "confidence": 0.00212304687517886,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 232.5,
+    "end": 233.5,
+    "startSamples": 10253250,
+    "endSamples": 10297349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010084226996144595,
+        "hz": 198.00048828125,
+        "standardDev": 9.177157593086868e-8,
+        "confidence": 0.09100506758322162,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 233,
+    "end": 234,
+    "startSamples": 10275300,
+    "endSamples": 10319399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000019310834067505904,
+        "hz": 202,
+        "standardDev": 9.005214878770903e-8,
+        "confidence": 0.04663296700334588,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 233.5,
+    "end": 234.5,
+    "startSamples": 10297350,
+    "endSamples": 10341449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011308543041468214,
+        "hz": 199.83837890625,
+        "standardDev": 4.511158138770467e-9,
+        "confidence": 0.003989159454253422,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 234,
+    "end": 235,
+    "startSamples": 10319400,
+    "endSamples": 10363499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000021964707387417353,
+        "hz": 199.5,
+        "standardDev": 9.848468615125865e-9,
+        "confidence": 0.004483769549676602,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 234.5,
+    "end": 235.5,
+    "startSamples": 10341450,
+    "endSamples": 10385549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012133625543232096,
+        "hz": 200.00048828125,
+        "standardDev": 6.168015263527935e-9,
+        "confidence": 0.005083406638478584,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 235,
+    "end": 236,
+    "startSamples": 10363500,
+    "endSamples": 10407599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001360828866633248,
+        "hz": 200.00048828125,
+        "standardDev": 3.030050330528034e-8,
+        "confidence": 0.02226621145996495,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 235.5,
+    "end": 236.5,
+    "startSamples": 10385550,
+    "endSamples": 10429649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000017732283786197734,
+        "hz": 198.00048828125,
+        "standardDev": 2.2625616436820185e-8,
+        "confidence": 0.012759561435866073,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 236,
+    "end": 237,
+    "startSamples": 10407600,
+    "endSamples": 10451699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.431031533440117e-7,
+        "hz": 200.00048828125,
+        "standardDev": 2.3729743446544238e-8,
+        "confidence": 0.03193331011954246,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 236.5,
+    "end": 237.5,
+    "startSamples": 10429650,
+    "endSamples": 10473749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000018275695407292311,
+        "hz": 198.3447265625,
+        "standardDev": 7.319563771457816e-9,
+        "confidence": 0.004005080851006734,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 237,
+    "end": 238,
+    "startSamples": 10451700,
+    "endSamples": 10495799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.149734285925812e-7,
+        "hz": 202,
+        "standardDev": 7.607102304589979e-8,
+        "confidence": 0.08314014447710552,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 237.5,
+    "end": 238.5,
+    "startSamples": 10473750,
+    "endSamples": 10517849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002064690878925693,
+        "hz": 201.400390625,
+        "standardDev": 5.3926570601281266e-9,
+        "confidence": 0.0026118471850537024,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 238,
+    "end": 239,
+    "startSamples": 10495800,
+    "endSamples": 10539899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.134531204831633e-7,
+        "hz": 201.2666015625,
+        "standardDev": 5.098919937976167e-9,
+        "confidence": 0.005582026952055445,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 238.5,
+    "end": 239.5,
+    "startSamples": 10517850,
+    "endSamples": 10561949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.424754165229492e-7,
+        "hz": 200,
+        "standardDev": 3.950647137792013e-8,
+        "confidence": 0.04191777385947144,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 239,
+    "end": 240,
+    "startSamples": 10539900,
+    "endSamples": 10583999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012976027440179483,
+        "hz": 201.00048828125,
+        "standardDev": 4.410200629919998e-9,
+        "confidence": 0.0033987294264376158,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 239.5,
+    "end": 240.5,
+    "startSamples": 10561950,
+    "endSamples": 10606049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012279280169074693,
+        "hz": 200.0068359375,
+        "standardDev": 3.210445186526731e-9,
+        "confidence": 0.0026145223028726243,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 240,
+    "end": 241,
+    "startSamples": 10584000,
+    "endSamples": 10628099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.7336865422355106e-7,
+        "hz": 198.15625,
+        "standardDev": 1.0761608229096503e-9,
+        "confidence": 0.003936665035595503,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 240.5,
+    "end": 241.5,
+    "startSamples": 10606050,
+    "endSamples": 10650149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 9.028987677842157e-7,
+        "hz": 200,
+        "standardDev": 7.724468518734801e-8,
+        "confidence": 0.08555187795516936,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 241,
+    "end": 242,
+    "startSamples": 10628100,
+    "endSamples": 10672199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000028042034716657096,
+        "hz": 198.00048828125,
+        "standardDev": 6.755068924103056e-8,
+        "confidence": 0.024089082665925503,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 241.5,
+    "end": 242.5,
+    "startSamples": 10650150,
+    "endSamples": 10694249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.6536800904895885e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.823461957520795e-8,
+        "confidence": 0.10464687281935667,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 242,
+    "end": 243,
+    "startSamples": 10672200,
+    "endSamples": 10716299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000014185724238654185,
+        "hz": 199.896484375,
+        "standardDev": 2.6720234157768877e-9,
+        "confidence": 0.0018836002806934483,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 242.5,
+    "end": 243.5,
+    "startSamples": 10694250,
+    "endSamples": 10738349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000011374233131767432,
+        "hz": 202,
+        "standardDev": 1.883921388408774e-8,
+        "confidence": 0.01656306290352986,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 243,
+    "end": 244,
+    "startSamples": 10716300,
+    "endSamples": 10760399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002114754379173246,
+        "hz": 199.7374267578125,
+        "standardDev": 3.6947124407683628e-9,
+        "confidence": 0.001747111852399991,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 243.5,
+    "end": 244.5,
+    "startSamples": 10738350,
+    "endSamples": 10782449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000027720475688310597,
+        "hz": 198.6572265625,
+        "standardDev": 7.065074917197554e-9,
+        "confidence": 0.002548684588474365,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 244,
+    "end": 245,
+    "startSamples": 10760400,
+    "endSamples": 10804499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.169832327328351e-7,
+        "hz": 200.5723876953125,
+        "standardDev": 3.1095062328052667e-9,
+        "confidence": 0.0038060832930485837,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 244.5,
+    "end": 245.5,
+    "startSamples": 10782450,
+    "endSamples": 10826549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010119374136556582,
+        "hz": 198.00048828125,
+        "standardDev": 1.8360854158899673e-8,
+        "confidence": 0.018144258638061878,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 245,
+    "end": 246,
+    "startSamples": 10804500,
+    "endSamples": 10848599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000021531030694473535,
+        "hz": 200.2393798828125,
+        "standardDev": 6.075917247905732e-9,
+        "confidence": 0.0028219351568084775,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 245.5,
+    "end": 246.5,
+    "startSamples": 10826550,
+    "endSamples": 10870649,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.185861897086362e-7,
+        "hz": 198.1611328125,
+        "standardDev": 2.3623581614541866e-9,
+        "confidence": 0.004555381937150042,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 246,
+    "end": 247,
+    "startSamples": 10848600,
+    "endSamples": 10892699,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001779158759469338,
+        "hz": 198.00048828125,
+        "standardDev": 2.922299777772763e-8,
+        "confidence": 0.01642517713621231,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 246.5,
+    "end": 247.5,
+    "startSamples": 10870650,
+    "endSamples": 10914749,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010443880758221572,
+        "hz": 200.3583984375,
+        "standardDev": 2.5704040776542193e-9,
+        "confidence": 0.0024611580093259495,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 247,
+    "end": 248,
+    "startSamples": 10892700,
+    "endSamples": 10936799,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.8764548097174793e-7,
+        "hz": 198.00048828125,
+        "standardDev": 3.2566524983599325e-8,
+        "confidence": 0.08401110442964976,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 247.5,
+    "end": 248.5,
+    "startSamples": 10914750,
+    "endSamples": 10958849,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000023243656468223396,
+        "hz": 198.00048828125,
+        "standardDev": 2.0325210287324202e-8,
+        "confidence": 0.008744411756003611,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 248,
+    "end": 249,
+    "startSamples": 10936800,
+    "endSamples": 10980899,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 2.926940310702752e-7,
+        "hz": 198.44049072265625,
+        "standardDev": 1.1324011421889685e-9,
+        "confidence": 0.003868890452081277,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 248.5,
+    "end": 249.5,
+    "startSamples": 10958850,
+    "endSamples": 11002949,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012777551347266555,
+        "hz": 200.6973876953125,
+        "standardDev": 5.884318092626232e-9,
+        "confidence": 0.004605200114406144,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 249,
+    "end": 250,
+    "startSamples": 10980900,
+    "endSamples": 11024999,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000001983518035749118,
+        "hz": 198.31103515625,
+        "standardDev": 3.261974012071263e-9,
+        "confidence": 0.001644539627712187,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 249.5,
+    "end": 250.5,
+    "startSamples": 11002950,
+    "endSamples": 11047049,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 3.909408756071293e-7,
+        "hz": 201.05517578125,
+        "standardDev": 2.783523283445997e-10,
+        "confidence": 0.0007120062027597392,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 250,
+    "end": 251,
+    "startSamples": 11025000,
+    "endSamples": 11069099,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 5.691014740243336e-7,
+        "hz": 201.9501953125,
+        "standardDev": 1.4074168498995955e-9,
+        "confidence": 0.002473050789953528,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 250.5,
+    "end": 251.5,
+    "startSamples": 11047050,
+    "endSamples": 11091149,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000002038633041875586,
+        "hz": 201.96923828125,
+        "standardDev": 6.091394435831159e-9,
+        "confidence": 0.002987979842721938,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 251,
+    "end": 252,
+    "startSamples": 11069100,
+    "endSamples": 11113199,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000013109370299743606,
+        "hz": 200.00048828125,
+        "standardDev": 8.810402095365261e-8,
+        "confidence": 0.06720690539604007,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 251.5,
+    "end": 252.5,
+    "startSamples": 11091150,
+    "endSamples": 11135249,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 7.388004979899982e-7,
+        "hz": 200,
+        "standardDev": 7.03042851319311e-8,
+        "confidence": 0.09516004025877481,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 252,
+    "end": 253,
+    "startSamples": 11113200,
+    "endSamples": 11157299,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.000005850311987161489,
+        "hz": 200.5791015625,
+        "standardDev": 1.5654947770043148e-8,
+        "confidence": 0.002675916738183867,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 252.5,
+    "end": 253.5,
+    "startSamples": 11135250,
+    "endSamples": 11179349,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000010744059984185467,
+        "hz": 198.3916015625,
+        "standardDev": 5.675370808734328e-9,
+        "confidence": 0.005282333509946976,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 253,
+    "end": 254,
+    "startSamples": 11157300,
+    "endSamples": 11201399,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000012946047284837294,
+        "hz": 198.4453125,
+        "standardDev": 4.430677209278097e-9,
+        "confidence": 0.0034224169831879167,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 253.5,
+    "end": 254.5,
+    "startSamples": 11179350,
+    "endSamples": 11223449,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015523271955755263,
+        "hz": 200,
+        "standardDev": 1.6495685115038105e-8,
+        "confidence": 0.01062642280703091,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 254,
+    "end": 255,
+    "startSamples": 11201400,
+    "endSamples": 11245499,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 8.638640561152175e-7,
+        "hz": 198.00048828125,
+        "standardDev": 5.370913166034262e-8,
+        "confidence": 0.06217312930216324,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 254.5,
+    "end": 255.5,
+    "startSamples": 11223450,
+    "endSamples": 11267549,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000015058428381585404,
+        "hz": 201,
+        "standardDev": 3.1082801875255047e-8,
+        "confidence": 0.02064146475821173,
+        "target": 200
+      }
+    ]
+  },
+  {
+    "start": 255,
+    "end": 256,
+    "startSamples": 11245500,
+    "endSamples": 11289599,
+    "channelNum": 1,
+    "data": [
+      {
+        "amp": 0.0000033230920902769835,
+        "hz": 200,
+        "standardDev": 1.1599660627450996e-7,
+        "confidence": 0.03490622682829157,
+        "target": 200
+      }
+    ]
+  }
+]

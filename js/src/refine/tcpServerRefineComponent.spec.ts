@@ -18,6 +18,7 @@ describe("TcpServerRefineComponent", () => {
         ];
         const tcpServerComponentOptions = new TcpServerComponentOptions();
         tcpServerComponentOptions.executablePath = getTestExecutablePath();
+        tcpServerComponentOptions.port = 50010;
         const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath;
         const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
@@ -38,5 +39,6 @@ describe("TcpServerRefineComponent", () => {
                 time: new Date("2014-01-15T08:13:17.000Z"),
             }
         ])
+        await refineComponent.stopServer();
     })
 })

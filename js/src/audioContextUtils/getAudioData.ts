@@ -1,20 +1,17 @@
 import {AudioFileMetadata} from "../preScan/audioFileMetadata";
 import {NoMatch} from "../ENFProcessor/noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
+import {RenderingAudioContext} from "@descript/web-audio-js";
 
 export const getAudioData = (buffer: ArrayBuffer, path: string): Promise<[Float32Array, AudioFileMetadata]> => {
     return new Promise(async (resolve,reject) => {
-        let AudioContext;
+        let audioContext:any;
         if (typeof AudioContext === "undefined") {
-            try {
-                const result = await import('web-audio-api');
-                AudioContext = result.AudioContext;
-            } catch (e) {
-                console.error(e);
-            }
+            audioContext = new RenderingAudioContext();
+        } else {
+            audioContext = new AudioContext();
         }
-
-        const audioContext = new AudioContext();
+        
         audioContext.decodeAudioData(buffer, (audioBuffer:AudioBuffer) => {
             if (!audioBuffer) {
                 reject(new NoMatch(NoMatchReason.MetaDataError));

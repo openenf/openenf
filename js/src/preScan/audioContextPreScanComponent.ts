@@ -11,7 +11,7 @@ import {PreScanResult} from "./preScanResult";
 export class AudioContextPreScanComponent implements PreScanComponent {
     readonly implementationId: string = "AudioContextPreScanComponent0.0.1"
     preScanProgressEvent: ENFEventBase<[PreScanUpdate, number]> = new ENFEventBase<[PreScanUpdate, number]>()
-
+    audioLoadedEvent: ENFEventBase<ArrayLike<number>> = new ENFEventBase<ArrayLike<number>>();
     private goertzelFilterCache: GoertzelFilterCache;
     constructor(goertzelFilterCache: GoertzelFilterCache) {
         this.goertzelFilterCache = goertzelFilterCache;
@@ -20,8 +20,9 @@ export class AudioContextPreScanComponent implements PreScanComponent {
     async preScan(resourceUri: string): Promise<PreScanResultLike> {
         let buffer = fs.readFileSync(resourceUri);
         const [audioData,metaData] = await getAudioData(buffer, resourceUri);
+        this.audioLoadedEvent.trigger(audioData);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
-        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent);
+        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent, audioData.length);
         for (let i = 0; i < audioData.length; i += 67108864) {
             preScanProcessor.process(audioData.slice(i, i+67108864));
         }

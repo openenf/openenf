@@ -2,14 +2,19 @@ import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {LookupResult} from "../model/lookupResult";
 import {LookupComponent} from "./lookupComponent";
 import {TcpServerComponentOptions} from "./tcpServerComponentOptions";
-import {TcpRequestClient} from "../tcpClient/tcpRequestClient";
+import {TcpClient} from "../tcpClient/tcpClient";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 import {LookupCommand} from "./lookupCommand";
 import {getStrongestSubsequence} from "./lookupComponentUtils";
+import {NoMatch} from "../ENFProcessor/noMatch";
+import {NoMatchReason} from "../model/noMatchReason";
 
 export class TcpServerLookupComponent implements LookupComponent {
+    async dispose(): Promise<void> {
+        await this.stopServer();
+    }
     private options: TcpServerComponentOptions;
-    private client: TcpRequestClient;
+    private client: TcpClient;
 
     /**
      * The contiguousSearchLimit is the longest sequence of frequencies that can be searched in a single pass.
@@ -22,7 +27,10 @@ export class TcpServerLookupComponent implements LookupComponent {
 
     constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
         this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpRequestClient(this.options.port, this.options.host);
+        this.client = new TcpClient(this.options.port, this.options.host);
+        if (tcpServerComponentOptions?.stdOutHandler) {
+            this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler)
+        }
     }
 
     readonly implementationId: string = "TcpServerLookupComponent0.0.1";
@@ -58,12 +66,23 @@ export class TcpServerLookupComponent implements LookupComponent {
                 this.lookupProgressEvent.trigger(progress);
             }
         });
+        if (responses.length === 0) {
+            throw new NoMatch(NoMatchReason.NoResultsOnLookup);
+        }
         const response = responses[responses.length - 1]
         const r = JSON.parse(response, toPascalCase);
         r.forEach((r1:any) => {
             r1.position = r1.position - position;
         })
         return r;
+    }
+
+    async stopServer() {
+        if (this.client) {
+            await this.client.stop()
+        } else {
+            console.warn('No attached TCP client')
+        }
     }
 }
 

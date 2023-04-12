@@ -412,7 +412,7 @@ describe('BaseAnalyzer', () => {
             new MockReduceComponent(),
             mockLookupComponentFiresProgressFourTimes,
             new MockRefineComponent())
-        baseAnalyzer.analysisProgressEvent.addHandler(progress => {
+        baseAnalyzer.progressEvent.addHandler(progress => {
             eventCount++;
             switch(eventCount) {
                 case 1:

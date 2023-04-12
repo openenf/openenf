@@ -1,1 +1,1 @@
-process.env.NODE_OPTIONS = '--experimental-wasm-eh';
+process.env.NODE_OPTIONS = '--experimental-vm-modules';

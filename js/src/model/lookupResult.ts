@@ -9,13 +9,13 @@ export class LookupResult {
      * is effectively a timestamp offset. It can be converted into a timestamp (in seconds) by adding the start timestamp of
      * the grid
      */
-    position: number;
+    position: number = 0;
 
     /**
      * The score, denoting the closeness of the match to the frequency array. A maximum score of 0 denotes a perfect match. 
      * Scores less than zero represent worse matches. Scores are never greater than zero.
      */
-    score: number;
+    score: number = 0;
 
     /**
      * The id of the grid being compared
@@ -23,5 +23,5 @@ export class LookupResult {
      * @example 
      * "DE"
      */
-    gridId:string;
+    gridId:string = "";
 }

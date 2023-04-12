@@ -1,9 +1,5 @@
-import {downloadData} from "./downloadData";
 import os from "os";
 import {getENFDataDirectory} from "./ENFDataDirectory";
-import path from "path";
-import fs from "fs";
-import * as crypto from "crypto";
 
 describe('downloadData', () => {
     it('can get the correct download directory for the current platform', () => {

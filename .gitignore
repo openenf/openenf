@@ -42,5 +42,9 @@ yarn.lock
 **/bin/
 **/obj/
 
+!js/bin/
+
 js/test/testAudio/large/
 js/test/serverExecutable
+
+js/dist
