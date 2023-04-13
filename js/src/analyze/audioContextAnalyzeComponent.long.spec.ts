@@ -100,6 +100,33 @@ describe('audioContextAnalyzeComponent', () => {
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
         })
         const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
+        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', 'utf-8'));
+        expect(expectedResult).toStrictEqual(result);
         console.log('result', result);
+    })
+    it('returns correct frequencies for audio decoded by Chrome wav decoder', async () => {
+        const filepath = path.resolve("test/testAudioWindows/large/plax_tumbledryer.chrome.json");
+        const audioData: Float32Array = Float32Array.from(Object.values(JSON.parse(fs.readFileSync(filepath, 'utf-8'))));
+        const preScanResult = {
+            duration: 83.28448979591836,
+            durationSamples: 3672846,
+            h100: 0.000603824838822795,
+            h120: 0.000007527601900392758,
+            h200: 0.0002058336319193009,
+            h240: 0.0000036297368335053236,
+            h50: 0.000019272759314746277,
+            h60: 0.000028027040707500292,
+            numChannels: 1,
+            sampleRate: 44100
+        }
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 16);
+        audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
+            const progress = event[1];
+            console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
+        })
+        const result = await audioContextPreScanComponent.analyze(audioData, preScanResult, 50);
+        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.fromChromePCM.json', 'utf-8'));
+        expect(expectedResult).toStrictEqual(result);
     })
 })

@@ -21,12 +21,17 @@ export class AudioContextAnalyzeComponent implements AnalyzeComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]> = new ENFEventBase<[AnalysisWindowResult, number]>()
     readonly implementationId: string = "AudioContextAnalyzeComponent0.0.1";
 
-    async analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency?: 50 | 60): Promise<AnalysisWindowResult[]> {
+    async analyze(resourceUri: (string | Float32Array), preScanResult: PreScanResultLike, expectedFrequency?: 50 | 60): Promise<AnalysisWindowResult[]> {
         const goertzelStore = this.goertzelFilterCache.getStore(preScanResult.sampleRate, preScanResult.sampleRate);
-        const frequencies = validatePreScanResult(preScanResult, expectedFrequency);
-        let buffer = fs.readFileSync(resourceUri);
-        const [audioData,_] = await getAudioData(buffer, resourceUri);
-        const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, frequencies[0], this.overlapFactor, this.analyzeProgressEvent, audioData.length);
+        const targetFrequencies = validatePreScanResult(preScanResult, expectedFrequency);
+        let audioData:Float32Array
+        if (resourceUri instanceof  Float32Array) {
+            audioData = resourceUri;
+        } else {
+            let buffer = fs.readFileSync(resourceUri);
+            [audioData] = await getAudioData(buffer, resourceUri);
+        }
+        const analyzeProcessor = new GoertzelAnalyzeProcessor(goertzelStore, targetFrequencies[0], this.overlapFactor, this.analyzeProgressEvent, audioData.length);
         for (let i = 0; i < audioData.length; i += 67108864) {
             analyzeProcessor.process(audioData.slice(i, i+67108864));
         }
