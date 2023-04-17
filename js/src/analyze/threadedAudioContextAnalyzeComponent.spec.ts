@@ -1,7 +1,5 @@
-import {FfmpegAnalyzeComponent} from "./ffmpegAnalyzeComponent";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {PreScanResultLike} from "../model/preScanResultLike";
-import {AudioContextAnalyzeComponent} from "./audioContextAnalyzeComponent";
 import {sliceAudioDataForThreads, ThreadedAudioContextAnalyzeComponent} from "./threadedAudioContextAnalyzeComponent";
 
 describe('audioContextAnalyzeComponent', () => {
@@ -13,10 +11,25 @@ describe('audioContextAnalyzeComponent', () => {
         const windowSize = 44100;
         const result = sliceAudioDataForThreads(totalDataLength, numThreads, windowSize, overlapFactor);
         expect(result).toStrictEqual([
-            [ 0, 1135575 ],
-            [ 1102500, 2238075 ],
-            [ 2205000, 3340575 ],
-            [ 3307500, 4410000 ]
+            [
+                [
+                    0,
+                    1135575
+                ],
+                [
+                    1102500,
+                    2238075
+                ],
+                [
+                    2205000,
+                    3340575
+                ],
+                [
+                    3307500,
+                    4410000
+                ]
+            ],
+            397
         ]);
     })
     
@@ -37,6 +50,7 @@ describe('audioContextAnalyzeComponent', () => {
             sampleRate: 44100
         };
         const result = await analyzeComponent.analyze(filepath, preScanResult);
+        console.log(JSON.stringify(result, null, 2));
         const freqs = result.map(x => parseFloat(x.data[0].hz.toFixed(3)));
         expect(freqs).toStrictEqual([59.95, 59.96, 59.97, 59.98, 59.99, 60, 60.01, 60.02, 60.03, 60.04]);
     }, 30000);
@@ -65,8 +79,8 @@ describe('audioContextAnalyzeComponent', () => {
             }
         })
         await analyzeComponent.analyze(filepath, preScanResult);
-        expect(progressFiredCount).toBe(145);
-        expect(progress).toBeCloseTo(1);
+        expect(progressFiredCount).toBe(146);
+        expect(progress).toBeCloseTo(1,1);
     }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";

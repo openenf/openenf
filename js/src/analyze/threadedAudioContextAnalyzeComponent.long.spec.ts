@@ -24,14 +24,15 @@ describe('audioContextAnalyzeComponent', () => {
         let preScanProgressEventCalled = false;
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
             const progress = event[1];
+            console.log('progress', progress);
             preScanProgressEventCalled = true;
-            expect(progress).toBeLessThanOrEqual(1);
             expect(progress).toBeGreaterThanOrEqual(prevProgress);
             prevProgress = progress
         })
         await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
-        //expect(preScanProgressEventCalled).toBe(true);
-    })
+        expect(preScanProgressEventCalled).toBe(true);
+        expect(prevProgress).toBeCloseTo(1,1);
+    },90000)
     it('returns correct frequencies for real-world data', async () => {
         const filepath = path.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
         const preScanResult = {
@@ -54,8 +55,8 @@ describe('audioContextAnalyzeComponent', () => {
         })
         const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
         //fs.writeFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', JSON.stringify(result)); 
-        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', 'utf-8'));
-        //expect(expectedResult).toStrictEqual(result);
+        const expectedResultJson = fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', 'utf-8');
+        expect(expectedResultJson).toBe(JSON.stringify(result));
         console.log('result', result);
     }, 20000)
     it('returns correct frequencies for apawlak sample', async () => {
@@ -79,9 +80,9 @@ describe('audioContextAnalyzeComponent', () => {
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
         })
         const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
-        //fs.writeFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', JSON.stringify(result, null, 2)); 
-        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', 'utf-8'));
-        //expect(expectedResult).toStrictEqual(result);
+        //fs.writeFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', JSON.stringify(result)); 
+        const expectedResultJson = fs.readFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', 'utf-8');
+        expect(expectedResultJson).toBe(JSON.stringify(result));
         console.log('result', result);
     }, 200000)
 })

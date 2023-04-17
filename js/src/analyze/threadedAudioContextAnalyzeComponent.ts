@@ -8,7 +8,7 @@ import {validatePreScanResult} from "./validatePrescanResult";
 import os from "os";
 import {spawn, Thread, Worker} from "threads";
 
-export const sliceAudioDataForThreads = (audioDataLength:number, numThreads:number, windowSize:number, overlapFactor:number):number[][] => {
+export const sliceAudioDataForThreads = (audioDataLength:number, numThreads:number, windowSize:number, overlapFactor:number):[number[][],number] => {
     const windows = [];
     for(let i = 0; i < audioDataLength; i+= (windowSize / overlapFactor)) {
         const window = [Math.floor(i), Math.floor(i) + windowSize];
@@ -29,8 +29,7 @@ export const sliceAudioDataForThreads = (audioDataLength:number, numThreads:numb
         const end = c[c.length - 1][1];
         results.push([start,end])
     })
-    console.log('results', JSON.stringify(results));
-    return results;
+    return [results,windows.length];
 }
 
 export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
@@ -41,14 +40,22 @@ export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
     async analyze(resourceUri: (string | Float32Array), preScanResult: PreScanResultLike, expectedFrequency?: 50 | 60): Promise<AnalysisWindowResult[]> {
         const numThreads = this.numThreads;
         const targetFrequencies = validatePreScanResult(preScanResult, expectedFrequency);
-        const slices = sliceAudioDataForThreads(preScanResult.durationSamples,numThreads,preScanResult.sampleRate,this.overlapFactor);
+        let [slices,totalWindows] = sliceAudioDataForThreads(preScanResult.durationSamples,numThreads,preScanResult.sampleRate,this.overlapFactor);
+        let completedWindows = 0;
         const workers = [];
         const promises = [];
         for(let i = 0; i < slices.length; i++) {
-            const worker:any = await spawn(new Worker('analyzeWorker.ts'));
+            const worker:any = await spawn(new Worker('observableAnalyzeWorker.ts'));
             workers.push(worker);
             const promise = new Promise(resolve => {
-                resolve(worker.analyze(resourceUri,preScanResult,slices[i],targetFrequencies[0],this.overlapFactor));
+                let mostRecentResult:any;
+                worker(resourceUri,preScanResult,slices[i],targetFrequencies[0],this.overlapFactor).subscribe((result:any) => {
+                    completedWindows++;
+                    this.analyzeProgressEvent.trigger([result[0],completedWindows/totalWindows])
+                    mostRecentResult = result;
+                }, null, (x:any) => {
+                    resolve(mostRecentResult);
+                })
             })
             promises.push(promise);
         }
