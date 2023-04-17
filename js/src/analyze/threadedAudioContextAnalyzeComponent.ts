@@ -6,7 +6,7 @@ import {OverlapFactor} from "../bufferedAudioProcessor/bufferedAudioProcessor";
 import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {validatePreScanResult} from "./validatePrescanResult";
 import os from "os";
-import {spawn, Worker} from "threads";
+import {spawn, Thread, Worker} from "threads";
 
 export const sliceAudioDataForThreads = (audioDataLength:number, numThreads:number, windowSize:number, overlapFactor:number):number[][] => {
     const windows = [];
@@ -45,7 +45,7 @@ export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
         const workers = [];
         const promises = [];
         for(let i = 0; i < slices.length; i++) {
-            const worker = await spawn(new Worker('analyzeWorker.ts'));
+            const worker:any = await spawn(new Worker('analyzeWorker.ts'));
             workers.push(worker);
             const promise = new Promise(resolve => {
                 resolve(worker.analyze(resourceUri,preScanResult,slices[i],targetFrequencies[0],this.overlapFactor));
@@ -53,6 +53,9 @@ export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
             promises.push(promise);
         }
         const results:any[] = await Promise.all(promises);
+        workers.forEach(w => {
+            Thread.terminate(w);
+        })
         let result:any[] = [].concat(...results);
         result = result.sort((a,b) => a.start > b.start ? 1 : -1);
         return result;
