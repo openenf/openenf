@@ -1,8 +1,6 @@
 import net from "net";
 import {LookupCommand} from "../lookup/lookupCommand";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
-import {TcpLookupServerController} from "./tcpLookupServerController";
-import fs from "fs";
 import {TcpOptions} from "../lookup/tcpOptions";
 import {FreqDbMetaData} from "../refine/freqDbMetaData";
 import {toPascalCase} from "./tcpClientUtils";
@@ -13,7 +11,6 @@ export class TcpClient {
     private readonly port: number;
     private readonly timeout: number = 2000;
     private connected: boolean = false;
-    private tcpServer: TcpLookupServerController | undefined;
 
     public serverMessageEvent: ENFEventBase<string> = new ENFEventBase<string>();
     private options: TcpOptions;
@@ -23,25 +20,10 @@ export class TcpClient {
         this.port = options.port;
         this.host = options.host;
         this.socket = new net.Socket();
-        this.tcpServer = new TcpLookupServerController(this.port, this.options.executablePath);
-        this.tcpServer.serverMessageEvent.addHandler(s => {
-            this.serverMessageEvent.trigger(s);
-        })
     }
 
     private buildPingCommand(): string {
         return LookupCommand.ping.toString();
-    }
-
-    async activateServer(): Promise<void> {
-        console.log('activating server');
-        await this.tcpServer?.start();
-        const pingCommand = this.buildPingCommand();
-        const {response, error} = await this.request(pingCommand);
-        if (error || response !== "pong") {
-            throw new Error(`Unable to ping spawned server. Sent '${pingCommand}'. Was expecting 'pong' but got '${response}'`);
-        }
-        await this.loadGrids(this.options.grids);
     }
 
     private buildLoadGridCommand(id: string, path: string) {
@@ -50,30 +32,6 @@ export class TcpClient {
             path
         }
         return `${LookupCommand.loadGrid.toString()}${JSON.stringify(path)}`;
-    }
-
-    private async loadGrids(grids: ({ [p: string]: string })): Promise<void> {
-        const optionsGridIds = Object.keys(grids);
-        if (optionsGridIds.length) {
-            for (const id of optionsGridIds) {
-                const filepath = grids[id];
-                if (filepath !== '' && !fs.existsSync(filepath)) {
-                    throw new Error(`Unable to find freqdb file at '${filepath}'`)
-                }
-                const loadGridCommand = this.buildLoadGridCommand(id, grids[id]);
-                console.log(`Loading grid with command '${loadGridCommand}'`);
-                const {response, error} = await this.request(loadGridCommand);
-                if (error) {
-                    console.error(error)
-                    throw error;
-                }
-                if (response !== "Ok") {
-                    const error = new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
-                    console.error(error);
-                    throw error;
-                }
-            }
-        }
     }
 
     request(message: string, onUpdate?: (buffer: Buffer) => void): Promise<{ response: string, responses: string[], error: Error | null }> {
@@ -117,12 +75,6 @@ export class TcpClient {
 
     private buildGetMetaDataCommand(gridId: string) {
         return `${LookupCommand.getMetaData.toString()}${JSON.stringify(gridId)}`;
-    }
-
-    async stop(): Promise<void> {
-        if (this.tcpServer) {
-            await this.tcpServer.stop();
-        }
     }
 
     async getMetaData(gridId: string):Promise<FreqDbMetaData> {

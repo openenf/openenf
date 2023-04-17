@@ -3,7 +3,6 @@ import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {GoertzelReduceComponent} from "../reduce/goertzelReduceComponent";
 import {AudioContextPreScanComponent} from "../preScan/audioContextPreScanComponent";
 import {AudioContextAnalyzeComponent} from "../analyze/audioContextAnalyzeComponent";
-import path from "path";
 import {TcpOptions} from "../lookup/tcpOptions";
 import {TcpServerLookupComponent} from "../lookup/tcpServerLookupComponent";
 import {TcpServerRefineComponent} from "../refine/tcpServerRefineComponent";
@@ -18,23 +17,17 @@ describe("BaseENFProcessor", () => {
     const reduceComponent = new GoertzelReduceComponent(overlapFactor);
 
     const tcpServerComponentOptions = new TcpOptions();
-    tcpServerComponentOptions.port = 50080;
-    const dbPath = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
-    tcpServerComponentOptions.grids["GB"] = dbPath;
 
     const tcpClient = new TcpClient(tcpServerComponentOptions);
 
     const lookupComponent = new TcpServerLookupComponent(tcpClient);
     const refineComponent = new TcpServerRefineComponent(tcpClient);
 
-    const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent, () => {
-        return tcpClient.stop();
-    });
+    const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
 
     it("Can perform lookup for real-world data on truncated Jan 2014 GB grid data", async () => {
         let result: any;
         try {
-            await tcpClient.activateServer();
             const filepath = "test/testAudio/GBJan2014LookupTest.wav";
             result = await baseENFProcessor.performFullAnalysis(filepath, ["GB"]);
         } finally {
@@ -53,5 +46,5 @@ describe("BaseENFProcessor", () => {
                 "time": new Date("2014-01-16T12:00:01.000Z")
             }
         );
-    })
+    }, 20000)
 })

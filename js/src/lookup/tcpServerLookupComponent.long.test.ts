@@ -15,7 +15,6 @@ describe("TcpServerLookupComponent", () => {
         tcpServerComponentOptions.grids["GB"] = dbPath;
         let progress = 0;
         const tcpClient = new TcpClient(tcpServerComponentOptions);
-        await tcpClient.activateServer();
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpClient);
         tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
             if (d) {
@@ -25,13 +24,8 @@ describe("TcpServerLookupComponent", () => {
             }
         })
         let r:any;
-        try {
-            const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
-            r = response[0];
-        }
-        finally {
-            await tcpClient.stop();
-        }
+        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
+        r = response[0];
         expect(r).toStrictEqual({ gridId: 'GB', position: 218063344, score: 0 });
         expect(progress).toBeGreaterThanOrEqual(1);
     }, 3000000)
@@ -47,7 +41,6 @@ describe("TcpServerLookupComponent", () => {
         tcpServerComponentOptions.grids["GB"] = dbPath;
         let progress = 0;
         const tcpClient = new TcpClient(tcpServerComponentOptions);
-        await tcpClient.activateServer();
         const tcpServerLookupComponent = new TcpServerLookupComponent(tcpClient);
         tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
             if (d) {
@@ -57,14 +50,9 @@ describe("TcpServerLookupComponent", () => {
             }
         })
         let r:any;
-        try {
-            const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
-            console.log('response', response);
-            r = response[0];
-        }
-        finally {
-            await tcpClient.stop();
-        }
+        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date("2020-11-01"), new Date("2021-11-01"));
+        console.log('response', response);
+        r = response[0];
         //expect(r).toStrictEqual({ gridId: 'GB', position: 218063344, score: 0 });
         //expect(progress).toBeGreaterThanOrEqual(1);
     }, 3000000)

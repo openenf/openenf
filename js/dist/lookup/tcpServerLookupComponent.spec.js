@@ -13,11 +13,9 @@ describe("TcpServerLookupComponent", () => {
         let progress = 0;
         const gbFreqs = JSON.parse(fs_1.default.readFileSync(path_1.default.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
         const tcpServerComponentOptions = new tcpOptions_1.TcpOptions();
-        tcpServerComponentOptions.port = 50000;
         const dbPath = path_1.default.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
         tcpServerComponentOptions.grids["GB"] = dbPath;
         const tcpClient = new tcpClient_1.TcpClient(tcpServerComponentOptions);
-        await tcpClient.activateServer();
         const tcpServerLookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpClient);
         tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
             if (d) {
@@ -26,13 +24,8 @@ describe("TcpServerLookupComponent", () => {
             }
         });
         let r;
-        try {
-            const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date('2014-01-01'), new Date('2015-01-03'));
-            r = response[0];
-        }
-        finally {
-            await tcpClient.stop();
-        }
+        const response = await tcpServerLookupComponent.lookup(gbFreqs, ["GB"], new Date('2014-01-01'), new Date('2015-01-03'));
+        r = response[0];
         expect(r).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
     }, 300000);
 });

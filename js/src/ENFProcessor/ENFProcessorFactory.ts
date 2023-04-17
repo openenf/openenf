@@ -47,12 +47,7 @@ export class ENFProcessorFactory {
         
         const lookupComponent = new TcpServerLookupComponent(tcpClient);
         const refineComponent = new TcpServerRefineComponent(tcpClient);
-        const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent, () => {
-            return tcpClient.stop();
-        });
-        baseENFProcessor.onAnalyzeCompleteEvent.addHandler(async () => {
-            return await tcpClient.activateServer();
-        })
+        const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
         return baseENFProcessor;
     }
 

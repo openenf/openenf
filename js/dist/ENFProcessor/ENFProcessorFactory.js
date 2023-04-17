@@ -48,12 +48,7 @@ class ENFProcessorFactory {
         const tcpClient = new tcpClient_1.TcpClient(tcpServerComponentOptions);
         const lookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpClient);
         const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpClient);
-        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent, () => {
-            return tcpClient.stop();
-        });
-        baseENFProcessor.onAnalyzeCompleteEvent.addHandler(async () => {
-            return await tcpClient.activateServer();
-        });
+        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
         return baseENFProcessor;
     }
     TcpPort(tcpPort) {
