@@ -2,7 +2,7 @@ import fs from "fs";
 import {ChildProcess, spawn} from "child_process";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 
-export class TcpLookupServer {
+export class TcpLookupServerController {
     private readonly port: number;
     private readonly executablePath: string;
     private childProcess: ChildProcess | undefined;

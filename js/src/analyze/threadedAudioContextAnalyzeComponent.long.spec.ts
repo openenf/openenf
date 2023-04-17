@@ -18,8 +18,7 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         }
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(goertzelFilterCache, 2);
+        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(2);
         let prevProgress = 0;
         let preScanProgressEventCalled = false;
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
@@ -47,8 +46,7 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         }
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(goertzelFilterCache, 16);
+        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(16);
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
@@ -73,8 +71,7 @@ describe('audioContextAnalyzeComponent', () => {
             numChannels: 2,
             sampleRate: 44100
         }
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(goertzelFilterCache, 16);
+        const audioContextPreScanComponent = new ThreadedAudioContextAnalyzeComponent(16);
         audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);

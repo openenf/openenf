@@ -45,7 +45,13 @@ export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
         const workers = [];
         const promises = [];
         for(let i = 0; i < slices.length; i++) {
-            const worker:any = await spawn(new Worker('observableAnalyzeWorker.ts'));
+            let worker:any;
+            try {
+                worker = await spawn(new Worker('observableAnalyzeWorker.js'));
+            }
+            catch {
+                worker = await spawn(new Worker('observableAnalyzeWorker.ts'));
+            }
             workers.push(worker);
             const promise = new Promise(resolve => {
                 let mostRecentResult:any;
@@ -69,9 +75,7 @@ export class ThreadedAudioContextAnalyzeComponent implements AnalyzeComponent {
     }
 
     private overlapFactor: OverlapFactor;
-    private goertzelFilterCache: GoertzelFilterCache;
-    constructor(goertzelFilterCache: GoertzelFilterCache, overlapFactor:OverlapFactor) {
-        this.goertzelFilterCache = goertzelFilterCache;
+    constructor(overlapFactor:OverlapFactor) {
         this.overlapFactor = overlapFactor;
         this.numThreads = os.cpus().length;
     }

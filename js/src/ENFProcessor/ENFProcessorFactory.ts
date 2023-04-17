@@ -10,8 +10,9 @@ import {BaseENFProcessor} from "./baseENFProcessor";
 import {getDefaultExecutablePath} from "../tcpClient/tcpClientUtils";
 import path from "path";
 import {getENFDataDirectory} from "../dataDownloader/ENFDataDirectory";
-import {TcpLookupServer} from "../tcpClient/tcpLookupServer";
+import {TcpLookupServerController} from "../tcpClient/tcpLookupServerController";
 import {TcpClient} from "../tcpClient/tcpClient";
+import {ThreadedAudioContextAnalyzeComponent} from "../analyze/threadedAudioContextAnalyzeComponent";
 
 export class ENFProcessorFactory {
     private executablePath: string = getDefaultExecutablePath();
@@ -34,7 +35,7 @@ export class ENFProcessorFactory {
         const overlapFactor = 16;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
-        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
+        const analyzeComponent = new ThreadedAudioContextAnalyzeComponent(overlapFactor);
         const reduceComponent = new GoertzelReduceComponent(overlapFactor);
         
         const tcpServerComponentOptions = new TcpOptions();

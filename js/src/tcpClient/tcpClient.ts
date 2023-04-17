@@ -1,7 +1,7 @@
 import net from "net";
 import {LookupCommand} from "../lookup/lookupCommand";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
-import {TcpLookupServer} from "./tcpLookupServer";
+import {TcpLookupServerController} from "./tcpLookupServerController";
 import fs from "fs";
 import {TcpOptions} from "../lookup/tcpOptions";
 import {FreqDbMetaData} from "../refine/freqDbMetaData";
@@ -13,7 +13,7 @@ export class TcpClient {
     private readonly port: number;
     private readonly timeout: number = 2000;
     private connected: boolean = false;
-    private tcpServer: TcpLookupServer | undefined;
+    private tcpServer: TcpLookupServerController | undefined;
 
     public serverMessageEvent: ENFEventBase<string> = new ENFEventBase<string>();
     private options: TcpOptions;
@@ -23,7 +23,7 @@ export class TcpClient {
         this.port = options.port;
         this.host = options.host;
         this.socket = new net.Socket();
-        this.tcpServer = new TcpLookupServer(this.port, this.options.executablePath);
+        this.tcpServer = new TcpLookupServerController(this.port, this.options.executablePath);
         this.tcpServer.serverMessageEvent.addHandler(s => {
             this.serverMessageEvent.trigger(s);
         })
