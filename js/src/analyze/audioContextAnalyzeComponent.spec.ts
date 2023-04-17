@@ -42,7 +42,7 @@ describe('audioContextAnalyzeComponent', () => {
         };
         let progress = 0;
         let progressFiredCount = 0;
-        analyzeComponent.analyzeProgressEvent.addHandler(e => {
+        analyzeComponent.analyzeProgressEvent.addHandler((e:any) => {
             progressFiredCount++;
             if (e) {
                 progress = e[1];

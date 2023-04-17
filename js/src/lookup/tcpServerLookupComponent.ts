@@ -1,7 +1,7 @@
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {LookupResult} from "../model/lookupResult";
 import {LookupComponent} from "./lookupComponent";
-import {TcpServerComponentOptions} from "./tcpServerComponentOptions";
+import {TcpOptions} from "./tcpOptions";
 import {TcpClient} from "../tcpClient/tcpClient";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 import {LookupCommand} from "./lookupCommand";
@@ -10,10 +10,6 @@ import {NoMatch} from "../ENFProcessor/noMatch";
 import {NoMatchReason} from "../model/noMatchReason";
 
 export class TcpServerLookupComponent implements LookupComponent {
-    async dispose(): Promise<void> {
-        await this.stopServer();
-    }
-    private options: TcpServerComponentOptions;
     private client: TcpClient;
 
     /**
@@ -25,12 +21,8 @@ export class TcpServerLookupComponent implements LookupComponent {
      */
     private contiguousSearchLimit = 10000;
 
-    constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
-        this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpClient(this.options.port, this.options.host);
-        if (tcpServerComponentOptions?.stdOutHandler) {
-            this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler)
-        }
+    constructor(tcpClient: TcpClient) {
+        this.client = tcpClient;
     }
 
     readonly implementationId: string = "TcpServerLookupComponent0.0.1";
@@ -47,8 +39,6 @@ export class TcpServerLookupComponent implements LookupComponent {
     }
 
     async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
-        await this.client.activateServer(this.options.executablePath, this.options.port);
-        await this.client.loadGrids(this.options.grids);
         let position = 0;
         let sequence:(number | null)[] = [];
         //If this is a relatively short frequency sequence we search for it all in one go:
@@ -70,19 +60,17 @@ export class TcpServerLookupComponent implements LookupComponent {
             throw new NoMatch(NoMatchReason.NoResultsOnLookup);
         }
         const response = responses[responses.length - 1]
-        const r = JSON.parse(response, toPascalCase);
+        let r;
+        try {
+            r = JSON.parse(response, toPascalCase);
+        }
+        catch {
+            throw new SyntaxError(`Error parsing '${response}'`);
+        }
         r.forEach((r1:any) => {
             r1.position = r1.position - position;
         })
         return r;
-    }
-
-    async stopServer() {
-        if (this.client) {
-            await this.client.stop()
-        } else {
-            console.warn('No attached TCP client')
-        }
     }
 }
 

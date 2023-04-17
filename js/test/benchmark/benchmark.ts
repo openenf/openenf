@@ -2,13 +2,13 @@ import * as Benchmark from "benchmark";
 import fs from "fs";
 import path from "path";
 import {GoertzelReduceComponent} from "../../src/reduce/goertzelReduceComponent";
-import {TcpServerComponentOptions} from "../../src/lookup/tcpServerComponentOptions";
-import {getTestExecutablePath} from "../../src/testUtils";
+import {TcpOptions} from "../../src/lookup/tcpOptions";
 import {TcpServerLookupComponent} from "../../src/lookup/tcpServerLookupComponent";
 import {BaseENFProcessor} from "../../src/ENFProcessor/baseENFProcessor";
 import {MockPreScanComponent} from "../../src/ENFProcessor/mocks/mockPreScanComponent.mock";
 import {MockAnalyzeComponent} from "../../src/ENFProcessor/mocks/mockAnalyzeComponent.mock";
 import {MockRefineComponent} from "../../src/ENFProcessor/mocks/mockRefineComponent.mock";
+import {TcpClient} from "../../src/tcpClient/tcpClient";
 
 // Function that returns a Promise
 function lookup(freqPath:string) {
@@ -19,10 +19,10 @@ function lookup(freqPath:string) {
         const analyzeComponent = new MockAnalyzeComponent();
         const reduceComponent = new GoertzelReduceComponent(overlapFactor);
 
-        const tcpServerComponentOptions = new TcpServerComponentOptions();
-        tcpServerComponentOptions.executablePath = getTestExecutablePath();
+        const tcpServerComponentOptions = new TcpOptions();
+        const tcpClient = new TcpClient(tcpServerComponentOptions);
 
-        const lookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
+        const lookupComponent = new TcpServerLookupComponent(tcpClient);
         const refineComponent = new MockRefineComponent();
 
         const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);

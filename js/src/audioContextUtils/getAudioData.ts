@@ -18,7 +18,6 @@ export const getAudioData = (buffer: ArrayBuffer, path: string): Promise<[Float3
                 return;
             }
             const channelData = audioBuffer.getChannelData(0);
-            console.log('channelData', channelData);
             const audioFileMetaData: AudioFileMetadata = {
                 channels: audioBuffer.numberOfChannels,
                 duration: audioBuffer.duration,

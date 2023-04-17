@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BufferedAudioProcessor = void 0;
 /**
  * BufferedAudioProcessor accepts variable size arrays of data of type {@link T} and appends them to a buffer array of the same type.
  * When the number of items in the buffer array exceeds the {@link windowSize} the {@link onWindowFull} function is executed for the first
@@ -6,7 +9,7 @@
  * The motivation behind this class is to create a structure that can accepts chunks of audio of unknown size from an unpredicatble stream
  * (e.g. a URL or filestream) but only operate on a window of samples of fixed size (e.g. 44100 samples or 1 second of 44.1Hz audio)
  */
-export class BufferedAudioProcessor {
+class BufferedAudioProcessor {
     /**
      *
      * @param windowSize in practice this usually a multiple of the sample rate, typically 44100 or 48000 samples
@@ -48,3 +51,4 @@ export class BufferedAudioProcessor {
         this.buffer = [];
     }
 }
+exports.BufferedAudioProcessor = BufferedAudioProcessor;

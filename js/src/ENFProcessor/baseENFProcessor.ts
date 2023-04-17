@@ -30,12 +30,15 @@ export class BaseENFProcessor implements ENFProcessor {
 
     /** @internal */
     public reduceComponent: ReduceComponent;
+    private disposeFunction: (() => Promise<void>) | undefined;
 
     constructor(preScanComponent: PreScanComponent,
                 analyzeComponent: AnalyzeComponent,
                 reduceComponent: ReduceComponent,
                 lookupComponent: LookupComponent,
-                refineComponent: RefineComponent) {
+                refineComponent: RefineComponent,
+                dispose?:() => Promise<void>) {
+        this.disposeFunction = dispose;
         this.preScanComponent = preScanComponent
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent
         this.onPreScanProgressEvent.addHandler(data => {
@@ -173,7 +176,8 @@ export class BaseENFProcessor implements ENFProcessor {
     onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]> = new ENFEventBase<ENFAnalysisResult[]>()
 
     async dispose() {
-        await this.lookupComponent.dispose();
-        await this.refineComponent.dispose();
+        if (this.disposeFunction) {
+            this.disposeFunction();
+        }
     }
 }

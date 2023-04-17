@@ -1,4 +1,7 @@
-export class ENFEventBase {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ENFEventBase = void 0;
+class ENFEventBase {
     constructor() {
         this.handlers = [];
     }
@@ -12,3 +15,4 @@ export class ENFEventBase {
         this.handlers.slice(0).forEach(h => h(data));
     }
 }
+exports.ENFEventBase = ENFEventBase;

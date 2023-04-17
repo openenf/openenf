@@ -1,7 +1,6 @@
 import {LookupResult} from "../model/lookupResult";
 import {ENFAnalysisResult} from "../model/ENFAnalysisResult";
 import {RefineComponent} from "./refineComponent";
-import {TcpServerComponentOptions} from "../lookup/tcpServerComponentOptions";
 import {TcpClient} from "../tcpClient/tcpClient";
 import {LookupCommand} from "../lookup/lookupCommand";
 import {computeKurtosis, convertPositionToGridDate, getPeaks} from "./refineComponentUtils";
@@ -9,49 +8,45 @@ import {FreqDbMetaData} from "./freqDbMetaData";
 import {toPascalCase} from "../tcpClient/tcpClientUtils";
 
 export class TcpServerRefineComponent implements RefineComponent {
-    async dispose(): Promise<void> {
-        await this.stopServer();
-    }
     readonly implementationId: string = "TcpServerRefineComponentv0.0.1"
-    private options: TcpServerComponentOptions;
     private client: TcpClient;
 
-    private buildGetMetaDataCommand(gridId:string) {
-        return `${LookupCommand.getMetaData.toString()}${JSON.stringify(gridId)}`;
-    }
-
-    async getGridMetaData(lookupResults: LookupResult[]):Promise<{ [id: string]: FreqDbMetaData }> {
-        const metaData:{ [id: string]: FreqDbMetaData } = {};
+    async getGridMetaData(lookupResults: LookupResult[]): Promise<{ [id: string]: FreqDbMetaData }> {
+        const metaData: { [id: string]: FreqDbMetaData } = {};
         const gridIds = Array.from(new Set(lookupResults.map(x => x.gridId)));
-        for(const gridId of gridIds) {
-            const {response} = await this.client.request(this.buildGetMetaDataCommand(gridId));
-            metaData[gridId] = JSON.parse(response, toPascalCase);
+        for (const gridId of gridIds) {
+            metaData[gridId] = await this.client.getMetaData(gridId);
         }
         return metaData;
     }
 
     async refine(lookupFrequencies: (number | null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]> {
-        await this.client.activateServer(this.options.executablePath, this.options.port);
-        await this.client.loadGrids(this.options.grids);
         const nonNullDuration = lookupFrequencies.filter(x => x !== null).length;
         const peaks = getPeaks(lookupResults);
         const gridMetaData = await this.getGridMetaData(lookupResults);
-        const results:ENFAnalysisResult[] = [];
+        const results: ENFAnalysisResult[] = [];
         for (const r of peaks) {
-            const command = this.buildComprehensiveLookupCommand(lookupFrequencies,r.gridId,12,r.position);
-            const {response} = await this.client.request(command);
+            const command = this.buildComprehensiveLookupCommand(lookupFrequencies, r.gridId, 12, r.position);
+            const responses = await this.client.request(command).catch(e => {
+                console.error(e);
+                process.exit();
+            })
+            if (!responses) {
+                console.error('No response from refine');
+                throw new Error('No response from refine'); // Fixed: replace process.exit() with throw statement
+            }
+            const response = responses.response;
             let comprehensiveResults: any[] = [];
             try {
                 comprehensiveResults = JSON.parse(response, toPascalCase);
-            }
-            catch (e) {
+            } catch (e) {
                 console.error('Unable to parse: ');
                 console.error(response);
                 throw e;
             }
-            const kurtosis =  computeKurtosis(comprehensiveResults.map(x => x.score));
+            const kurtosis = computeKurtosis(comprehensiveResults.map(x => x.score));
             const startDate = new Date(gridMetaData[r.gridId].startDate * 1000);
-            const result:ENFAnalysisResult = {
+            const result: ENFAnalysisResult = {
                 gridId: r.gridId,
                 kurtosis,
                 normalisedScore: r.score / (nonNullDuration * 1.0),
@@ -60,7 +55,8 @@ export class TcpServerRefineComponent implements RefineComponent {
             }
             results.push(result);
         }
-        return results.sort((a,b) => a.score - b.score);
+        const sortedResults = results.sort((a, b) => a.score - b.score);
+        return sortedResults;
     }
 
     private buildComprehensiveLookupCommand(freqs: (number | null)[], gridId: string, range: number, around: number): string {
@@ -73,16 +69,7 @@ export class TcpServerRefineComponent implements RefineComponent {
         return `${LookupCommand.comprehensiveLookup.toString()}${JSON.stringify(request)}`;
     }
 
-    constructor(tcpServerComponentOptions?: TcpServerComponentOptions) {
-        this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpClient(this.options.port, this.options.host);
-    }
-
-    async stopServer() {
-        if (this.client) {
-            await this.client.stop()
-        } else {
-            console.warn('No attached TCP client')
-        }
+    constructor(tcpClient: TcpClient) {
+        this.client = tcpClient;
     }
 }

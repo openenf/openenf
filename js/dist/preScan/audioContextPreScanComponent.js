@@ -1,25 +1,40 @@
-import { ENFEventBase } from "../ENFProcessor/events/ENFEventBase";
-import fs from "fs";
-import { getAudioData } from "../audioContextUtils/getAudioData";
-import { PreScanProcessor } from "./preScanProcessor";
-import { PreScanResult } from "./preScanResult";
-export class AudioContextPreScanComponent {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AudioContextPreScanComponent = void 0;
+const ENFEventBase_1 = require("../ENFProcessor/events/ENFEventBase");
+const fs_1 = __importDefault(require("fs"));
+const getAudioData_1 = require("../audioContextUtils/getAudioData");
+const preScanProcessor_1 = require("./preScanProcessor");
+const preScanResult_1 = require("./preScanResult");
+class AudioContextPreScanComponent {
     constructor(goertzelFilterCache) {
         this.implementationId = "AudioContextPreScanComponent0.0.1";
-        this.preScanProgressEvent = new ENFEventBase();
-        this.audioLoadedEvent = new ENFEventBase();
+        this.preScanProgressEvent = new ENFEventBase_1.ENFEventBase();
+        this.audioLoadedEvent = new ENFEventBase_1.ENFEventBase();
         this.goertzelFilterCache = goertzelFilterCache;
     }
     async preScan(resourceUri) {
-        let buffer = fs.readFileSync(resourceUri);
-        const [audioData, metaData] = await getAudioData(buffer, resourceUri);
+        let audioData;
+        let metaData;
+        if (resourceUri instanceof Object) {
+            audioData = resourceUri;
+            metaData = { channels: 1, duration: audioData.length / 44100, durationSamples: audioData.length, sampleRate: 44100 };
+        }
+        else {
+            let buffer = fs_1.default.readFileSync(resourceUri);
+            [audioData, metaData] = await (0, getAudioData_1.getAudioData)(buffer, resourceUri);
+        }
         this.audioLoadedEvent.trigger(audioData);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
-        const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent, audioData.length);
+        const preScanProcessor = new preScanProcessor_1.PreScanProcessor(goertzelStore, this.preScanProgressEvent, audioData.length);
         for (let i = 0; i < audioData.length; i += 67108864) {
             preScanProcessor.process(audioData.slice(i, i + 67108864));
         }
         const firstPassResult = preScanProcessor.getResult();
-        return new PreScanResult(firstPassResult, metaData);
+        return new preScanResult_1.PreScanResult(firstPassResult, metaData);
     }
 }
+exports.AudioContextPreScanComponent = AudioContextPreScanComponent;

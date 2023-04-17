@@ -1,20 +1,20 @@
 import {TcpClient} from "./tcpClient";
-import {getTestExecutablePath} from "../testUtils";
 import path from "path";
 import {getENFDataDirectory} from "../dataDownloader/ENFDataDirectory";
+import {TcpOptions} from "../lookup/tcpOptions";
 
 describe('tcpClient', () => {
     it('Can load large grid', async () => {
         const port = 50020;
-        const tcpClient = new TcpClient(port,"127.0.0.1");
-        const executablePath = getTestExecutablePath();
+        const options = new TcpOptions();
+        options.port = port;
+        options.grids = {
+            "DE":path.resolve(getENFDataDirectory(),"DE.freqdb")
+        }
+        const tcpClient = new TcpClient(options);
         let loadedGrids = false;
         try {
-            await tcpClient.activateServer(executablePath, port);
-            const grids = {
-                "DE":path.resolve(getENFDataDirectory(),"DE.freqdb")
-            }
-            await tcpClient.loadGrids(grids);
+            await tcpClient.activateServer();
             loadedGrids = true;
         }
         finally {

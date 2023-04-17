@@ -1,8 +1,33 @@
 #!/usr/bin/env node
-import { ENFProcessorFactory } from "./ENFProcessor/ENFProcessorFactory";
-import * as fs from "fs";
-import * as cliProgress from "cli-progress";
-import { verifyApplicationData } from "./dataDownloader/downloadData";
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ENFProcessorFactory_1 = require("./ENFProcessor/ENFProcessorFactory");
+const fs = __importStar(require("fs"));
+const cliProgress = __importStar(require("cli-progress"));
+const downloadData_1 = require("./dataDownloader/downloadData");
 const parseDateWithError = (opt) => {
     const result = Date.parse(opt);
     if (isNaN(result)) {
@@ -25,9 +50,8 @@ if (!fs.existsSync(filepath)) {
     console.error(`Unable to find file at ${filepath}`);
 }
 else {
-    console.log(`Running from: ${__filename}`);
-    verifyApplicationData().then(() => {
-        ENFProcessorFactory.Build().then((enfProcessor) => {
+    (0, downloadData_1.verifyApplicationData)().then(() => {
+        ENFProcessorFactory_1.ENFProcessorFactory.Build().then((enfProcessor) => {
             const progressBar = new cliProgress.SingleBar({
                 format: 'ENF Analysis |{bar}| {percentage}% || {log}',
                 barCompleteChar: '\u2588',
@@ -55,9 +79,15 @@ else {
                     if (result.ENFAnalysisResults) {
                         const r = result.ENFAnalysisResults[0];
                         console.log(`Match found.\nBest guess for when this audio was recorded:\n${r.time}.\nScore: ${r.normalisedScore}\nGrid: ${r.gridId}`);
+                        if (result.analysisEndTime) {
+                            const diffInSeconds = Math.floor((result.analysisEndTime?.getTime() - result.analysisStartTime.getTime()) / 1000);
+                            console.log(`Total time: ${diffInSeconds} secs`);
+                        }
                     }
                 }
-                process.exit();
+                enfProcessor.dispose().then(() => {
+                    process.exit();
+                });
             });
         });
     }).catch(p => {

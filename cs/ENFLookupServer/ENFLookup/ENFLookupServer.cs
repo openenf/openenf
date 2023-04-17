@@ -50,14 +50,15 @@ public class ENFLookupServer : IDisposable
 
         var message = messageBuilder.ToString();
         var messageType = (ENFLookupServerCommands)int.Parse(message[..1]);
+        var messageContent = message.Length > 1 ? message.Substring(1) : "";
         string responseString = "";
         switch (messageType)
         {
             case ENFLookupServerCommands.Ping:
-                responseString = "pong";
+                responseString = $"pong{messageContent}";
                 break;
             case ENFLookupServerCommands.LoadGrid:
-                var freqDbFilePath = JsonConvert.DeserializeObject<string>(message[1..]);
+                var freqDbFilePath = JsonConvert.DeserializeObject<string>(messageContent);
                 if (_lookupRequestHandler is ICanAddDbReader iCanAddDbReader)
                 {
                     Console.WriteLine($"Loading grid file at {freqDbFilePath}");
@@ -67,7 +68,7 @@ public class ENFLookupServer : IDisposable
                 responseString = "Ok";
                 break;
             case ENFLookupServerCommands.Lookup:
-                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);
+                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(messageContent);
                 var lookupResults = await _lookupRequestHandler.Lookup(lookupRequest,
                     d =>
                     {
@@ -87,12 +88,12 @@ public class ENFLookupServer : IDisposable
                 break;
             case ENFLookupServerCommands.ComprehensiveLookup:
                 var comprehensiveLookupRequest =
-                    JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
+                    JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(messageContent);
                 var results = await _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
                 responseString = JsonConvert.SerializeObject(results);
                 break;
             case ENFLookupServerCommands.GetMetaData:
-                var gridId = JsonConvert.DeserializeObject<string>(message[1..]);
+                var gridId = JsonConvert.DeserializeObject<string>(messageContent);
                 var metaData = _lookupRequestHandler.GetMetaData(gridId);
                 responseString = JsonConvert.SerializeObject(metaData);
                 break;

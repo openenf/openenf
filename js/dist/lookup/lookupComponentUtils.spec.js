@@ -1,7 +1,9 @@
-import { findLongestNonNullSubsequences, getContiguousSequenceLengths, getMaxStdDevSequence } from "./lookupComponentUtils";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const lookupComponentUtils_1 = require("./lookupComponentUtils");
 describe('lookupComponentUtils', () => {
     it('getMaxStdDevSequence returns the sequence with the smallest standard deviation', () => {
-        const { position, sequence } = getMaxStdDevSequence({
+        const { position, sequence } = (0, lookupComponentUtils_1.getMaxStdDevSequence)({
             '5': [1, 2, 3, 8],
             '16': [1, 2, 3, 4],
             '21': [1, 2, 3, 3],
@@ -12,7 +14,7 @@ describe('lookupComponentUtils', () => {
     });
     it('findLongestNonNullSubsequences finds the longest non-null subsequences smaller than 5', () => {
         const sequence = [1, null, 1, 2, null, 1, 2, 3, 4, null, null, 1, 2, 3, null, null, 1, 2, 3, 4, null, 1, 2, 3, 4, 5];
-        const result = findLongestNonNullSubsequences(sequence, 4);
+        const result = (0, lookupComponentUtils_1.findLongestNonNullSubsequences)(sequence, 4);
         expect(result).toStrictEqual({
             '5': [1, 2, 3, 4],
             '16': [1, 2, 3, 4],
@@ -22,7 +24,7 @@ describe('lookupComponentUtils', () => {
     });
     it('getContiguousSequenceLengths returns lengths of non-null subsequences for each index of a sequence (short)', () => {
         const sequence = [1, null, 1, 2, null, 1];
-        const result = getContiguousSequenceLengths(sequence);
+        const result = (0, lookupComponentUtils_1.getContiguousSequenceLengths)(sequence);
         expect(result.length).toBe(sequence.length);
         expect(result[0]).toStrictEqual({ position: 0, length: 1 });
         expect(result[1]).toStrictEqual({ position: 1, length: 0 });
@@ -31,7 +33,7 @@ describe('lookupComponentUtils', () => {
     });
     it('getContiguousSequenceLengths returns lengths of non-null subsequences for each index of a sequence', () => {
         const sequence = [1, null, 1, 2, null, 1, 2, 3, 4, null, null, 1, 2, 3, null, null, 1, 2, 3, 4, null, 1, 2, 3, 4, 5];
-        const result = getContiguousSequenceLengths(sequence);
+        const result = (0, lookupComponentUtils_1.getContiguousSequenceLengths)(sequence);
         expect(result).toStrictEqual([
             { position: 0, length: 1 },
             { position: 1, length: 0 },

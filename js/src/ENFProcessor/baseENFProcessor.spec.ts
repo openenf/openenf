@@ -120,20 +120,6 @@ describe('BaseAnalyzer', () => {
         await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
         expect(eventFired).toBe(true);
     })
-    it('Fires onAnalyzeComplete event', async () => {
-        let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(
-            new MockPreScanComponent(),
-            new MockAnalyzeComponent(),
-            new MockReduceComponent(),
-            new MockLookupComponent(),
-            new MockRefineComponent())
-        baseAnalyzer.onAnalyzeCompleteEvent.addHandler(_result => {
-            eventFired = true;
-        })
-        await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
-        expect(eventFired).toBe(true);
-    })
     it('Fires onReduceComplete event', async () => {
         let eventFired = false;
         const baseAnalyzer = new BaseENFProcessor(

@@ -1,5 +1,9 @@
 import { FrequencyRequestCache } from "./FrequencyRequestCache";
 import { GoertzelHarmonicResult } from "./GoertzelHarmonicResult";
+export declare const detectPeakAround: (goertzelRequestCache: FrequencyRequestCache, target: number) => {
+    hz: number;
+    amp: number;
+};
 /**
  * Returns a {@link GoertzelHarmonicResult} at the specified frequency for the audio contained in the {@link FrequencyRequestCache}
  * @param freq The target frequency to analyse, e.g. 50Hz, 120Hz, etc. This function will return the peak frequency within +-0.5HZ of the target

@@ -1,12 +1,38 @@
-import * as crypto from "crypto";
-import { CompletionTimes } from "./CompletionTimes";
-import { StageDurations } from "./StageDurations";
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ENFAnalysis = void 0;
+const crypto = __importStar(require("crypto"));
+const CompletionTimes_1 = require("./CompletionTimes");
+const StageDurations_1 = require("./StageDurations");
 /**
  * Represents an occurrence of ENF Analysis for a specific media file
  *
  * A single media resource could be analysed several times. The `ENFAnalysis` object represents one analysis event.
  */
-export class ENFAnalysis {
+class ENFAnalysis {
     constructor(uri, id) {
         /**
          * An optional string representing the MD5 hash of the media resource. Useful for caching the various stages of analysis
@@ -121,10 +147,11 @@ export class ENFAnalysis {
          * "WithKurtosis1.1"
          */
         this.refineImplementationId = null;
-        this.completionTimes = new CompletionTimes();
+        this.completionTimes = new CompletionTimes_1.CompletionTimes();
         this.id = id || crypto.randomUUID();
         this.uri = uri;
         this.analysisStartTime = new Date();
-        this.durations = new StageDurations(this.analysisStartTime, this.completionTimes);
+        this.durations = new StageDurations_1.StageDurations(this.analysisStartTime, this.completionTimes);
     }
 }
+exports.ENFAnalysis = ENFAnalysis;

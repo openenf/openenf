@@ -3,6 +3,9 @@ import {LookupCommand} from "../lookup/lookupCommand";
 import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
 import {TcpLookupServer} from "./tcpLookupServer";
 import fs from "fs";
+import {TcpOptions} from "../lookup/tcpOptions";
+import {FreqDbMetaData} from "../refine/freqDbMetaData";
+import {toPascalCase} from "./tcpClientUtils";
 
 export class TcpClient {
     private readonly host: string;
@@ -10,42 +13,35 @@ export class TcpClient {
     private readonly port: number;
     private readonly timeout: number = 2000;
     private connected: boolean = false;
-    private tcpServer:TcpLookupServer | undefined;
-    
-    public serverMessageEvent:ENFEventBase<string> = new ENFEventBase<string>();
+    private tcpServer: TcpLookupServer | undefined;
 
-    constructor(port: number, host: string) {
-        this.port = port;
-        this.host = host;
+    public serverMessageEvent: ENFEventBase<string> = new ENFEventBase<string>();
+    private options: TcpOptions;
+
+    constructor(options:TcpOptions) {
+        this.options = options;
+        this.port = options.port;
+        this.host = options.host;
         this.socket = new net.Socket();
+        this.tcpServer = new TcpLookupServer(this.port, this.options.executablePath);
+        this.tcpServer.serverMessageEvent.addHandler(s => {
+            this.serverMessageEvent.trigger(s);
+        })
     }
 
     private buildPingCommand(): string {
         return LookupCommand.ping.toString();
     }
 
-    async activateServer(executablePath:string, port:number): Promise<void> {
-        return new Promise(async (resolve, reject) => {
-            const {response, error} = await this.request(this.buildPingCommand());
-            if (error || response !== "pong") {
-                this.tcpServer = new TcpLookupServer(port, executablePath);
-                this.tcpServer.serverMessageEvent.addHandler(s => {
-                    this.serverMessageEvent.trigger(s);
-                })
-                this.tcpServer.start().then(async () => {
-                    const {response, error} = await this.request(this.buildPingCommand());
-                    if (error || response !== "pong") {
-                        reject(new Error("Unable to ping spawned server"));
-                    } else {
-                        resolve();
-                    }
-                }).catch(e => {
-                    reject(e);
-                });
-            } else {
-                resolve();
-            }
-        })
+    async activateServer(): Promise<void> {
+        console.log('activating server');
+        await this.tcpServer?.start();
+        const pingCommand = this.buildPingCommand();
+        const {response, error} = await this.request(pingCommand);
+        if (error || response !== "pong") {
+            throw new Error(`Unable to ping spawned server. Sent '${pingCommand}'. Was expecting 'pong' but got '${response}'`);
+        }
+        await this.loadGrids(this.options.grids);
     }
 
     private buildLoadGridCommand(id: string, path: string) {
@@ -56,21 +52,25 @@ export class TcpClient {
         return `${LookupCommand.loadGrid.toString()}${JSON.stringify(path)}`;
     }
 
-    async loadGrids(grids: { [p: string]: string }):Promise<void> {
+    private async loadGrids(grids: ({ [p: string]: string })): Promise<void> {
         const optionsGridIds = Object.keys(grids);
         if (optionsGridIds.length) {
             for (const id of optionsGridIds) {
                 const filepath = grids[id];
-                if (!fs.existsSync(filepath)) {
+                if (filepath !== '' && !fs.existsSync(filepath)) {
                     throw new Error(`Unable to find freqdb file at '${filepath}'`)
                 }
                 const loadGridCommand = this.buildLoadGridCommand(id, grids[id]);
+                console.log(`Loading grid with command '${loadGridCommand}'`);
                 const {response, error} = await this.request(loadGridCommand);
                 if (error) {
+                    console.error(error)
                     throw error;
                 }
                 if (response !== "Ok") {
-                    //throw new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
+                    const error = new Error(`Non-ok result loading grid ${id}. Was expecting 'Ok' but got '${response}'. Filepath '${filepath}'`);
+                    console.error(error);
+                    throw error;
                 }
             }
         }
@@ -79,19 +79,19 @@ export class TcpClient {
     request(message: string, onUpdate?: (buffer: Buffer) => void): Promise<{ response: string, responses: string[], error: Error | null }> {
         this.connected = false;
         const self = this;
-        return new Promise<{ response: string, responses: string[], error: Error | null }>(resolve => {
+        return new Promise<{ response: string, responses: string[], error: Error | null }>((resolve,reject) => {
             let wholeMessage = "";
-            const responses:string[] = [];
+            const responses: string[] = [];
             setTimeout(() => {
                 if (!this.connected) {
-                    resolve({response: wholeMessage, responses, error: new Error(`Timeout after ${this.timeout} ms`)})
+                    reject(new Error(`Timeout after ${this.timeout} ms`));
                 }
             }, this.timeout)
             const socket = this.socket;
             const errorHandler = ((e: Error) => {
-                resolve({response: wholeMessage, responses, error: e})
+                reject(e);
             });
-            socket.on('error', errorHandler)
+            socket.once('error', errorHandler)
             socket.connect(this.port, this.host, function () {
                 self.connected = true;
                 socket.write(message);
@@ -105,20 +105,35 @@ export class TcpClient {
             };
             socket.on('data', newDataHandler);
             const closeHandler = (hadError: boolean) => {
+                if (hadError) {
+                    reject(socket.errored);
+                }
                 socket.removeListener('data', newDataHandler);
-                socket.removeListener('close', closeHandler);
-                socket.removeListener('error', errorHandler);
                 resolve({response: wholeMessage, responses, error: socket.errored});
             };
-            socket.on('close', closeHandler);
+            socket.once('close', closeHandler);
         })
     }
 
-    async stop():Promise<void> {
+    private buildGetMetaDataCommand(gridId: string) {
+        return `${LookupCommand.getMetaData.toString()}${JSON.stringify(gridId)}`;
+    }
+
+    async stop(): Promise<void> {
         if (this.tcpServer) {
             await this.tcpServer.stop();
-        } else {
-            console.warn('No attached TCP server');
         }
+    }
+
+    async getMetaData(gridId: string):Promise<FreqDbMetaData> {
+        const {response} = await this.request(this.buildGetMetaDataCommand(gridId));
+        let freqDbMetaData;
+        try {
+            freqDbMetaData = JSON.parse(response, toPascalCase);
+        }
+        catch (e) {
+            throw new SyntaxError(`Error parsing '${response}' to JSON while getting metadata for ${gridId}`);
+        }
+        return freqDbMetaData;
     }
 }

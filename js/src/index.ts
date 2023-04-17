@@ -30,7 +30,6 @@ const filepath = argv._[0];
 if (!fs.existsSync(filepath)) {
     console.error(`Unable to find file at ${filepath}`);
 } else {
-    console.log(`Running from: ${__filename}`)
     verifyApplicationData().then(() => {
         ENFProcessorFactory.Build().then((enfProcessor: ENFProcessor) => {
             const progressBar = new cliProgress.SingleBar({
@@ -59,9 +58,15 @@ if (!fs.existsSync(filepath)) {
                     if (result.ENFAnalysisResults) {
                         const r = result.ENFAnalysisResults[0];
                         console.log(`Match found.\nBest guess for when this audio was recorded:\n${r.time}.\nScore: ${r.normalisedScore}\nGrid: ${r.gridId}`);
+                        if (result.analysisEndTime) {
+                            const diffInSeconds = Math.floor((result.analysisEndTime?.getTime() - result.analysisStartTime.getTime()) / 1000);
+                            console.log(`Total time: ${diffInSeconds} secs`);
+                        }
                     }
                 }
-                process.exit();
+                enfProcessor.dispose().then(() => {
+                    process.exit();
+                })
             })
         })
     }).catch(p => {

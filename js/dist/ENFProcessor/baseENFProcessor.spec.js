@@ -1,19 +1,21 @@
-import { BaseENFProcessor } from "./baseENFProcessor";
-import { MockPreScanComponent } from "./mocks/mockPreScanComponent.mock";
-import { MockAnalyzeComponent } from "./mocks/mockAnalyzeComponent.mock";
-import { MockLookupComponent } from "./mocks/mockLookupComponent.mock";
-import { MockReduceComponent } from "./mocks/mockReduceComponent.mock";
-import { MockRefineComponent } from "./mocks/mockRefineComponent.mock";
-import { NoMatch } from "./noMatch";
-import { NoMatchReason } from "../model/noMatchReason";
-import { ENFAnalysis } from "../model/ENFAnalysis";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const baseENFProcessor_1 = require("./baseENFProcessor");
+const mockPreScanComponent_mock_1 = require("./mocks/mockPreScanComponent.mock");
+const mockAnalyzeComponent_mock_1 = require("./mocks/mockAnalyzeComponent.mock");
+const mockLookupComponent_mock_1 = require("./mocks/mockLookupComponent.mock");
+const mockReduceComponent_mock_1 = require("./mocks/mockReduceComponent.mock");
+const mockRefineComponent_mock_1 = require("./mocks/mockRefineComponent.mock");
+const noMatch_1 = require("./noMatch");
+const noMatchReason_1 = require("../model/noMatchReason");
+const ENFAnalysis_1 = require("../model/ENFAnalysis");
 describe('BaseAnalyzer', () => {
     it('Sends data to preScan component when fullAnalysis invoked', async () => {
         let urlReceived = "";
-        const mockPreScanComponent = new MockPreScanComponent(url => {
+        const mockPreScanComponent = new mockPreScanComponent_mock_1.MockPreScanComponent(url => {
             urlReceived = url;
         });
-        const baseAnalyzer = new BaseENFProcessor(mockPreScanComponent, new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(mockPreScanComponent, new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         await baseAnalyzer.performFullAnalysis("TEST_URL", []);
         expect(urlReceived).toBe("TEST_URL");
     });
@@ -31,21 +33,21 @@ describe('BaseAnalyzer', () => {
             sampleRate: 0
         };
         let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(undefined, preScanResult), new MockAnalyzeComponent((url, result) => {
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(undefined, preScanResult), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent((url, result) => {
             expect(url).toBe("TEST_URL");
             expect(result).toBe(preScanResult);
             eventFired = true;
-        }), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        }), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         await baseAnalyzer.performFullAnalysis("TEST_URL", []);
         expect(eventFired).toBe(true);
     });
     it('Sends data to reduce component when fullAnalysisInvoked', async () => {
         let eventFired = false;
         const analysisResult = [];
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(undefined, analysisResult), new MockReduceComponent(windowResult => {
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(undefined, analysisResult), new mockReduceComponent_mock_1.MockReduceComponent(windowResult => {
             expect(windowResult).toBe(analysisResult);
             eventFired = true;
-        }), new MockLookupComponent(), new MockRefineComponent());
+        }), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         await baseAnalyzer.performFullAnalysis("TEST_URL", []);
         expect(eventFired).toBe(true);
     });
@@ -55,20 +57,20 @@ describe('BaseAnalyzer', () => {
         const gridIds = ["DE", "GB"];
         const from = new Date("2010-01-01");
         const to = new Date("2030-01-01");
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(undefined, reduceResult), new MockLookupComponent((arg1, arg2, arg3, arg4) => {
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(undefined, reduceResult), new mockLookupComponent_mock_1.MockLookupComponent((arg1, arg2, arg3, arg4) => {
             expect(arg1).toBe(reduceResult);
             expect(arg2).toBe(gridIds);
             expect(arg3).toBe(from);
             expect(arg4).toBe(to);
             eventFired = true;
-        }), new MockRefineComponent());
+        }), new mockRefineComponent_mock_1.MockRefineComponent());
         await baseAnalyzer.performFullAnalysis("TEST_URL", gridIds, from, to);
         expect(eventFired).toBe(true);
     });
     it('Sends data to refine component when fullAnalysisInvoked', async () => {
         let eventFired = false;
         const lookupResult = [];
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(undefined, lookupResult), new MockRefineComponent(arg1 => {
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(undefined, lookupResult), new mockRefineComponent_mock_1.MockRefineComponent(arg1 => {
             expect(arg1).toBe(lookupResult);
             eventFired = true;
         }));
@@ -77,17 +79,8 @@ describe('BaseAnalyzer', () => {
     });
     it('Fires onPreScan complete event', async () => {
         let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         baseAnalyzer.onPreScanCompleteEvent.addHandler(_result => {
-            eventFired = true;
-        });
-        await baseAnalyzer.performFullAnalysis("TEST_URL", []);
-        expect(eventFired).toBe(true);
-    });
-    it('Fires onAnalyzeComplete event', async () => {
-        let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
-        baseAnalyzer.onAnalyzeCompleteEvent.addHandler(_result => {
             eventFired = true;
         });
         await baseAnalyzer.performFullAnalysis("TEST_URL", []);
@@ -95,7 +88,7 @@ describe('BaseAnalyzer', () => {
     });
     it('Fires onReduceComplete event', async () => {
         let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         baseAnalyzer.onReduceCompleteEvent.addHandler(_result => {
             eventFired = true;
         });
@@ -104,7 +97,7 @@ describe('BaseAnalyzer', () => {
     });
     it('Fires onLookupComplete event', async () => {
         let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         baseAnalyzer.onLookupCompleteEvent.addHandler(_result => {
             eventFired = true;
         });
@@ -113,7 +106,7 @@ describe('BaseAnalyzer', () => {
     });
     it('Fires onRefineComplete event', async () => {
         let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         baseAnalyzer.onRefineCompleteEvent.addHandler(_result => {
             eventFired = true;
         });
@@ -121,44 +114,44 @@ describe('BaseAnalyzer', () => {
         expect(eventFired).toBe(true);
     });
     it('Adds default properties to ENFAnalysisResult ', async () => {
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", []);
         expect(result.analysisStartTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
         expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
         expect(result.error).toBeNull();
         expect(result.noMatchReason).toBeNull();
-        expect(result.preScanImplementationId).toBe(new MockPreScanComponent().implementationId);
-        expect(result.analyseImplementationId).toBe(new MockAnalyzeComponent().implementationId);
-        expect(result.reduceImplementationId).toBe(new MockReduceComponent().implementationId);
-        expect(result.lookupImplementationId).toBe(new MockLookupComponent().implementationId);
-        expect(result.refineImplementationId).toBe(new MockRefineComponent().implementationId);
+        expect(result.preScanImplementationId).toBe(new mockPreScanComponent_mock_1.MockPreScanComponent().implementationId);
+        expect(result.analyseImplementationId).toBe(new mockAnalyzeComponent_mock_1.MockAnalyzeComponent().implementationId);
+        expect(result.reduceImplementationId).toBe(new mockReduceComponent_mock_1.MockReduceComponent().implementationId);
+        expect(result.lookupImplementationId).toBe(new mockLookupComponent_mock_1.MockLookupComponent().implementationId);
+        expect(result.refineImplementationId).toBe(new mockRefineComponent_mock_1.MockRefineComponent().implementationId);
         expect(result.uri).toBe("TEST_URL");
     });
     it('Can handle NoMatch error at analyze stage', async () => {
-        const analyzeComponentThrowsError = new MockAnalyzeComponent(() => {
-            throw new NoMatch(NoMatchReason.DominantFifty);
+        const analyzeComponentThrowsError = new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(() => {
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.DominantFifty);
         });
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), analyzeComponentThrowsError, new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), analyzeComponentThrowsError, new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", []);
-        expect(result.noMatchReason).toBe(NoMatchReason.DominantFifty);
+        expect(result.noMatchReason).toBe(noMatchReason_1.NoMatchReason.DominantFifty);
         expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     });
     it('Can handle NoMatch error at reduce stage', async () => {
-        const reduceComponentThrowsError = new MockReduceComponent(() => {
-            throw new NoMatch(NoMatchReason.NoStrongSignal);
+        const reduceComponentThrowsError = new mockReduceComponent_mock_1.MockReduceComponent(() => {
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);
         });
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), reduceComponentThrowsError, new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), reduceComponentThrowsError, new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", []);
-        expect(result.noMatchReason).toBe(NoMatchReason.NoStrongSignal);
+        expect(result.noMatchReason).toBe(noMatchReason_1.NoMatchReason.NoStrongSignal);
         expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     });
     it('Can handle NoMatch error at lookup stage', async () => {
-        const lookupComponentThrowsError = new MockLookupComponent(() => {
-            throw new NoMatch(NoMatchReason.NoResultsOnLookup);
+        const lookupComponentThrowsError = new mockLookupComponent_mock_1.MockLookupComponent(() => {
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoResultsOnLookup);
         });
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), lookupComponentThrowsError, new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), lookupComponentThrowsError, new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", []);
-        expect(result.noMatchReason).toBe(NoMatchReason.NoResultsOnLookup);
+        expect(result.noMatchReason).toBe(noMatchReason_1.NoMatchReason.NoResultsOnLookup);
         expect(result.analysisEndTime?.getTime()).toBeCloseTo(new Date().getTime(), -2);
     });
     it('Attaches correct stage results during performFullAnalysis()', async () => {
@@ -178,12 +171,12 @@ describe('BaseAnalyzer', () => {
         const reduceResult = [];
         const lookupResult = [];
         const refineResult = [];
-        const preScanComponent = new MockPreScanComponent(undefined, preScanResult);
-        const analyzeComponent = new MockAnalyzeComponent(undefined, analyzeResult);
-        const reduceComponent = new MockReduceComponent(undefined, reduceResult);
-        const lookupComponent = new MockLookupComponent(undefined, lookupResult);
-        const refineComponent = new MockRefineComponent(undefined, refineResult);
-        const baseAnalyzer = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
+        const preScanComponent = new mockPreScanComponent_mock_1.MockPreScanComponent(undefined, preScanResult);
+        const analyzeComponent = new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(undefined, analyzeResult);
+        const reduceComponent = new mockReduceComponent_mock_1.MockReduceComponent(undefined, reduceResult);
+        const lookupComponent = new mockLookupComponent_mock_1.MockLookupComponent(undefined, lookupResult);
+        const refineComponent = new mockRefineComponent_mock_1.MockRefineComponent(undefined, refineResult);
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", []);
         expect(result.preScanResult).toBe(preScanResult);
         expect(result.analysisResult).toBe(analyzeResult);
@@ -193,8 +186,8 @@ describe('BaseAnalyzer', () => {
     });
     it('fires full analysis complete event', async () => {
         let result;
-        let resultFromHandler = new ENFAnalysis("not_from_handler");
-        const baseENFProcessor = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        let resultFromHandler = new ENFAnalysis_1.ENFAnalysis("not_from_handler");
+        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         baseENFProcessor.fullAnalysisCompleteEvent.addHandler(r => {
             if (r) {
                 resultFromHandler = r;
@@ -205,7 +198,7 @@ describe('BaseAnalyzer', () => {
     });
     it('fires log event', async () => {
         let result;
-        const baseENFProcessor = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseENFProcessor = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         let logFiredCount = 0;
         baseENFProcessor.logEvent.addHandler((s) => {
             logFiredCount++;
@@ -247,13 +240,13 @@ describe('BaseAnalyzer', () => {
         const endDate = new Date('2020-01-01');
         const gridIds = ["GB", "DE"];
         let lookupCalled = false;
-        const mockLookupComponentChecksDates = new MockLookupComponent((freqs, ids, from, to) => {
+        const mockLookupComponentChecksDates = new mockLookupComponent_mock_1.MockLookupComponent((freqs, ids, from, to) => {
             expect(from).toBe(startDate);
             expect(to).toBe(endDate);
             expect(ids).toStrictEqual(gridIds);
             lookupCalled = true;
         });
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), mockLookupComponentChecksDates, new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), mockLookupComponentChecksDates, new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", gridIds, startDate, endDate);
         expect(result.start).toBe(startDate);
         expect(result.end).toBe(endDate);
@@ -264,7 +257,7 @@ describe('BaseAnalyzer', () => {
         const startDate = new Date('2010-01-01');
         const endDate = new Date('2020-01-01');
         const gridIds = ["GB", "DE"];
-        const baseAnalyzer = new BaseENFProcessor(new MockPreScanComponent(), new MockAnalyzeComponent(), new MockReduceComponent(), new MockLookupComponent(), new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(), new mockRefineComponent_mock_1.MockRefineComponent());
         const result = await baseAnalyzer.performFullAnalysis("TEST_URL", gridIds, startDate, endDate);
         const completionTimes = result.completionTimes;
         expect(completionTimes.preScan).not.toBeFalsy();
@@ -281,12 +274,12 @@ describe('BaseAnalyzer', () => {
     });
     it('fires progress event', async () => {
         let eventCount = 0;
-        const mockPreScanComponentFiresProgressTwice = new MockPreScanComponent(() => {
+        const mockPreScanComponentFiresProgressTwice = new mockPreScanComponent_mock_1.MockPreScanComponent(() => {
             const preScanUpdate = { f50: 0, f100: 0, f200: 0, f60: 0, f120: 0, f240: 0, startSamples: 0, endSamples: 44100 };
             mockPreScanComponentFiresProgressTwice.preScanProgressEvent.trigger([preScanUpdate, 0.5]);
             mockPreScanComponentFiresProgressTwice.preScanProgressEvent.trigger([preScanUpdate, 1]);
         });
-        const mockAnalyzeComponentFiresProgressThreeTimes = new MockAnalyzeComponent(() => {
+        const mockAnalyzeComponentFiresProgressThreeTimes = new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(() => {
             const analysisWindowResult = {
                 start: 0,
                 end: 1,
@@ -299,13 +292,13 @@ describe('BaseAnalyzer', () => {
             mockAnalyzeComponentFiresProgressThreeTimes.analyzeProgressEvent.trigger([analysisWindowResult, 2 / 3]);
             mockAnalyzeComponentFiresProgressThreeTimes.analyzeProgressEvent.trigger([analysisWindowResult, 1]);
         });
-        const mockLookupComponentFiresProgressFourTimes = new MockLookupComponent(() => {
+        const mockLookupComponentFiresProgressFourTimes = new mockLookupComponent_mock_1.MockLookupComponent(() => {
             mockLookupComponentFiresProgressFourTimes.lookupProgressEvent.trigger(0.25);
             mockLookupComponentFiresProgressFourTimes.lookupProgressEvent.trigger(0.5);
             mockLookupComponentFiresProgressFourTimes.lookupProgressEvent.trigger(0.75);
             mockLookupComponentFiresProgressFourTimes.lookupProgressEvent.trigger(1);
         });
-        const baseAnalyzer = new BaseENFProcessor(mockPreScanComponentFiresProgressTwice, mockAnalyzeComponentFiresProgressThreeTimes, new MockReduceComponent(), mockLookupComponentFiresProgressFourTimes, new MockRefineComponent());
+        const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(mockPreScanComponentFiresProgressTwice, mockAnalyzeComponentFiresProgressThreeTimes, new mockReduceComponent_mock_1.MockReduceComponent(), mockLookupComponentFiresProgressFourTimes, new mockRefineComponent_mock_1.MockRefineComponent());
         baseAnalyzer.progressEvent.addHandler(progress => {
             eventCount++;
             switch (eventCount) {

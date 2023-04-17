@@ -1,8 +1,11 @@
-import { NoMatchReason } from "../model/noMatchReason";
-import { NoMatch } from "../ENFProcessor/noMatch";
-import { interpolateUnconfidentSamples } from "./goertzelReduceUtils/interpolateUnconfidentSamples";
-import { checkForStrongSignal } from "./goertzelReduceUtils/checkForStrongSignal";
-import { structuredCloneWithFallback } from "../polyfill/structuredCloneWithFallback";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GoertzelReduceComponent = void 0;
+const noMatchReason_1 = require("../model/noMatchReason");
+const noMatch_1 = require("../ENFProcessor/noMatch");
+const interpolateUnconfidentSamples_1 = require("./goertzelReduceUtils/interpolateUnconfidentSamples");
+const checkForStrongSignal_1 = require("./goertzelReduceUtils/checkForStrongSignal");
+const structuredCloneWithFallback_1 = require("../polyfill/structuredCloneWithFallback");
 const factors = {
     "50": 1,
     "100": 2,
@@ -62,7 +65,7 @@ const getStreamsWithTotalAmplitude = (streams) => {
     return rtrn;
 };
 const downSample = (windows, overlapFactor, downSampleOffset) => {
-    const wCopy = structuredCloneWithFallback(windows);
+    const wCopy = (0, structuredCloneWithFallback_1.structuredCloneWithFallback)(windows);
     overlapFactor = overlapFactor;
     const chunks = [];
     if (downSampleOffset === undefined) {
@@ -80,7 +83,7 @@ const downSample = (windows, overlapFactor, downSampleOffset) => {
         return Math.round(avg * 1000) / 1000;
     });
 };
-export class GoertzelReduceComponent {
+class GoertzelReduceComponent {
     constructor(overlapFactor) {
         this.implementationId = "DefaultReduceV0.1";
         this.overlapFactor = overlapFactor;
@@ -94,12 +97,13 @@ export class GoertzelReduceComponent {
         const s = transformWindowsToStreams(analysisResults);
         const amps = getStreamsWithTotalAmplitude(s);
         const initialTargetStream = amps.filter(x => x.target !== "240" && x.target !== "120" && x.target !== "240")[0].stream;
-        const targetStream = interpolateUnconfidentSamples(initialTargetStream, 0.005, windowSize);
+        const targetStream = (0, interpolateUnconfidentSamples_1.interpolateUnconfidentSamples)(initialTargetStream, 0.005, windowSize);
         const downSampledStream = downSample(targetStream, this.overlapFactor);
-        const isStrongSignal = checkForStrongSignal(downSampledStream);
+        const isStrongSignal = (0, checkForStrongSignal_1.checkForStrongSignal)(downSampledStream);
         if (!isStrongSignal) {
-            throw new NoMatch(NoMatchReason.NoStrongSignal);
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);
         }
         return downSampledStream;
     }
 }
+exports.GoertzelReduceComponent = GoertzelReduceComponent;

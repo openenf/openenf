@@ -9,5 +9,5 @@ export declare class AudioContextPreScanComponent implements PreScanComponent {
     audioLoadedEvent: ENFEventBase<ArrayLike<number>>;
     private goertzelFilterCache;
     constructor(goertzelFilterCache: GoertzelFilterCache);
-    preScan(resourceUri: string): Promise<PreScanResultLike>;
+    preScan(resourceUri: (string | Float32Array)): Promise<PreScanResultLike>;
 }

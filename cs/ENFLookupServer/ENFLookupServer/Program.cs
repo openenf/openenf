@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.CommandLine;
 using ENFLookup;
 
 namespace MyProject;
@@ -35,11 +34,8 @@ class Program
             while (keepRunning)
             {
                 Thread.Sleep(1000);
-                //if (!Console.IsInputRedirected && Console.KeyAvailable)
-                //{
-                    Console.Read();
-                    keepRunning = false;
-                //}
+                Console.Read();
+                keepRunning = false;
             }
         }
         catch (Exception e)

@@ -34,52 +34,6 @@ describe('audioContextAnalyzeComponent', () => {
         expect(preScanProgressEventCalled).toBe(true);
     })
     it('returns correct frequencies for real-world data', async () => {
-        const filepath = path.resolve("test/testAudio/large/608774__theplax__downstairs-in-boots-library_TRIM.wav");
-        const preScanResult = {
-            duration: 256.40290249433104,
-            durationSamples: 11307368,
-            h100: 0.05514567991874277,
-            h120: 0.0004897763528248434,
-            h200: 0.00021586038986000033,
-            h240: 0.00017863239783691908,
-            h50: 0.00042946929630745365,
-            h60: 0.0007291119766316747,
-            numChannels: 2,
-            sampleRate: 44100
-        }
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 2);
-        audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
-            const progress = event[1];
-            console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
-        })
-        const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
-        console.log('result', JSON.stringify(result, null, 2));
-    })
-    it('returns correct frequencies for real-world data 2', async () => {
-        const filepath = path.resolve("test/testAudio/large/656618__theplax__cafe-weekday-afternoon.wav");
-        const preScanResult = {
-            duration: 413.94,
-            durationSamples: 18254754,
-            h100: 0.00016258296840545534,
-            h120: 0.00006852562514363658,
-            h200: 0.00018003335930611377,
-            h240: 0.00012848405963188653,
-            h50: 0.00003853620666597983,
-            h60: 0.000060271145314359334,
-            numChannels: 2,
-            sampleRate: 44100
-        }
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const audioContextPreScanComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 2);
-        audioContextPreScanComponent.analyzeProgressEvent.addHandler((event:any) => {
-            const progress = event[1];
-            console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
-        })
-        const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
-        console.log('result', JSON.stringify(result, null, 2));
-    })
-    it('returns correct frequencies for real-world data 3', async () => {
         const filepath = path.resolve("test/testAudio/large/618186__theplax__tumble-dryer-contact.wav");
         const preScanResult = {
             duration: 83.28448979591836,
@@ -100,23 +54,23 @@ describe('audioContextAnalyzeComponent', () => {
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
         })
         const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
+        //fs.writeFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', JSON.stringify(result)); 
         const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json', 'utf-8'));
         expect(expectedResult).toStrictEqual(result);
         console.log('result', result);
     })
-    it('returns correct frequencies for audio decoded by Chrome wav decoder', async () => {
-        const filepath = path.resolve("test/testAudioWindows/large/plax_tumbledryer.chrome.json");
-        const audioData: Float32Array = Float32Array.from(Object.values(JSON.parse(fs.readFileSync(filepath, 'utf-8'))));
+    it('returns correct frequencies for apawlak sample', async () => {
+        const filepath = path.resolve("test/testAudio/large/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav");
         const preScanResult = {
-            duration: 83.28448979591836,
-            durationSamples: 3672846,
-            h100: 0.000603824838822795,
-            h120: 0.000007527601900392758,
-            h200: 0.0002058336319193009,
-            h240: 0.0000036297368335053236,
-            h50: 0.000019272759314746277,
-            h60: 0.000028027040707500292,
-            numChannels: 1,
+            duration: 607.5080272108844,
+            durationSamples: 26791104,
+            h100: 0.0000109695957986133,
+            h120: 0.0000015924407798751826,
+            h200: 0.000004373956170401663,
+            h240: 0.000004999626116558637,
+            h50: 0.000005728122559862526,
+            h60: 0.0000018719339208093409,
+            numChannels: 2,
             sampleRate: 44100
         }
         const goertzelFilterCache = new GoertzelFilterCache();
@@ -125,8 +79,10 @@ describe('audioContextAnalyzeComponent', () => {
             const progress = event[1];
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
         })
-        const result = await audioContextPreScanComponent.analyze(audioData, preScanResult, 50);
-        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.fromChromePCM.json', 'utf-8'));
+        const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
+        //fs.writeFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', JSON.stringify(result, null, 2)); 
+        const expectedResult = JSON.parse(fs.readFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', 'utf-8'));
         expect(expectedResult).toStrictEqual(result);
+        console.log('result', result);
     })
 })

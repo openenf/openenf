@@ -20,12 +20,9 @@ export class GoertzelAnalyzeProcessor {
 
     bufferHandler(window: number[]) {
         if (!this.firstWindow) {
-            fs.writeFileSync('/Users/chris.hodges/openEnfPublicRepo/js/test/testAudioWindows/Plax_tumbledryer_firstSecondUnwindowed.chrome.json', JSON.stringify(window, null, 2))
-            console.log('WINDOW!!!', JSON.stringify(window, null, 2));
-            console.log('windowLength', window.length);
             this.firstWindow = true;
         }
-        const windowedSamples = hann(window,0);
+        const windowedSamples = hann(window,1);
         const sampleRate = this.goertzelFilterStore.sampleRate
         const windowSize = this.goertzelFilterStore.windowSize;
         const requestCache = this.goertzelFilterStore.createRequestCache(windowedSamples);

@@ -91,6 +91,26 @@ describe('audioContextPreScanComponent', () => {
         }));
     })
 
+    it('reads audio data correctly for apawlak sample', async () => {
+        const filepath = path.resolve("test/testAudio/large/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav");
+        const goertzelFilterCache = new GoertzelFilterCache();
+        const audioContextPreScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
+        const result = await audioContextPreScanComponent.preScan(filepath);
+        expect(JSON.stringify(result)).toStrictEqual(JSON.stringify({
+            duration: 607.5080272108844,
+            durationSamples: 26791104,
+            h100: 0.0000109695957986133,
+            h120: 0.0000015924407798751826,
+            h200: 0.000004373956170401663,
+            h240: 0.000004999626116558637,
+            h50: 0.000005728122559862526,
+            h60: 0.0000018719339208093409,
+            numChannels: 2,
+            sampleRate: 44100
+        }));
+        console.log('result', result);
+    })
+
     it('reads audio data correctly for PCM audio decoded by chrome', async () => {
         const filepath = path.resolve("test/testAudioWindows/large/plax_tumbledryer.chrome.json");
         const audioData: Float32Array = Float32Array.from(Object.values(JSON.parse(fs.readFileSync(filepath, 'utf-8'))));

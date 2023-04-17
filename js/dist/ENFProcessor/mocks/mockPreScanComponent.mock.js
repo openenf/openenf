@@ -1,8 +1,11 @@
-import { ENFEventBase } from "../events/ENFEventBase";
-export class MockPreScanComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MockPreScanComponent = void 0;
+const ENFEventBase_1 = require("../events/ENFEventBase");
+class MockPreScanComponent {
     constructor(onPreScan, result) {
         this.implementationId = "MockPreScanComponent";
-        this.preScanProgressEvent = new ENFEventBase();
+        this.preScanProgressEvent = new ENFEventBase_1.ENFEventBase();
         this.onPreScan = onPreScan;
         const defaultPreScanResult = {
             duration: undefined,
@@ -25,3 +28,4 @@ export class MockPreScanComponent {
         return Promise.resolve(this.result);
     }
 }
+exports.MockPreScanComponent = MockPreScanComponent;
