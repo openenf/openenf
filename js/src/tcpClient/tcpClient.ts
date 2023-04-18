@@ -9,7 +9,7 @@ export class TcpClient {
     private readonly host: string;
     private readonly socket: net.Socket
     private readonly port: number;
-    private readonly timeout: number = 2000;
+    private readonly timeout: number = 10000;
     private connected: boolean = false;
     
     private options: TcpOptions;
@@ -50,9 +50,10 @@ export class TcpClient {
             }, this.timeout)
             const socket = this.socket;
             const errorHandler = ((e: Error) => {
+                console.error('e', e)
                 reject(e);
             });
-            socket.once('error', errorHandler)
+            socket.on('error', errorHandler)
             socket.connect(this.port, this.host, function () {
                 socket.write(message);
             });
@@ -70,6 +71,10 @@ export class TcpClient {
                     reject(socket.errored);
                 }
                 socket.removeListener('data', newDataHandler);
+                socket.removeListener('error', errorHandler);
+                if (wholeMessage.startsWith("TCP SERVER ERROR:")) {
+                    reject(new Error(wholeMessage));
+                }
                 resolve({response: wholeMessage, responses, error: socket.errored});
             };
             socket.once('close', closeHandler);

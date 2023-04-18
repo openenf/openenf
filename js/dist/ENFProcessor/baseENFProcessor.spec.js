@@ -6,6 +6,7 @@ const mockAnalyzeComponent_mock_1 = require("./mocks/mockAnalyzeComponent.mock")
 const mockLookupComponent_mock_1 = require("./mocks/mockLookupComponent.mock");
 const mockReduceComponent_mock_1 = require("./mocks/mockReduceComponent.mock");
 const mockRefineComponent_mock_1 = require("./mocks/mockRefineComponent.mock");
+const lookupResult_1 = require("../model/lookupResult");
 const noMatch_1 = require("./noMatch");
 const noMatchReason_1 = require("../model/noMatchReason");
 const ENFAnalysis_1 = require("../model/ENFAnalysis");
@@ -69,7 +70,7 @@ describe('BaseAnalyzer', () => {
     });
     it('Sends data to refine component when fullAnalysisInvoked', async () => {
         let eventFired = false;
-        const lookupResult = [];
+        const lookupResult = [new lookupResult_1.LookupResult()];
         const baseAnalyzer = new baseENFProcessor_1.BaseENFProcessor(new mockPreScanComponent_mock_1.MockPreScanComponent(), new mockAnalyzeComponent_mock_1.MockAnalyzeComponent(), new mockReduceComponent_mock_1.MockReduceComponent(), new mockLookupComponent_mock_1.MockLookupComponent(undefined, lookupResult), new mockRefineComponent_mock_1.MockRefineComponent(arg1 => {
             expect(arg1).toBe(lookupResult);
             eventFired = true;

@@ -5,7 +5,6 @@ const ENFAnalysis_1 = require("../model/ENFAnalysis");
 const ENFEventBase_1 = require("./events/ENFEventBase");
 const fullAnalysisErrorHandler_1 = require("./fullAnalysisErrorHandler");
 const StageDurations_1 = require("../model/StageDurations");
-const noMatchReason_1 = require("../model/noMatchReason");
 class BaseENFProcessor {
     constructor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent, dispose) {
         this.progressEvent = new ENFEventBase_1.ENFEventBase();
@@ -94,11 +93,6 @@ class BaseENFProcessor {
         this.logEvent.trigger(`Frequency analysis complete.`);
         this.logEvent.trigger(`Comparing frequencies to grid data...`);
         let lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function (e) { errorHandler.handleError(e); });
-        if (!lookupResults?.length) {
-            lookupResults = undefined;
-            enfAnalysis.noMatchReason = noMatchReason_1.NoMatchReason.NoResultsOnLookup;
-        }
-        ;
         enfAnalysis.lookupResults = lookupResults || null;
         enfAnalysis.completionTimes.lookup = new Date();
         if (!enfAnalysis.lookupResults) {

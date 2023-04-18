@@ -3,7 +3,7 @@ namespace ENFLookup;
 /// <summary>
 /// The command types the <see cref="ENFLookupServer"/> understands.
 /// </summary>
-public enum ENFLookupServerCommands
+public enum ENFLookupServerCommand
 {
     /// <summary>
     /// Pings the server just to check it's up and running.

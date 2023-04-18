@@ -30,7 +30,7 @@ public class ENFLookupServerTests
                 EndTime = new DateTime(2020, 1, 1)
             };
 
-            var command = ENFLookupServerCommands.Lookup;
+            var command = ENFLookupServerCommand.Lookup;
             var requestString = $"{(int)command}{JsonConvert.SerializeObject(lookupRequest)}";
             var data = Encoding.ASCII.GetBytes(requestString);
 
@@ -71,7 +71,7 @@ public class ENFLookupServerTests
             // Send the message to the server
             stream = client.GetStream();
 
-            var message = ENFLookupServerCommands.Ping;
+            var message = ENFLookupServerCommand.Ping;
             var data = Encoding.ASCII.GetBytes(((int)message).ToString());
             stream.Write(data, 0, data.Length);
 

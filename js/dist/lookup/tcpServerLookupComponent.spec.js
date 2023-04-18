@@ -26,4 +26,24 @@ describe("TcpServerLookupComponent", () => {
         r = response[0];
         expect(r).toStrictEqual({ gridId: 'GB', position: 1339200, score: 0 });
     }, 300000);
+    it('will throw error if no results found', async () => {
+        let progress = 0;
+        const gbFreqs = JSON.parse(fs_1.default.readFileSync(path_1.default.resolve("test/testFreqs/GBFreqs1339200.json")).toString());
+        const tcpServerComponentOptions = new tcpOptions_1.TcpOptions();
+        const tcpClient = new tcpClient_1.TcpClient(tcpServerComponentOptions);
+        const tcpServerLookupComponent = new tcpServerLookupComponent_1.TcpServerLookupComponent(tcpClient);
+        let error;
+        tcpServerLookupComponent.lookupProgressEvent.addHandler(d => {
+            if (d) {
+                expect(d).toBeGreaterThanOrEqual(progress);
+                progress = d;
+            }
+        });
+        let r;
+        //Grid XY should not exist:
+        await tcpServerLookupComponent.lookup(gbFreqs, ["XY"], new Date('2014-01-01'), new Date('2015-01-03')).catch(e => {
+            error = e;
+        });
+        expect(error.message).toBe("NoResultsOnLookup");
+    }, 300000);
 });

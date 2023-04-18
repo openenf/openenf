@@ -51,4 +51,15 @@ describe('tcpClient', () => {
             "startDate": 1388534400
         });
     })
+    it('Can handle error and resume', async () => {
+        const options = new TcpOptions();
+        const tcpClient = new TcpClient(options);
+        let error:any;
+        await tcpClient.request("THIS_WILL_THROW_AN_ERROR").catch(e => {
+            error = e;
+        })
+        const response:any = await tcpClient.ping();
+        expect(error.message).toBe("TCP SERVER ERROR: Input string was not in a correct format.");
+        expect(response.response).toBe("pong");
+    })
 })

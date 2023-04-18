@@ -50,9 +50,6 @@ class TcpServerLookupComponent {
                 this.lookupProgressEvent.trigger(progress);
             }
         });
-        if (responses.length === 0) {
-            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoResultsOnLookup);
-        }
         const response = responses[responses.length - 1];
         let r;
         try {
@@ -60,6 +57,9 @@ class TcpServerLookupComponent {
         }
         catch {
             throw new SyntaxError(`Error parsing '${response}'`);
+        }
+        if (r.length === 0) {
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoResultsOnLookup);
         }
         r.forEach((r1) => {
             r1.position = r1.position - position;
