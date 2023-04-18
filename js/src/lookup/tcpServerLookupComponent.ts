@@ -39,6 +39,7 @@ export class TcpServerLookupComponent implements LookupComponent {
     }
 
     async lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]> {
+        const {response:pingResponse} = await this.client.request(LookupCommand.ping.toString());
         let position = 0;
         let sequence:(number | null)[] = [];
         //If this is a relatively short frequency sequence we search for it all in one go:
@@ -56,9 +57,6 @@ export class TcpServerLookupComponent implements LookupComponent {
                 this.lookupProgressEvent.trigger(progress);
             }
         });
-        if (responses.length === 0) {
-            throw new NoMatch(NoMatchReason.NoResultsOnLookup);
-        }
         const response = responses[responses.length - 1]
         let r;
         try {
@@ -66,6 +64,9 @@ export class TcpServerLookupComponent implements LookupComponent {
         }
         catch {
             throw new SyntaxError(`Error parsing '${response}'`);
+        }
+        if (r.length === 0) {
+            throw new NoMatch(NoMatchReason.NoResultsOnLookup);
         }
         r.forEach((r1:any) => {
             r1.position = r1.position - position;

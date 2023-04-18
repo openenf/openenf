@@ -11,8 +11,7 @@ export class TcpClient {
     private readonly port: number;
     private readonly timeout: number = 2000;
     private connected: boolean = false;
-
-    public serverMessageEvent: ENFEventBase<string> = new ENFEventBase<string>();
+    
     private options: TcpOptions;
 
     constructor(options:TcpOptions) {
@@ -33,6 +32,10 @@ export class TcpClient {
         }
         return `${LookupCommand.loadGrid.toString()}${JSON.stringify(path)}`;
     }
+    
+    ping(): Promise<{ response: string, responses: string[], error: Error | null }> {
+        return this.request(LookupCommand.ping.toString())
+    }
 
     request(message: string, onUpdate?: (buffer: Buffer) => void): Promise<{ response: string, responses: string[], error: Error | null }> {
         this.connected = false;
@@ -51,10 +54,10 @@ export class TcpClient {
             });
             socket.once('error', errorHandler)
             socket.connect(this.port, this.host, function () {
-                self.connected = true;
                 socket.write(message);
             });
             const newDataHandler = (buffer: Buffer) => {
+                self.connected = true;
                 if (onUpdate) {
                     onUpdate(buffer);
                 }

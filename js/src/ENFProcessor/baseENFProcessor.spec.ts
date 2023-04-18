@@ -92,7 +92,7 @@ describe('BaseAnalyzer', () => {
     })
     it('Sends data to refine component when fullAnalysisInvoked', async () => {
         let eventFired = false;
-        const lookupResult:LookupResult[] = [];
+        const lookupResult:LookupResult[] = [new LookupResult()];
         const baseAnalyzer = new BaseENFProcessor(
             new MockPreScanComponent(),
             new MockAnalyzeComponent(),

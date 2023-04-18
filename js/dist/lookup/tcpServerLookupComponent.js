@@ -31,6 +31,7 @@ class TcpServerLookupComponent {
         return `${lookupCommand_1.LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
     }
     async lookup(freqs, gridIds, from, to) {
+        const { response: pingResponse } = await this.client.request(lookupCommand_1.LookupCommand.ping.toString());
         let position = 0;
         let sequence = [];
         //If this is a relatively short frequency sequence we search for it all in one go:

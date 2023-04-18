@@ -135,7 +135,11 @@ public class ENFLookupServer : IDisposable
                 try
                 {
                     var client = await _tcpListener.AcceptTcpClientAsync();
-                    await Task.Run(() => HandleClient(client));
+                    if (!Suspended)
+                    {
+                        await Task.Run(() => HandleClient(client));
+                    }
+
                     _started = true;
                 }
                 catch (SocketException e)
@@ -155,6 +159,8 @@ public class ENFLookupServer : IDisposable
     /// </summary>
     public static int DefaultPort =>
         49170; //49170 is an ephemeral port and may change to something below 49152 in the future.
+
+    public bool Suspended { get; set; }
 
     /// <summary>
     /// Stops the server listening for TCP requests.
@@ -181,5 +187,17 @@ public class ENFLookupServer : IDisposable
         Stop();
         _tcpListener = null;
         GC.SuppressFinalize(this);
+    }
+
+    public void Suspend()
+    {
+        Console.WriteLine("Suspending server");
+        Suspended = true;
+    }
+
+    public void Resume()
+    {
+        Console.WriteLine("Resuming server");
+        Suspended = false;
     }
 }

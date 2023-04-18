@@ -13,6 +13,7 @@ import {AnalyzeComponent} from "../analyze/analyzeComponent";
 import {ReduceComponent} from "../reduce/reduceComponent";
 import {FullAnalysisErrorHandler} from "./fullAnalysisErrorHandler";
 import {StageDurations} from "../model/StageDurations";
+import {NoMatchReason} from "../model/noMatchReason";
 
 export class BaseENFProcessor implements ENFProcessor {
 
@@ -115,7 +116,7 @@ export class BaseENFProcessor implements ENFProcessor {
         }
         this.logEvent.trigger(`Frequency analysis complete.`)
         this.logEvent.trigger(`Comparing frequencies to grid data...`);
-        const lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
+        let lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.lookupResults = lookupResults || null;
         enfAnalysis.completionTimes.lookup = new Date();
         if (!enfAnalysis.lookupResults) {
