@@ -3,14 +3,16 @@ import {GoertzelFilterCache} from "../goertzel/GoertzelFilterCache";
 import {AudioContextPreScanComponent} from "../preScan/audioContextPreScanComponent";
 import {AudioContextAnalyzeComponent} from "../analyze/audioContextAnalyzeComponent";
 import {GoertzelReduceComponent} from "../reduce/goertzelReduceComponent";
-import {TcpServerComponentOptions} from "../lookup/tcpServerComponentOptions";
+import {TcpOptions} from "../lookup/tcpOptions";
 import {TcpServerLookupComponent} from "../lookup/tcpServerLookupComponent";
 import {TcpServerRefineComponent} from "../refine/tcpServerRefineComponent";
 import {BaseENFProcessor} from "./baseENFProcessor";
 import {getDefaultExecutablePath} from "../tcpClient/tcpClientUtils";
 import path from "path";
 import {getENFDataDirectory} from "../dataDownloader/ENFDataDirectory";
-import {TcpLookupServer} from "../tcpClient/tcpLookupServer";
+import {TcpLookupServerController} from "../tcpClient/tcpLookupServerController";
+import {TcpClient} from "../tcpClient/tcpClient";
+import {ThreadedAudioContextAnalyzeComponent} from "../analyze/threadedAudioContextAnalyzeComponent";
 
 export class ENFProcessorFactory {
     private executablePath: string = getDefaultExecutablePath();
@@ -28,28 +30,24 @@ export class ENFProcessorFactory {
         const factory = new ENFProcessorFactory();
         return await factory.Build();
     }
+    
     public async Build():Promise<ENFProcessor> {
         const overlapFactor = 16;
         const goertzelFilterCache = new GoertzelFilterCache();
         const preScanComponent = new AudioContextPreScanComponent(goertzelFilterCache);
-        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, overlapFactor);
+        const analyzeComponent = new ThreadedAudioContextAnalyzeComponent(overlapFactor);
         const reduceComponent = new GoertzelReduceComponent(overlapFactor);
-
-        const tcpServerComponentOptions = new TcpServerComponentOptions();
+        
+        const tcpServerComponentOptions = new TcpOptions();
         tcpServerComponentOptions.executablePath = this.executablePath;
         tcpServerComponentOptions.grids["GB"] = path.join(getENFDataDirectory(),"GB.freqdb");
         tcpServerComponentOptions.grids["DE"] = path.join(getENFDataDirectory(),"DE.freqdb");
         tcpServerComponentOptions.port = this.tcpPort;
-        const tcpServer = new TcpLookupServer(tcpServerComponentOptions.port, tcpServerComponentOptions.executablePath);
-        await tcpServer.start().catch(e => {
-            console.error(e);
-        })
-        const lookupComponent = new TcpServerLookupComponent(tcpServerComponentOptions);
-        const refineComponent = new TcpServerRefineComponent(tcpServerComponentOptions);
+        const tcpClient = new TcpClient(tcpServerComponentOptions);
+        
+        const lookupComponent = new TcpServerLookupComponent(tcpClient);
+        const refineComponent = new TcpServerRefineComponent(tcpClient);
         const baseENFProcessor = new BaseENFProcessor(preScanComponent, analyzeComponent, reduceComponent, lookupComponent, refineComponent);
-        baseENFProcessor.fullAnalysisCompleteEvent.addHandler(async () => {
-            await tcpServer.stop();
-        })
         return baseENFProcessor;
     }
 

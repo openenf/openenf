@@ -1,6 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getDataForWindow = exports.detectPeakAround = void 0;
 const detectPeakAround = (goertzelRequestCache, target) => {
-    const min = target - 2;
-    const max = target + 2;
+    const min = target - 1.5;
+    const max = target + 1.5;
     let currentMinHz = min;
     let currentMaxHz = max;
     let amp = 0;
@@ -26,6 +29,7 @@ const detectPeakAround = (goertzelRequestCache, target) => {
     }
     return { hz, amp };
 };
+exports.detectPeakAround = detectPeakAround;
 const getStandardDeviation = (array) => {
     const n = array.length;
     const mean = array.reduce((a, b) => a + b) / n;
@@ -44,9 +48,10 @@ const detectDeviationAround = (goertzelRequestCache, peak) => {
  * @param freq The target frequency to analyse, e.g. 50Hz, 120Hz, etc. This function will return the peak frequency within +-0.5HZ of the target
  * @param requestCache The frequency request cache for the audio window you want to analyse
  */
-export const getDataForWindow = (freq, requestCache) => {
-    const { amp, hz } = detectPeakAround(requestCache, freq);
+const getDataForWindow = (freq, requestCache) => {
+    const { amp, hz } = (0, exports.detectPeakAround)(requestCache, freq);
     const deviation = detectDeviationAround(requestCache, hz);
     const confidence = deviation / amp;
     return { amp, hz, standardDev: deviation, confidence, target: freq };
 };
+exports.getDataForWindow = getDataForWindow;

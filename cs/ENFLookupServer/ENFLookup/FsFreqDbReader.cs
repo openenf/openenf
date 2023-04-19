@@ -238,7 +238,7 @@ public class FsFreqDbReader : IFreqDbReader
     internal void ThreadSafeLookup(ThreadLookupRequest request, Action<int, double> onNewResult, CancellationToken token,
         Action<double>? onProgress = null, ResultLeague? resultLeague = null)
     {
-        var i = request.StartTime;
+        var i = Math.Max(request.StartTime, 0); //To allow us to do a comprehensive lookup from the start if the 
         var total = request.EndTime - request.StartTime;
         var progressChunk = total / 100;
         var nextProgress = i + progressChunk;

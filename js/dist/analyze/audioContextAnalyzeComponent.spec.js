@@ -1,10 +1,12 @@
-import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
-import { AudioContextAnalyzeComponent } from "./audioContextAnalyzeComponent";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
+const audioContextAnalyzeComponent_1 = require("./audioContextAnalyzeComponent");
 describe('audioContextAnalyzeComponent', () => {
     it('can extract frequency data from synthesized saw wave', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 1);
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 1);
         const preScanResult = {
             duration: 10,
             durationSamples: 441000,
@@ -23,8 +25,8 @@ describe('audioContextAnalyzeComponent', () => {
     }, 30000);
     it('fires progress event', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 16);
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 16);
         const preScanResult = {
             duration: 10,
             durationSamples: 441000,
@@ -39,7 +41,7 @@ describe('audioContextAnalyzeComponent', () => {
         };
         let progress = 0;
         let progressFiredCount = 0;
-        analyzeComponent.analyzeProgressEvent.addHandler(e => {
+        analyzeComponent.analyzeProgressEvent.addHandler((e) => {
             progressFiredCount++;
             if (e) {
                 progress = e[1];
@@ -51,8 +53,8 @@ describe('audioContextAnalyzeComponent', () => {
     }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new AudioContextAnalyzeComponent(goertzelFilterCache, 1);
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const analyzeComponent = new audioContextAnalyzeComponent_1.AudioContextAnalyzeComponent(goertzelFilterCache, 1);
         const preScanResult = {
             duration: 99,
             durationSamples: 4365900,

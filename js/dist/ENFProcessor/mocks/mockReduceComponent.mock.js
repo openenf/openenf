@@ -1,4 +1,7 @@
-export class MockReduceComponent {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MockReduceComponent = void 0;
+class MockReduceComponent {
     constructor(onReduce, result) {
         this.implementationId = "MockReduceComponent";
         this.onReduce = onReduce;
@@ -11,3 +14,4 @@ export class MockReduceComponent {
         return Promise.resolve(this.result);
     }
 }
+exports.MockReduceComponent = MockReduceComponent;

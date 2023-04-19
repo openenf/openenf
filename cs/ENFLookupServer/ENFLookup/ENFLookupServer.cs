@@ -34,9 +34,68 @@ public class ENFLookupServer : IDisposable
     /// </summary>
     public int Port { get; }
 
+    internal async Task<string> HandleMessage(ENFLookupServerCommand messageType, string messageContent,
+        NetworkStream? stream)
+    {
+        string responseString = "";
+        switch (messageType)
+        {
+            case ENFLookupServerCommand.Ping:
+                responseString = $"pong{messageContent}";
+                break;
+            case ENFLookupServerCommand.LoadGrid:
+                var freqDbFilePath = JsonConvert.DeserializeObject<string>(messageContent);
+                if (_lookupRequestHandler is ICanAddDbReader iCanAddDbReader)
+                {
+                    Console.WriteLine($"Loading grid file at {freqDbFilePath}");
+                    iCanAddDbReader.AddFreqDbReader(new FsFreqDbReader(freqDbFilePath));
+                }
+
+                responseString = "Ok";
+                break;
+            case ENFLookupServerCommand.Lookup:
+                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(messageContent);
+                var cancellationTokenSource = new CancellationTokenSource();
+                var lookupResults = await _lookupRequestHandler.Lookup(lookupRequest,
+                    d =>
+                    {
+                        try
+                        {
+                            stream?.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
+                        }
+                        catch (IOException e)
+                        {
+                            if (stream != null)
+                            {
+                                Console.WriteLine(
+                                    $"Exception writing to stream: {e.GetType()}, Connected: {stream.Socket.Connected}");
+                                cancellationTokenSource.Cancel();
+                            }
+                        }
+                    }, cancellationTokenSource.Token);
+                responseString = JsonConvert.SerializeObject(lookupResults);
+
+                break;
+            case ENFLookupServerCommand.ComprehensiveLookup:
+                var comprehensiveLookupRequest =
+                    JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(messageContent);
+                var results = await _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
+                responseString = JsonConvert.SerializeObject(results);
+                break;
+            case ENFLookupServerCommand.GetMetaData:
+                var gridId = JsonConvert.DeserializeObject<string>(messageContent);
+                var metaData = _lookupRequestHandler.GetMetaData(gridId);
+                responseString = JsonConvert.SerializeObject(metaData);
+                break;
+            default:
+                throw new NotImplementedException($"Unable to handle message of type: {messageType}");
+        }
+
+        return responseString;
+    }
+
     private async Task HandleClient(TcpClient client)
     {
-        var cancellationTokenSource = new CancellationTokenSource();
         // Get the client stream
         NetworkStream stream = client.GetStream();
         // Read the incoming message*/
@@ -49,56 +108,10 @@ public class ENFLookupServer : IDisposable
         } while (stream.DataAvailable);
 
         var message = messageBuilder.ToString();
-        var messageType = (ENFLookupServerCommands)int.Parse(message[..1]);
-        string responseString = "";
-        switch (messageType)
-        {
-            case ENFLookupServerCommands.Ping:
-                responseString = "pong";
-                break;
-            case ENFLookupServerCommands.LoadGrid:
-                var freqDbFilePath = JsonConvert.DeserializeObject<string>(message[1..]);
-                if (_lookupRequestHandler is ICanAddDbReader iCanAddDbReader)
-                {
-                    Console.WriteLine($"Loading grid file at {freqDbFilePath}");
-                    iCanAddDbReader.AddFreqDbReader(new FsFreqDbReader(freqDbFilePath));
-                }
+        var messageType = (ENFLookupServerCommand)int.Parse(message[..1]);
+        var messageContent = message.Length > 1 ? message.Substring(1) : "";
 
-                responseString = "Ok";
-                break;
-            case ENFLookupServerCommands.Lookup:
-                var lookupRequest = JsonConvert.DeserializeObject<LookupRequest>(message[1..]);
-                var lookupResults = await _lookupRequestHandler.Lookup(lookupRequest,
-                    d =>
-                    {
-                        try
-                        {
-                            stream.Write(Encoding.ASCII.GetBytes($"Progress: {d}"));
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(
-                                $"Exception writing to stream: {e.GetType()}, Connected: {stream.Socket.Connected}");
-                            cancellationTokenSource.Cancel();
-                        }
-                    }, cancellationTokenSource.Token);
-                responseString = JsonConvert.SerializeObject(lookupResults);
-
-                break;
-            case ENFLookupServerCommands.ComprehensiveLookup:
-                var comprehensiveLookupRequest =
-                    JsonConvert.DeserializeObject<ComprehensiveLookupRequest>(message[1..]);
-                var results = await _lookupRequestHandler.ComprehensiveLookup(comprehensiveLookupRequest);
-                responseString = JsonConvert.SerializeObject(results);
-                break;
-            case ENFLookupServerCommands.GetMetaData:
-                var gridId = JsonConvert.DeserializeObject<string>(message[1..]);
-                var metaData = _lookupRequestHandler.GetMetaData(gridId);
-                responseString = JsonConvert.SerializeObject(metaData);
-                break;
-            default:
-                throw new NotImplementedException($"Unable to handle message of type: {messageType}");
-        }
+        var responseString = await HandleMessage(messageType, messageContent, stream);
 
         // Send a response back to the client
         var response = Encoding.ASCII.GetBytes(responseString);
@@ -130,11 +143,15 @@ public class ENFLookupServer : IDisposable
             // Enter the listening loop
             while (!_shouldStop)
             {
+                var client = await _tcpListener.AcceptTcpClientAsync();
                 // Accept the client connection
                 try
                 {
-                    var client = await _tcpListener.AcceptTcpClientAsync();
-                    await Task.Run(() => HandleClient(client));
+                    if (!Suspended)
+                    {
+                        await Task.Run(() => HandleClient(client));
+                    }
+
                     _started = true;
                 }
                 catch (SocketException e)
@@ -143,6 +160,13 @@ public class ENFLookupServer : IDisposable
                     {
                         throw;
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error processing request: {e}");
+                    var response = Encoding.ASCII.GetBytes($"TCP SERVER ERROR: {e.Message} {e.StackTrace}");
+                    client.GetStream().Write(response);
+                    client.Close();
                 }
             }
         });
@@ -154,6 +178,8 @@ public class ENFLookupServer : IDisposable
     /// </summary>
     public static int DefaultPort =>
         49170; //49170 is an ephemeral port and may change to something below 49152 in the future.
+
+    public bool Suspended { get; set; }
 
     /// <summary>
     /// Stops the server listening for TCP requests.
@@ -180,5 +206,17 @@ public class ENFLookupServer : IDisposable
         Stop();
         _tcpListener = null;
         GC.SuppressFinalize(this);
+    }
+
+    public void Suspend()
+    {
+        Console.WriteLine("Suspending server");
+        Suspended = true;
+    }
+
+    public void Resume()
+    {
+        Console.WriteLine("Resuming server");
+        Suspended = false;
     }
 }

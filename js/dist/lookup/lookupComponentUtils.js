@@ -1,4 +1,7 @@
-export const getContiguousSequenceLengths = (sequence) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getStrongestSubsequence = exports.getMaxStdDevSequence = exports.findLongestNonNullSubsequences = exports.getContiguousSequenceLengths = void 0;
+const getContiguousSequenceLengths = (sequence) => {
     const sequenceLengths = [];
     for (let i = 0; i < sequence.length; i++) {
         for (let j = i; j < sequence.length; j++) {
@@ -13,9 +16,10 @@ export const getContiguousSequenceLengths = (sequence) => {
     }
     return sequenceLengths;
 };
-export const findLongestNonNullSubsequences = (sequence, max) => {
+exports.getContiguousSequenceLengths = getContiguousSequenceLengths;
+const findLongestNonNullSubsequences = (sequence, max) => {
     const result = {};
-    let sequenceLengths = getContiguousSequenceLengths(sequence);
+    let sequenceLengths = (0, exports.getContiguousSequenceLengths)(sequence);
     sequenceLengths = sequenceLengths.sort((a, b) => a.length > b.length ? -1 : 1);
     if (!sequenceLengths.length) {
         return {};
@@ -27,12 +31,13 @@ export const findLongestNonNullSubsequences = (sequence, max) => {
     });
     return result;
 };
+exports.findLongestNonNullSubsequences = findLongestNonNullSubsequences;
 function getStandardDeviation(array) {
     const n = array.length;
     const mean = array.reduce((a, b) => a + b) / n;
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
 }
-export const getMaxStdDevSequence = (subsequences) => {
+const getMaxStdDevSequence = (subsequences) => {
     let stdDevs = Object.keys(subsequences).map(x => parseInt(x)).map((p) => {
         return {
             position: p,
@@ -43,8 +48,10 @@ export const getMaxStdDevSequence = (subsequences) => {
     const position = stdDevs[0].position;
     return { position, sequence: subsequences[position] };
 };
-export const getStrongestSubsequence = (sequence, max) => {
-    const longestSubsequences = findLongestNonNullSubsequences(sequence, max);
-    const minStdDevSequence = getMaxStdDevSequence(longestSubsequences);
+exports.getMaxStdDevSequence = getMaxStdDevSequence;
+const getStrongestSubsequence = (sequence, max) => {
+    const longestSubsequences = (0, exports.findLongestNonNullSubsequences)(sequence, max);
+    const minStdDevSequence = (0, exports.getMaxStdDevSequence)(longestSubsequences);
     return minStdDevSequence;
 };
+exports.getStrongestSubsequence = getStrongestSubsequence;

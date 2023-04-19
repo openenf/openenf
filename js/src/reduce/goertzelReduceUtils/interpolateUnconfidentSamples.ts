@@ -36,12 +36,12 @@ const fixChunk = (s:HzWithConfidence[], chunk:{[id:number]:HzWithConfidence}) =>
     const start = parseInt(keys[0]);
     const end = parseInt(keys[keys.length - 1]);
 
-    /*if (keys.length >= 9) {
+    if (keys.length >= 9) {
         for (let i = start; i <= end; i++) {
             s[i].hz = null
         }
         return;
-    }*/
+    }
 
     if (start == 0) {
         fixStart(s, end)

@@ -1,11 +1,14 @@
-import { hann } from "../windowing/windowing";
-import { BufferedAudioProcessor } from "../bufferedAudioProcessor/bufferedAudioProcessor";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PreScanProcessor = void 0;
+const windowing_1 = require("../windowing/windowing");
+const bufferedAudioProcessor_1 = require("../bufferedAudioProcessor/bufferedAudioProcessor");
 /**
  * This processor uses a regular (non-adaptive) Goertzel filter to determine the signal strengths at 50, 100, 200, 60, 120 and 240hz
  * It combines a {@link BufferedAudioProcessor} and a {@link GoertzelFilterStore} to calculate the harmonics for each audio of window
  * of the size defined in the GoertzelFilterStore.
  */
-export class PreScanProcessor {
+class PreScanProcessor {
     constructor(context, preScanProgressEvent, totalSamples) {
         this.harmonicStrengths = {};
         this.harmonics = [50, 100, 200, 60, 120, 240];
@@ -17,8 +20,8 @@ export class PreScanProcessor {
         this.harmonics.forEach(h => {
             this.harmonicStrengths[h] = 0;
         });
-        this.bufferedProcessor = new BufferedAudioProcessor(this.context.windowSize, window => {
-            const windowedSamples = hann(window, 0);
+        this.bufferedProcessor = new bufferedAudioProcessor_1.BufferedAudioProcessor(this.context.windowSize, window => {
+            const windowedSamples = (0, windowing_1.hann)(window, 0);
             const goertzelRequestCache = context.createRequestCache(windowedSamples);
             const update = {};
             this.harmonics.forEach(h => {
@@ -47,3 +50,4 @@ export class PreScanProcessor {
         return this.harmonicStrengths;
     }
 }
+exports.PreScanProcessor = PreScanProcessor;

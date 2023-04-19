@@ -1,9 +1,9 @@
 import {FrequencyRequestCache} from "./FrequencyRequestCache";
 import {GoertzelHarmonicResult} from "./GoertzelHarmonicResult";
 
-const detectPeakAround = (goertzelRequestCache:FrequencyRequestCache, target:number):{hz:number,amp:number} => {
-    const min = target - 2;
-    const max = target + 2;
+export const detectPeakAround = (goertzelRequestCache:FrequencyRequestCache, target:number):{hz:number,amp:number} => {
+    const min = target - 1.5;
+    const max = target + 1.5;
     let currentMinHz = min;
     let currentMaxHz = max;
     let amp = 0;

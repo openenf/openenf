@@ -1,16 +1,23 @@
-import kurtosis from "compute-kurtosis";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.computeKurtosis = exports.getPeaks = exports.clusterResults = exports.convertPositionToGridDate = void 0;
+const compute_kurtosis_1 = __importDefault(require("compute-kurtosis"));
 let kurtosisFunction;
-if (typeof kurtosis === 'object') {
-    kurtosisFunction = kurtosis.default;
+if (typeof compute_kurtosis_1.default === 'object') {
+    kurtosisFunction = compute_kurtosis_1.default.default;
 }
 else {
-    kurtosisFunction = kurtosis;
+    kurtosisFunction = compute_kurtosis_1.default;
 }
-export const convertPositionToGridDate = (position, gridStartDate) => {
+const convertPositionToGridDate = (position, gridStartDate) => {
     const date = new Date(gridStartDate.getTime() + (position * 1000));
     return date;
 };
-export const clusterResults = (results) => {
+exports.convertPositionToGridDate = convertPositionToGridDate;
+const clusterResults = (results) => {
     const groupDict = results.reduce((groups, item) => {
         const group = (groups[item.gridId] || []);
         group.push(item);
@@ -40,10 +47,13 @@ export const clusterResults = (results) => {
         .sort((a, b) => b[0].score - a[0].score);
     return orderedClusters;
 };
-export const getPeaks = (results) => {
-    const resultClusters = clusterResults(results);
+exports.clusterResults = clusterResults;
+const getPeaks = (results) => {
+    const resultClusters = (0, exports.clusterResults)(results);
     return resultClusters.map(x => { return { position: x[0].position, gridId: x[0].gridId, score: x[0].score }; }).slice(0, 50);
 };
-export const computeKurtosis = (numbers) => {
+exports.getPeaks = getPeaks;
+const computeKurtosis = (numbers) => {
     return kurtosisFunction(numbers);
 };
+exports.computeKurtosis = computeKurtosis;

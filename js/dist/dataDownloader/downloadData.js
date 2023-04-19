@@ -1,12 +1,41 @@
-import path from "path";
-import * as cliProgress from "cli-progress";
-import fs from "fs";
-import { getENFDataDirectory } from "./ENFDataDirectory";
-import crypto from "crypto";
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.verifyApplicationData = void 0;
+const path_1 = __importDefault(require("path"));
+const cliProgress = __importStar(require("cli-progress"));
+const fs_1 = __importDefault(require("fs"));
+const ENFDataDirectory_1 = require("./ENFDataDirectory");
+const crypto_1 = __importDefault(require("crypto"));
 const getMD5 = async (filePath) => {
     return new Promise((resolve, reject) => {
-        const fileHash = crypto.createHash('md5');
-        const stream = fs.createReadStream(filePath);
+        const fileHash = crypto_1.default.createHash('md5');
+        const stream = fs_1.default.createReadStream(filePath);
         stream.on('data', function (data) {
             fileHash.update(data);
         });
@@ -19,13 +48,14 @@ const getMD5 = async (filePath) => {
         });
     });
 };
-export const verifyApplicationData = async () => {
-    const dataDirectory = getENFDataDirectory();
-    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", path.resolve(dataDirectory, "GB.freqdb"));
-    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", path.resolve(dataDirectory, "DE.freqdb"));
+const verifyApplicationData = async () => {
+    const dataDirectory = (0, ENFDataDirectory_1.getENFDataDirectory)();
+    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", path_1.default.resolve(dataDirectory, "GB.freqdb"));
+    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", path_1.default.resolve(dataDirectory, "DE.freqdb"));
 };
+exports.verifyApplicationData = verifyApplicationData;
 const downloadIfNotExist = async (url, filepath) => {
-    if (fs.existsSync(filepath)) {
+    if (fs_1.default.existsSync(filepath)) {
         return;
     }
     await downloadFile(url, filepath);
@@ -33,7 +63,7 @@ const downloadIfNotExist = async (url, filepath) => {
 const downloadFile = async (fileUrl, apiPath) => {
     return new Promise((resolve, reject) => {
         var url = require('url'), http = require('https'), p = url.parse(fileUrl), timeout = 10000;
-        var file = fs.createWriteStream(apiPath);
+        var file = fs_1.default.createWriteStream(apiPath);
         var timeout_wrapper = function (req) {
             return function () {
                 req.abort();
@@ -49,7 +79,7 @@ const downloadFile = async (fileUrl, apiPath) => {
                 barIncompleteChar: '\u2591',
                 hideCursor: false
             });
-            progressBar.start(len, 0, { log: `Downloading ${path.basename(apiPath)}` });
+            progressBar.start(len, 0, { log: `Downloading ${path_1.default.basename(apiPath)}` });
             res.on('data', function (chunk) {
                 file.write(chunk);
                 downloaded += chunk.length;

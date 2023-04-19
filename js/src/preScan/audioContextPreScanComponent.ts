@@ -7,6 +7,7 @@ import fs from "fs";
 import {getAudioData} from "../audioContextUtils/getAudioData";
 import {PreScanProcessor} from "./preScanProcessor";
 import {PreScanResult} from "./preScanResult";
+import {AudioFileMetadata} from "./audioFileMetadata";
 
 export class AudioContextPreScanComponent implements PreScanComponent {
     readonly implementationId: string = "AudioContextPreScanComponent0.0.1"
@@ -17,9 +18,17 @@ export class AudioContextPreScanComponent implements PreScanComponent {
         this.goertzelFilterCache = goertzelFilterCache;
     }
 
-    async preScan(resourceUri: string): Promise<PreScanResultLike> {
-        let buffer = fs.readFileSync(resourceUri);
-        const [audioData,metaData] = await getAudioData(buffer, resourceUri);
+    async preScan(resourceUri: (string|Float32Array)): Promise<PreScanResultLike> {
+        let audioData:Float32Array;
+        let metaData:AudioFileMetadata;
+        if (resourceUri instanceof Object) {
+            audioData = resourceUri;
+            metaData = {channels: 1, duration: audioData.length / 44100, durationSamples: audioData.length, sampleRate: 44100}
+        }
+        else {
+            let buffer = fs.readFileSync(resourceUri);
+            [audioData, metaData] = await getAudioData(buffer, resourceUri);
+        }
         this.audioLoadedEvent.trigger(audioData);
         const goertzelStore = this.goertzelFilterCache.getStore(metaData.sampleRate, metaData.sampleRate);
         const preScanProcessor = new PreScanProcessor(goertzelStore, this.preScanProgressEvent, audioData.length);

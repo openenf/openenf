@@ -1,0 +1,175 @@
+import fs from "fs";
+import {ChildProcess, spawn} from "child_process";
+import {ENFEventBase} from "../ENFProcessor/events/ENFEventBase";
+import net from "net";
+import {LookupCommand} from "../lookup/lookupCommand";
+
+export class TcpLookupServerController {
+    private readonly port: number;
+    private readonly executablePath: string;
+    private childProcess: ChildProcess | undefined;
+    public serverMessageEvent:ENFEventBase<string> = new ENFEventBase<string>();
+    private suspended: boolean = false;
+
+    constructor(port: number, executablePath: string) {
+        this.port = port;
+        this.executablePath = executablePath;
+    }
+
+    private fireExecutable = (executablePath: string, port:number, withGrids:boolean): Promise<boolean> => {
+        return new Promise((resolve, reject) => {
+            const args = ["--port", port.toString()];
+            if (!withGrids) {
+                args.push("--nogrids")
+            }
+            this.childProcess = spawn(executablePath, args);
+            if (this.childProcess.stdout) {
+                this.childProcess.stdout.on('data', (data) => {
+                    const dataString = data.toString();
+                    this.serverMessageEvent.trigger(dataString);
+                    if (dataString.indexOf("Server started on port ") > -1) {
+                        resolve(true);
+                    }
+                });
+            }
+            this.childProcess.on('error', (err) => {
+                console.error('Lookup server error: ', err);
+                reject(err);
+            })
+        })
+    }
+    
+    private startInternal(withGrids:boolean): Promise<void> {
+        return new Promise(async (resolve, reject) => {
+            if (fs.existsSync(this.executablePath)) {
+                const fireExecutableResponse = await this.fireExecutable(this.executablePath, this.port, withGrids).catch(e => {
+                    if (!e) {
+                        reject(new Error(`Cannot reach server at port ${this.port} - no error defined`));
+                    }
+                    reject(new Error(`Cannot reach server at port ${this.port} because ${e.message || e.toString()}`))
+                });
+                if (fireExecutableResponse) {
+                    resolve();
+                }
+            } else {
+                reject(new Error(`No TCP Lookup executable found at ${this.executablePath}`))
+            }
+        });
+    }
+
+    async start() {
+        return this.startInternal(false);
+    }
+
+    async startWithGrids() {
+        return this.startInternal(true);
+    }
+
+    stop():Promise<void> {
+        return new Promise(async resolve => {
+            if (this.childProcess) {
+                this.childProcess.on('close', () => {
+                    resolve();
+                })
+                if (this.childProcess.stdin) {
+                    this.childProcess.stdin.write('\n');
+                } else {
+                    console.warn('Unable to cleanly terminate TCP server. Killing process.')
+                    this.childProcess?.kill()
+                }
+            } else {
+                resolve();
+            }
+        })
+    }
+
+    async suspend():Promise<void> {
+        if (this.suspended) {
+            return;
+        }
+        return new Promise(async resolve => {
+            if (this.childProcess) {
+                if (this.childProcess.stdin) {
+                    const serverMessageHandler = (s: string | undefined) => {
+                        if (s?.startsWith("Suspending server")) {
+                            this.serverMessageEvent.removeHandler(serverMessageHandler);
+                            this.suspended = true;
+                            resolve();
+                        }
+                    }
+                    this.serverMessageEvent.addHandler(serverMessageHandler);
+                    this.childProcess.stdin.write('S\n');
+                } else {
+                    console.error("No STDIN on attached child process!")
+                    throw new Error("No STDIN on attached child process!")
+                }
+            } else {
+                console.error("No attached child process!")
+                throw new Error("No attached child process!");
+            }
+        })
+    }
+
+    async resume():Promise<void> {
+        if (!this.suspended) {
+            return ;
+        }
+        return new Promise(async resolve => {
+            if (this.childProcess) {
+                if (this.childProcess.stdin) {
+                    const serverMessageHandler = (s:string | undefined) => {
+                        if (s?.startsWith("Resuming server")) {
+                            this.serverMessageEvent.removeHandler(serverMessageHandler);
+                            this.suspended = true;
+                            resolve();
+                        }
+                    }
+                    this.serverMessageEvent.addHandler(serverMessageHandler);
+                    this.childProcess.stdin.write('S\n');
+                } else {
+                    console.error("No STDIN on attached child process!")
+                    throw new Error("No STDIN on attached child process!")
+                }
+            } else {
+                console.error("No attached child process!")
+                throw new Error("No attached child process!");
+            }
+        })
+    }
+
+    static async ServerRunningOnPort(port: number):Promise<boolean> {
+        return new Promise(resolve => {
+            const socket = new net.Socket();
+            const timeout = setTimeout(() => {
+                console.error(`Timeout pinging server on port ${port}`);
+                socket.destroy();
+                resolve(false);
+            },3000)
+            socket.connect(port, '127.0.0.1', () => {
+                socket.write(LookupCommand.ping.toString());
+            });
+
+            socket.on('data', async (data) => {
+                const dataReceived = `${data}`;
+                if (dataReceived === "pong") {
+                    socket.destroy();
+                    clearTimeout(timeout);
+                    resolve(true);
+                } else {
+                    console.error(`Was expecting pong from process on port ${port} but got '${dataReceived}'`)
+                    socket.destroy();
+                    clearTimeout(timeout);
+                    resolve(false);
+                }
+            });
+
+            socket.on('error', (error) => {
+                console.error(`Socket error: ${error}`);
+                socket.destroy();
+                clearTimeout(timeout);
+                resolve(false)
+            });
+        })
+        
+    }
+}

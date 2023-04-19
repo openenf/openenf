@@ -29,11 +29,13 @@ const bases:{ [id: string] : number; } = {
 //convertHarmonicFrequenciesToFundamental converts all harmonic frequencies to their corresponding fundamental/
 //It also nullifies any frequency that deviates 0.4hz away from the fundamental
 const convertHarmonicFrequenciesToFundamental = (windows:AnalysisWindowResult[]):AnalysisWindowResult[] => {
+    const tolerance = 0.4;
     windows.forEach(w => {
-        w.data.forEach((d:GoertzelHarmonicResult) => {
+        w.data.forEach((d:any) => {
             const tk = d.target.toString();
-            if (d.hz !== null) {
-                d.hz = d.hz / factors[tk]
+            d.hz = d.hz / factors[tk]
+            if (Math.abs(d.hz - bases[tk]) > tolerance) {
+                d.hz = null;
             }
         })
     })

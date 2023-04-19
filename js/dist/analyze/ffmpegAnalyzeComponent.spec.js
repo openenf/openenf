@@ -1,10 +1,12 @@
-import { FfmpegAnalyzeComponent } from "./ffmpegAnalyzeComponent";
-import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const ffmpegAnalyzeComponent_1 = require("./ffmpegAnalyzeComponent");
+const GoertzelFilterCache_1 = require("../goertzel/GoertzelFilterCache");
 describe('ffmpegAnalyzeComponent', () => {
     it('can extract frequency data from synthesized saw wave', async () => {
         const filepath = "test/testAudio/DiscreteFrom60HzInHundredths10secs.wav";
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new FfmpegAnalyzeComponent(goertzelFilterCache, 1);
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const analyzeComponent = new ffmpegAnalyzeComponent_1.FfmpegAnalyzeComponent(goertzelFilterCache, 1);
         const preScanResult = {
             duration: 10,
             durationSamples: 441000,
@@ -23,8 +25,8 @@ describe('ffmpegAnalyzeComponent', () => {
     }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
         const filepath = "test/testAudio/GBJan2014LookupTest.wav";
-        const goertzelFilterCache = new GoertzelFilterCache();
-        const analyzeComponent = new FfmpegAnalyzeComponent(goertzelFilterCache, 1);
+        const goertzelFilterCache = new GoertzelFilterCache_1.GoertzelFilterCache();
+        const analyzeComponent = new ffmpegAnalyzeComponent_1.FfmpegAnalyzeComponent(goertzelFilterCache, 1);
         const preScanResult = {
             duration: 99,
             durationSamples: 4365900,

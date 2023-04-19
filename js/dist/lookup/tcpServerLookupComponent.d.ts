@@ -1,9 +1,8 @@
 import { ENFEventBase } from "../ENFProcessor/events/ENFEventBase";
 import { LookupResult } from "../model/lookupResult";
 import { LookupComponent } from "./lookupComponent";
-import { TcpServerComponentOptions } from "./tcpServerComponentOptions";
+import { TcpClient } from "../tcpClient/tcpClient";
 export declare class TcpServerLookupComponent implements LookupComponent {
-    private options;
     private client;
     /**
      * The contiguousSearchLimit is the longest sequence of frequencies that can be searched in a single pass.
@@ -13,10 +12,9 @@ export declare class TcpServerLookupComponent implements LookupComponent {
      * @private
      */
     private contiguousSearchLimit;
-    constructor(tcpServerComponentOptions?: TcpServerComponentOptions);
+    constructor(tcpClient: TcpClient);
     readonly implementationId: string;
     lookupProgressEvent: ENFEventBase<number>;
     private buildLookupCommand;
     lookup(freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date): Promise<LookupResult[]>;
-    stopServer(): Promise<void>;
 }

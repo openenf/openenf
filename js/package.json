@@ -12,7 +12,7 @@
 		"node": ">=12"
 	},
 	"scripts": {
-		"testWithoutBuild": "jest --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long --testPathIgnorePatterns puppeteer",
+		"testWithoutBuild": "jest --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long --testPathIgnorePatterns puppeteer --silent",
 		"chromeEngineTest": "jest --testMatch \"**/?(*.)+(puppeteer\\.spec|puppeteer\\.test).[jt]s?(x)\" --detectOpenHandles --testPathIgnorePatterns /dist --testPathIgnorePatterns long --config jest.browser.config.js",
 		"buildExecutable": "dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/macos --no-incremental --runtime osx-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/linux --no-incremental --runtime linux-x64 --self-contained && dotnet build ../cs/ENFLookupServer --configuration Release -o test/serverExecutable/windows --no-incremental --runtime win-x64 --self-contained",
 		"test": "npm run buildExecutable && npm run testWithoutBuild",
@@ -43,6 +43,7 @@
 		"meow": "^9.0.0",
 		"node-fetch": "^2.6.9",
 		"standardized-audio-context": "^25.3.41",
+		"threads": "^1.7.0",
 		"wav-decoder": "^1.3.0",
 		"yargs": "^17.7.1"
 	},

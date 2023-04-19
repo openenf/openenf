@@ -22,7 +22,8 @@ export declare class BaseENFProcessor implements ENFProcessor {
     analyzeComponent: AnalyzeComponent;
     /** @internal */
     reduceComponent: ReduceComponent;
-    constructor(preScanComponent: PreScanComponent, analyzeComponent: AnalyzeComponent, reduceComponent: ReduceComponent, lookupComponent: LookupComponent, refineComponent: RefineComponent);
+    private disposeFunction;
+    constructor(preScanComponent: PreScanComponent, analyzeComponent: AnalyzeComponent, reduceComponent: ReduceComponent, lookupComponent: LookupComponent, refineComponent: RefineComponent, dispose?: () => Promise<void>);
     closeOutENFAnalysis(enfAnalysis: ENFAnalysis): ENFAnalysis;
     private toIsoDate;
     performFullAnalysis(resourceUri: string, gridIds: string[], from?: Date, to?: Date, expectedFrequency?: 50 | 60): Promise<ENFAnalysis>;
@@ -42,4 +43,5 @@ export declare class BaseENFProcessor implements ENFProcessor {
     onLookupCompleteEvent: ENFEventBase<LookupResult[]>;
     refine(lookupFrequencies: (number | null)[], lookupResults: LookupResult[]): Promise<ENFAnalysisResult[]>;
     onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]>;
+    dispose(): Promise<void>;
 }

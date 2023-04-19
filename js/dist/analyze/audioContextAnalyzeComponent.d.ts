@@ -15,7 +15,7 @@ import { GoertzelFilterCache } from "../goertzel/GoertzelFilterCache";
 export declare class AudioContextAnalyzeComponent implements AnalyzeComponent {
     analyzeProgressEvent: ENFEventBase<[AnalysisWindowResult, number]>;
     readonly implementationId: string;
-    analyze(resourceUri: string, preScanResult: PreScanResultLike, expectedFrequency?: 50 | 60): Promise<AnalysisWindowResult[]>;
+    analyze(resourceUri: (string | Float32Array), preScanResult: PreScanResultLike, expectedFrequency?: 50 | 60): Promise<AnalysisWindowResult[]>;
     private overlapFactor;
     private goertzelFilterCache;
     constructor(goertzelFilterCache: GoertzelFilterCache, overlapFactor: OverlapFactor);

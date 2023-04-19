@@ -1,11 +1,14 @@
-import { ENFEventBase } from "../ENFProcessor/events/ENFEventBase";
-import { TcpServerComponentOptions } from "./tcpServerComponentOptions";
-import { TcpClient } from "../tcpClient/tcpClient";
-import { toPascalCase } from "../tcpClient/tcpClientUtils";
-import { LookupCommand } from "./lookupCommand";
-import { getStrongestSubsequence } from "./lookupComponentUtils";
-export class TcpServerLookupComponent {
-    constructor(tcpServerComponentOptions) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TcpServerLookupComponent = void 0;
+const ENFEventBase_1 = require("../ENFProcessor/events/ENFEventBase");
+const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
+const lookupCommand_1 = require("./lookupCommand");
+const lookupComponentUtils_1 = require("./lookupComponentUtils");
+const noMatch_1 = require("../ENFProcessor/noMatch");
+const noMatchReason_1 = require("../model/noMatchReason");
+class TcpServerLookupComponent {
+    constructor(tcpClient) {
         /**
          * The contiguousSearchLimit is the longest sequence of frequencies that can be searched in a single pass.
          * It's currently (somewhat arbitrarily set at 600 seconds). For longer sequences it's significantly more efficient
@@ -15,12 +18,8 @@ export class TcpServerLookupComponent {
          */
         this.contiguousSearchLimit = 10000;
         this.implementationId = "TcpServerLookupComponent0.0.1";
-        this.lookupProgressEvent = new ENFEventBase();
-        this.options = tcpServerComponentOptions || new TcpServerComponentOptions();
-        this.client = new TcpClient(this.options.port, this.options.host);
-        if (tcpServerComponentOptions?.stdOutHandler) {
-            this.client.serverMessageEvent.addHandler(tcpServerComponentOptions?.stdOutHandler);
-        }
+        this.lookupProgressEvent = new ENFEventBase_1.ENFEventBase();
+        this.client = tcpClient;
     }
     buildLookupCommand(freqs, gridIds, startTime, endTime) {
         const request = {
@@ -29,11 +28,10 @@ export class TcpServerLookupComponent {
             startTime,
             endTime
         };
-        return `${LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
+        return `${lookupCommand_1.LookupCommand.lookup.toString()}${JSON.stringify(request)}`;
     }
     async lookup(freqs, gridIds, from, to) {
-        await this.client.activateServer(this.options.executablePath, this.options.port);
-        await this.client.loadGrids(this.options.grids);
+        const { response: pingResponse } = await this.client.request(lookupCommand_1.LookupCommand.ping.toString());
         let position = 0;
         let sequence = [];
         //If this is a relatively short frequency sequence we search for it all in one go:
@@ -43,7 +41,7 @@ export class TcpServerLookupComponent {
         else {
             //Otherwise we need to
             // 1: find the longest non-null section:
-            ({ position, sequence } = getStrongestSubsequence(freqs, this.contiguousSearchLimit));
+            ({ position, sequence } = (0, lookupComponentUtils_1.getStrongestSubsequence)(freqs, this.contiguousSearchLimit));
         }
         const lookupCommand = this.buildLookupCommand(sequence, gridIds, from, to);
         const { responses } = await this.client.request(lookupCommand, (buffer) => {
@@ -53,18 +51,20 @@ export class TcpServerLookupComponent {
             }
         });
         const response = responses[responses.length - 1];
-        const r = JSON.parse(response, toPascalCase);
+        let r;
+        try {
+            r = JSON.parse(response, tcpClientUtils_1.toPascalCase);
+        }
+        catch {
+            throw new SyntaxError(`Error parsing '${response}'`);
+        }
+        if (r.length === 0) {
+            throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoResultsOnLookup);
+        }
         r.forEach((r1) => {
             r1.position = r1.position - position;
         });
         return r;
     }
-    async stopServer() {
-        if (this.client) {
-            await this.client.stop();
-        }
-        else {
-            console.warn('No attached TCP client');
-        }
-    }
 }
+exports.TcpServerLookupComponent = TcpServerLookupComponent;

@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.CommandLine;
 using ENFLookup;
 
 namespace MyProject;
@@ -9,7 +8,7 @@ class Program
 {
     public static void Main(int port = 49170, bool nogrids = false)
     {
-        ENFLookup.ENFLookupServer? server = null;
+        ENFLookupServer? server = null;
         Console.WriteLine($"ENF Lookup Server. Port {port}");
         Console.WriteLine();
         var lookupRequestHandler = new LookupRequestHandler();
@@ -25,7 +24,7 @@ class Program
                 lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
             }
 
-            server = new ENFLookup.ENFLookupServer(lookupRequestHandler, port);
+            server = new ENFLookupServer(lookupRequestHandler, port);
 
             Console.WriteLine("Starting server...");
             server.Start();
@@ -35,11 +34,22 @@ class Program
             while (keepRunning)
             {
                 Thread.Sleep(1000);
-                //if (!Console.IsInputRedirected && Console.KeyAvailable)
-                //{
-                    Console.Read();
+                var key = Console.ReadLine().FirstOrDefault();
+                if (key == 'S')
+                {
+                    if (!server.Suspended)
+                    {
+                        server.Suspend();
+                    }
+                    else
+                    {
+                        server.Resume();
+                    }
+                }
+                else
+                {
                     keepRunning = false;
-                //}
+                }
             }
         }
         catch (Exception e)

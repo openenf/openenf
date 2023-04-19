@@ -2,6 +2,7 @@ import { LookupComponent } from "../../lookup/lookupComponent";
 import { ENFEventBase } from "../events/ENFEventBase";
 import { LookupResult } from "../../model/lookupResult";
 export declare class MockLookupComponent implements LookupComponent {
+    dispose(): Promise<void>;
     private readonly onLookup;
     private readonly result;
     constructor(onLookup?: (freqs: (number | null)[], gridIds: string[], from?: Date, to?: Date) => void, result?: LookupResult[]);

@@ -13,6 +13,7 @@ import {AnalyzeComponent} from "../analyze/analyzeComponent";
 import {ReduceComponent} from "../reduce/reduceComponent";
 import {FullAnalysisErrorHandler} from "./fullAnalysisErrorHandler";
 import {StageDurations} from "../model/StageDurations";
+import {NoMatchReason} from "../model/noMatchReason";
 
 export class BaseENFProcessor implements ENFProcessor {
 
@@ -30,12 +31,15 @@ export class BaseENFProcessor implements ENFProcessor {
 
     /** @internal */
     public reduceComponent: ReduceComponent;
+    private disposeFunction: (() => Promise<void>) | undefined;
 
     constructor(preScanComponent: PreScanComponent,
                 analyzeComponent: AnalyzeComponent,
                 reduceComponent: ReduceComponent,
                 lookupComponent: LookupComponent,
-                refineComponent: RefineComponent) {
+                refineComponent: RefineComponent,
+                dispose?:() => Promise<void>) {
+        this.disposeFunction = dispose;
         this.preScanComponent = preScanComponent
         this.preScanComponent.preScanProgressEvent = this.onPreScanProgressEvent
         this.onPreScanProgressEvent.addHandler(data => {
@@ -112,7 +116,7 @@ export class BaseENFProcessor implements ENFProcessor {
         }
         this.logEvent.trigger(`Frequency analysis complete.`)
         this.logEvent.trigger(`Comparing frequencies to grid data...`);
-        const lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
+        let lookupResults = await this.lookup(enfAnalysis.frequencies, gridIds, from, to).catch(function(e) {errorHandler.handleError(e)})
         enfAnalysis.lookupResults = lookupResults || null;
         enfAnalysis.completionTimes.lookup = new Date();
         if (!enfAnalysis.lookupResults) {
@@ -173,7 +177,8 @@ export class BaseENFProcessor implements ENFProcessor {
     onRefineCompleteEvent: ENFEventBase<ENFAnalysisResult[]> = new ENFEventBase<ENFAnalysisResult[]>()
 
     async dispose() {
-        await this.lookupComponent.dispose();
-        await this.refineComponent.dispose();
+        if (this.disposeFunction) {
+            this.disposeFunction();
+        }
     }
 }

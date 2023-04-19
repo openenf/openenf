@@ -1,4 +1,7 @@
-export const getFrequencyBase = (freqs) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFrequencyBase = void 0;
+const getFrequencyBase = (freqs) => {
     const possBases = [50, 60];
     const sums = possBases.map(base => {
         return freqs.reduce((sum, freq) => {
@@ -7,3 +10,4 @@ export const getFrequencyBase = (freqs) => {
     });
     return (sums[0] < sums[1]) ? 50 : 60;
 };
+exports.getFrequencyBase = getFrequencyBase;

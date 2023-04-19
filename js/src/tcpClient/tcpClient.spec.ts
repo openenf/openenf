@@ -1,74 +1,65 @@
 import {TcpClient} from "./tcpClient";
-import {getTestExecutablePath} from "../testUtils";
-import net from "net";
+import {TcpOptions} from "../lookup/tcpOptions";
 import {LookupCommand} from "../lookup/lookupCommand";
-import path from "path";
+import {TcpLookupServerController} from "./tcpLookupServerController";
+import {getDefaultExecutablePath} from "./tcpClientUtils";
 
 describe('tcpClient', () => {
-    it('Can load grids', async () => {
-        const port = 50020;
-        const tcpClient = new TcpClient(port,"127.0.0.1");
-        const executablePath = getTestExecutablePath();
-        let loadedGrids = false;
+    it('Can ping server', async () => {
+        const port = 50035;
+        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath());
+        let serverResponse: any;
         try {
-            await tcpClient.activateServer(executablePath, port);
-            const grids = {
-                "GB": path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb")
-            }
-            await tcpClient.loadGrids(grids);
-            loadedGrids = true;
+            await tcpServerController.start()
+            const options = new TcpOptions();
+            options.port = port;
+            const tcpClient = new TcpClient(options);
+            serverResponse = await tcpClient.ping().catch(e => {
+                console.error(e);
+            })
         } finally {
-            await tcpClient.stop();
+            await tcpServerController.stop();
         }
-        expect(loadedGrids).toBe(true);
+        expect(serverResponse.response).toBe('pong');
     })
-    it('Can spawn a server', (done) => {
-        const port = 50001;
-        const tcpClient = new TcpClient(port,"127.0.0.1");
-        const executablePath = getTestExecutablePath();
-        let socket:net.Socket;
-        let onErrorFired = false;
-        let dataReceived = "";
-        tcpClient.activateServer(executablePath, port).then(() => {
-            socket = new net.Socket();
-            socket.connect(port, '127.0.0.1', () => {
-                socket.write(LookupCommand.ping.toString());
-            });
-
-            socket.on('data', (data) => {
-                dataReceived = `${data}`;
-                tcpClient.stop();
-            });
-
-            socket.on('error', (error) => {
-                onErrorFired = true;
-                console.error(`Socket error: ${error}`);
-            });
-            
-            socket.on('close', () => {
-                expect(dataReceived).toBe("pong");
-                expect(onErrorFired).toBeFalsy();
-                done();
-            })
+    it('Can handle suspended server', async () => {
+        const port = 50036;
+        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath());
+        let error:any;
+        let serverResponse: any;
+        await tcpServerController.start();
+        await tcpServerController.suspend();
+        const options = new TcpOptions();
+        options.port = port;
+        const tcpClient = new TcpClient(options);
+        serverResponse = await tcpClient.ping().catch(e => {
+            error = e;
+        }).finally(async () => {
+            await tcpServerController.stop();
         })
+        expect(error.message).toBe("Timeout after 2000 ms");
+    }, 10000)
+    it('Can get metadata from grids', async () => {
+        const options = new TcpOptions();
+        const tcpClient = new TcpClient(options);
+        let metadata;
+        metadata = await tcpClient.getMetaData("GB");
+        expect(metadata).toStrictEqual({
+            "baseFrequency": 50,
+            "endDate": 1669852800,
+            "gridId": "GB",
+            "startDate": 1388534400
+        });
     })
-    it('Receives messages from server console', async () => {
-        const port = 50030;
-        const tcpClient = new TcpClient(port, "127.0.0.1");
-        let serverMessageEventFired = false;
-        try {
-            tcpClient.serverMessageEvent.addHandler(s => {
-                console.log('s', s);
-                serverMessageEventFired = true;
-            })
-            await tcpClient.activateServer(getTestExecutablePath(), port);
-        }
-        catch (e) {
-            console.error(e)
-        }
-        finally {
-            await tcpClient.stop();
-        }
-        expect(serverMessageEventFired).toBe(true);
+    it('Can handle error and resume', async () => {
+        const options = new TcpOptions();
+        const tcpClient = new TcpClient(options);
+        let error:any;
+        await tcpClient.request("THIS_WILL_THROW_AN_ERROR").catch(e => {
+            error = e;
+        })
+        const response:any = await tcpClient.ping();
+        expect(error.message).toBe("TCP SERVER ERROR: Input string was not in a correct format.");
+        expect(response.response).toBe("pong");
     })
 })

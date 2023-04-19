@@ -1,4 +1,6 @@
-import { validatePreScanResult } from "./validatePrescanResult";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const validatePrescanResult_1 = require("./validatePrescanResult");
 describe('validatePreScanResult', () => {
     it('result with a single sin wave at 50 to return result [50]', () => {
         const preScanResult = {
@@ -13,7 +15,7 @@ describe('validatePreScanResult', () => {
             numChannels: 0,
             sampleRate: 0
         };
-        const result = validatePreScanResult(preScanResult);
+        const result = (0, validatePrescanResult_1.validatePreScanResult)(preScanResult);
         expect(result).toStrictEqual([50]);
     });
     it('returns 100 target for dominate 100HZ result', () => {
@@ -29,7 +31,7 @@ describe('validatePreScanResult', () => {
             numChannels: 2,
             sampleRate: 44100
         };
-        const result = validatePreScanResult(preScanResult);
+        const result = (0, validatePrescanResult_1.validatePreScanResult)(preScanResult);
         expect(result).toStrictEqual([100]);
     });
 });

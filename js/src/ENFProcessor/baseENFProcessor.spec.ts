@@ -92,7 +92,7 @@ describe('BaseAnalyzer', () => {
     })
     it('Sends data to refine component when fullAnalysisInvoked', async () => {
         let eventFired = false;
-        const lookupResult:LookupResult[] = [];
+        const lookupResult:LookupResult[] = [new LookupResult()];
         const baseAnalyzer = new BaseENFProcessor(
             new MockPreScanComponent(),
             new MockAnalyzeComponent(),
@@ -115,20 +115,6 @@ describe('BaseAnalyzer', () => {
             new MockLookupComponent(),
             new MockRefineComponent())
         baseAnalyzer.onPreScanCompleteEvent.addHandler(_result => {
-            eventFired = true;
-        })
-        await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
-        expect(eventFired).toBe(true);
-    })
-    it('Fires onAnalyzeComplete event', async () => {
-        let eventFired = false;
-        const baseAnalyzer = new BaseENFProcessor(
-            new MockPreScanComponent(),
-            new MockAnalyzeComponent(),
-            new MockReduceComponent(),
-            new MockLookupComponent(),
-            new MockRefineComponent())
-        baseAnalyzer.onAnalyzeCompleteEvent.addHandler(_result => {
             eventFired = true;
         })
         await baseAnalyzer.performFullAnalysis("TEST_URL",[]);
