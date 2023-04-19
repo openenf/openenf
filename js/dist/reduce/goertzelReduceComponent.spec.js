@@ -108,7 +108,7 @@ describe('goertzelReduceComponent', () => {
         const analysisWindows = JSON.parse(fs_1.default.readFileSync(analysisWindowJsonFile, 'utf-8'));
         const goertzelReduceComponent = new goertzelReduceComponent_1.GoertzelReduceComponent(16);
         const result = await goertzelReduceComponent.reduce(analysisWindows);
-        fs_1.default.writeFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", JSON.stringify(result));
+        //fs.writeFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", JSON.stringify(result))
         console.log(result);
     });
     it('reduces an array of AnalysisWindowResults with GoertzelHarmonicResult data to a stream of frequencies (and possibly nulls)', async () => {

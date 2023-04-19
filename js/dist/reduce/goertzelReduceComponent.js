@@ -25,11 +25,13 @@ const bases = {
 //convertHarmonicFrequenciesToFundamental converts all harmonic frequencies to their corresponding fundamental/
 //It also nullifies any frequency that deviates 0.4hz away from the fundamental
 const convertHarmonicFrequenciesToFundamental = (windows) => {
+    const tolerance = 0.4;
     windows.forEach(w => {
         w.data.forEach((d) => {
             const tk = d.target.toString();
-            if (d.hz !== null) {
-                d.hz = d.hz / factors[tk];
+            d.hz = d.hz / factors[tk];
+            if (Math.abs(d.hz - bases[tk]) > tolerance) {
+                d.hz = null;
             }
         });
     });
@@ -97,8 +99,11 @@ class GoertzelReduceComponent {
         const s = transformWindowsToStreams(analysisResults);
         const amps = getStreamsWithTotalAmplitude(s);
         const initialTargetStream = amps.filter(x => x.target !== "240" && x.target !== "120" && x.target !== "240")[0].stream;
+        console.log('initialTargetStream', JSON.stringify(initialTargetStream.slice(0, 50), null, 2));
         const targetStream = (0, interpolateUnconfidentSamples_1.interpolateUnconfidentSamples)(initialTargetStream, 0.005, windowSize);
+        console.log('targetStream', targetStream);
         const downSampledStream = downSample(targetStream, this.overlapFactor);
+        console.log('downSampledStream', downSampledStream);
         const isStrongSignal = (0, checkForStrongSignal_1.checkForStrongSignal)(downSampledStream);
         if (!isStrongSignal) {
             throw new noMatch_1.NoMatch(noMatchReason_1.NoMatchReason.NoStrongSignal);

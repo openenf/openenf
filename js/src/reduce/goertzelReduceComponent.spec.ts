@@ -2,18 +2,18 @@ import {AnalysisWindowResult} from "../model/analysisWindowResult";
 import {GoertzelReduceComponent} from "./goertzelReduceComponent";
 import fs from "fs";
 
-describe('goertzelReduceComponent',  () => {
+describe('goertzelReduceComponent', () => {
     it('reduces an AnalysisWindowResults array with 100% accurate frequency match to the source to a 100% accurate stream of frequencies', async () => {
         const analysisWindowJsonFile = "src/reduce/testData/GB_50_Jan2014_analayzeOutput_OF1.json";
-        const analysisWindows:AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
+        const analysisWindows: AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
         const goertzelReduceComponent = new GoertzelReduceComponent(1);
         const result = await goertzelReduceComponent.reduce(analysisWindows);
-        const expectedResult = [49.94, 49.98, 49.98, 50.01, 50.02, 50.05, 50.01, 50.01, 50.03, 50.04, 50.04, 50.05, 50.05, 50.06, 50.04, 50.02, 50.01, 49.96, 49.95, 49.91, 49.89, 49.86, 49.87, 49.85, 49.85, 49.81, 49.75, 49.74, 49.69, 49.65, 49.62, 49.61, 49.61, 49.62,  49.6,  49.6, 49.62, 49.63, 49.62, 49.62,  49.6, 49.59, 49.59, 49.56, 49.54, 49.54, 49.56, 49.53, 49.54, 49.52, 49.51, 49.52, 49.52, 49.52, 49.54, 49.55, 49.53, 49.53, 49.51, 49.51,  49.5,  49.5, 49.48, 49.47, 49.49, 49.47, 49.49, 49.51, 49.54, 49.54, 49.56, 49.56, 49.58, 49.61,  49.6, 49.61, 49.63, 49.61, 49.64, 49.64, 49.63, 49.64, 49.63, 49.64, 49.63, 49.63, 49.64, 49.67, 49.69, 49.71, 49.71, 49.72, 49.74, 49.75, 49.77, 49.77, 49.78, 49.78];
+        const expectedResult = [49.94, 49.98, 49.98, 50.01, 50.02, 50.05, 50.01, 50.01, 50.03, 50.04, 50.04, 50.05, 50.05, 50.06, 50.04, 50.02, 50.01, 49.96, 49.95, 49.91, 49.89, 49.86, 49.87, 49.85, 49.85, 49.81, 49.75, 49.74, 49.69, 49.65, 49.62, 49.61, 49.61, 49.62, 49.6, 49.6, 49.62, 49.63, 49.62, 49.62, 49.6, 49.59, 49.59, 49.56, 49.54, 49.54, 49.56, 49.53, 49.54, 49.52, 49.51, 49.52, 49.52, 49.52, 49.54, 49.55, 49.53, 49.53, 49.51, 49.51, 49.5, 49.5, 49.48, 49.47, 49.49, 49.47, 49.49, 49.51, 49.54, 49.54, 49.56, 49.56, 49.58, 49.61, 49.6, 49.61, 49.63, 49.61, 49.64, 49.64, 49.63, 49.64, 49.63, 49.64, 49.63, 49.63, 49.64, 49.67, 49.69, 49.71, 49.71, 49.72, 49.74, 49.75, 49.77, 49.77, 49.78, 49.78];
         expect(result).toStrictEqual(expectedResult);
     })
     it('reduces a real-world sample correctly', async () => {
         const analysisWindowJsonFile = "test/testAnalysisOutput/618186__theplax__tumble-dryer-contact.wav.analysis.json";
-        const analysisWindows:AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
+        const analysisWindows: AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
         const goertzelReduceComponent = new GoertzelReduceComponent(16);
         const result = await goertzelReduceComponent.reduce(analysisWindows);
         expect(result).toStrictEqual([
@@ -102,19 +102,19 @@ describe('goertzelReduceComponent',  () => {
         );
     })
     it('reduces apawlak sample correctly', async () => {
-            const analysisWindowJsonFile = "test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json";
-            const analysisWindows: AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
-            const goertzelReduceComponent = new GoertzelReduceComponent(16);
-            const result = await goertzelReduceComponent.reduce(analysisWindows);
-            fs.writeFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", JSON.stringify(result))
-            console.log(result);
+        const analysisWindowJsonFile = "test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json";
+        const analysisWindows: AnalysisWindowResult[] = JSON.parse(fs.readFileSync(analysisWindowJsonFile, 'utf-8'));
+        const goertzelReduceComponent = new GoertzelReduceComponent(16);
+        const result = await goertzelReduceComponent.reduce(analysisWindows);
+        //fs.writeFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", JSON.stringify(result))
+        console.log(result);
     });
     it('reduces an array of AnalysisWindowResults with GoertzelHarmonicResult data to a stream of frequencies (and possibly nulls)', async () => {
         const goertzelReduceComponent = new GoertzelReduceComponent(1);
         const result = await goertzelReduceComponent.reduce(analyzeOutput);
         expect(result).toStrictEqual([59.96, 59.97, 59.98, 59.99, 60, 60.01, 60.02, 60.03, 60.04]);
     })
-    const analyzeOutput:AnalysisWindowResult[] = [
+    const analyzeOutput: AnalysisWindowResult[] = [
         {
             "start": 0,
             "end": 1,
