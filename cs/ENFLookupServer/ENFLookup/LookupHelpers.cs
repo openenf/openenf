@@ -21,10 +21,10 @@ public static class LookupHelpers
             path = Path.Combine(userPath, "Library", "Application Support");
         } else {
             // on Linux or other platforms, use the home directory
-            path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),".config");
         }
 
-        return Path.Combine(path, "OpenENF");
+        return Path.Combine(path, "openenf");
     }
     
     internal static IEnumerable<ThreadBounds> GetArrayThreadBounds(long startTime, long endTime, long numThreads, int freqLength)

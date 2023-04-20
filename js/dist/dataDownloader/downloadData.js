@@ -31,23 +31,6 @@ const path_1 = __importDefault(require("path"));
 const cliProgress = __importStar(require("cli-progress"));
 const fs_1 = __importDefault(require("fs"));
 const ENFDataDirectory_1 = require("./ENFDataDirectory");
-const crypto_1 = __importDefault(require("crypto"));
-const getMD5 = async (filePath) => {
-    return new Promise((resolve, reject) => {
-        const fileHash = crypto_1.default.createHash('md5');
-        const stream = fs_1.default.createReadStream(filePath);
-        stream.on('data', function (data) {
-            fileHash.update(data);
-        });
-        stream.on('end', function () {
-            const md5sum = fileHash.digest('hex');
-            resolve(md5sum);
-        });
-        stream.on('error', function (err) {
-            reject(err);
-        });
-    });
-};
 const verifyApplicationData = async () => {
     const dataDirectory = (0, ENFDataDirectory_1.getENFDataDirectory)();
     await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", path_1.default.resolve(dataDirectory, "GB.freqdb"));
@@ -55,6 +38,7 @@ const verifyApplicationData = async () => {
 };
 exports.verifyApplicationData = verifyApplicationData;
 const downloadIfNotExist = async (url, filepath) => {
+    console.log('filepath', filepath);
     if (fs_1.default.existsSync(filepath)) {
         return;
     }
@@ -62,8 +46,10 @@ const downloadIfNotExist = async (url, filepath) => {
 };
 const downloadFile = async (fileUrl, apiPath) => {
     return new Promise((resolve, reject) => {
-        var url = require('url'), http = require('https'), p = url.parse(fileUrl), timeout = 10000;
-        var file = fs_1.default.createWriteStream(apiPath);
+        const url = require('url'), http = require('https'), p = url.parse(fileUrl), timeout = 10000;
+        const dir = path_1.default.dirname(apiPath);
+        fs_1.default.mkdirSync(dir, { recursive: true });
+        const file = fs_1.default.createWriteStream(apiPath);
         var timeout_wrapper = function (req) {
             return function () {
                 req.abort();

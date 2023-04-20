@@ -56,8 +56,12 @@ else {
         const port = 49170;
         let serverController;
         if (!await tcpLookupServerController_1.TcpLookupServerController.ServerRunningOnPort(port)) {
+            console.log("No TCP lookup server found. I'll spin one up.");
             serverController = new tcpLookupServerController_1.TcpLookupServerController(49170, (0, tcpClientUtils_1.getDefaultExecutablePath)());
-            await serverController.startWithGrids();
+            await serverController.startWithGrids().catch(e => {
+                console.error(e);
+                process.exit();
+            });
         }
         const enfProcessor = await ENFProcessorFactory_1.ENFProcessorFactory.Build();
         const progressBar = new cliProgress.SingleBar({

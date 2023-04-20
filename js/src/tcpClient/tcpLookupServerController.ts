@@ -30,6 +30,9 @@ export class TcpLookupServerController {
                     if (dataString.indexOf("Server started on port ") > -1) {
                         resolve(true);
                     }
+                    if (dataString.indexOf("Unhandled exception") > -1) {
+                        reject(new Error(dataString));
+                    }
                 });
             }
             this.childProcess.on('error', (err) => {
@@ -44,15 +47,26 @@ export class TcpLookupServerController {
             if (fs.existsSync(this.executablePath)) {
                 const fireExecutableResponse = await this.fireExecutable(this.executablePath, this.port, withGrids).catch(e => {
                     if (!e) {
-                        reject(new Error(`Cannot reach server at port ${this.port} - no error defined`));
+                        const message = `Cannot reach server at port ${this.port} - no error defined`;
+                        console.error(message)
+                        reject(new Error(message));
                     }
-                    reject(new Error(`Cannot reach server at port ${this.port} because ${e.message || e.toString()}`))
+                    const message = `Cannot reach server at port ${this.port} because ${e.message || e.toString()}. \n Executable path: ${this.executablePath}`;
+                    console.error(message)
+                    reject(new Error(message))
                 });
                 if (fireExecutableResponse) {
                     resolve();
+                } else {
+                    const message = "Unable to launch TCP server executable";
+                    console.error(message);
+                    reject(new Error(message));
                 }
             } else {
-                reject(new Error(`No TCP Lookup executable found at ${this.executablePath}`))
+                console.log(8);
+                const message = `No TCP Lookup executable found at ${this.executablePath}`;
+                console.error(message)
+                reject(new Error(message))
             }
         });
     }
@@ -164,7 +178,6 @@ export class TcpLookupServerController {
             });
 
             socket.on('error', (error) => {
-                console.error(`Socket error: ${error}`);
                 socket.destroy();
                 clearTimeout(timeout);
                 resolve(false)

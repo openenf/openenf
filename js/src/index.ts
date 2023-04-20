@@ -36,8 +36,12 @@ if (!fs.existsSync(filepath)) {
         const port = 49170;
         let serverController: TcpLookupServerController | undefined;
         if (!await TcpLookupServerController.ServerRunningOnPort(port)) {
+            console.log("No TCP lookup server found. I'll spin one up.");
             serverController = new TcpLookupServerController(49170, getDefaultExecutablePath());
-            await serverController.startWithGrids();
+            await serverController.startWithGrids().catch(e => {
+                console.error(e);
+                process.exit();
+            })
         }
         const enfProcessor: ENFProcessor = await ENFProcessorFactory.Build()
         const progressBar = new cliProgress.SingleBar({
