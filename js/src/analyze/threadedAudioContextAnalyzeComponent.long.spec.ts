@@ -77,7 +77,6 @@ describe('audioContextAnalyzeComponent', () => {
             console.log(`${progress} audioContextAnalyzeComponent - returns correct frequencies for real-world data`);
         })
         const result = await audioContextPreScanComponent.analyze(filepath, preScanResult, 50);
-        //fs.writeFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json', JSON.stringify(result)); 
         const expectedResultJson = fs.readFileSync('test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.threaded.json', 'utf-8');
         expect(expectedResultJson).toBe(JSON.stringify(result));
         console.log('result', result);

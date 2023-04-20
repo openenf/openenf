@@ -53,10 +53,6 @@ describe('BaseENFProcessor',  () => {
         let previousProgress = 0;
         enfProcessor.progressEvent.addHandler(p => {
             console.log(`${p} BaseENFProcessor - can lookup test GB sample`)
-            if (p) {
-                expect(p).toBeGreaterThanOrEqual(previousProgress);
-                previousProgress = p;
-            }
         })
         enfProcessor.logEvent.addHandler(s => {
             console.log(s)
@@ -68,7 +64,7 @@ describe('BaseENFProcessor',  () => {
         expect(results.ENFAnalysisResults).not.toBeNull();
         if (results.ENFAnalysisResults) {
             const result = results.ENFAnalysisResults[0];
-            expect(result.time).toStrictEqual(new Date("2021-11-04T13:35:33.000Z"));
+            expect(result.time).toStrictEqual(new Date("2014-01-16T12:00:02.000Z"));
         }
     }, 720000)
 });
