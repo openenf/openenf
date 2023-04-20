@@ -9,7 +9,7 @@ export class TcpClient {
     private readonly host: string;
     private readonly socket: net.Socket
     private readonly port: number;
-    private readonly timeout: number = 10000;
+    private readonly timeoutMs: number = 2000;
     private connected: boolean = false;
     
     private options: TcpOptions;
@@ -43,13 +43,14 @@ export class TcpClient {
         return new Promise<{ response: string, responses: string[], error: Error | null }>((resolve,reject) => {
             let wholeMessage = "";
             const responses: string[] = [];
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (!this.connected) {
-                    reject(new Error(`Timeout after ${this.timeout} ms`));
+                    reject(new Error(`Timeout after ${this.timeoutMs} ms`));
                 }
-            }, this.timeout)
+            }, this.timeoutMs)
             const socket = this.socket;
             const errorHandler = ((e: Error) => {
+                clearTimeout(timeout);
                 console.error('e', e)
                 reject(e);
             });
@@ -68,13 +69,16 @@ export class TcpClient {
             socket.on('data', newDataHandler);
             const closeHandler = (hadError: boolean) => {
                 if (hadError) {
+                    clearTimeout(timeout);
                     reject(socket.errored);
                 }
                 socket.removeListener('data', newDataHandler);
                 socket.removeListener('error', errorHandler);
                 if (wholeMessage.startsWith("TCP SERVER ERROR:")) {
+                    clearTimeout(timeout);
                     reject(new Error(wholeMessage));
                 }
+                clearTimeout(timeout);
                 resolve({response: wholeMessage, responses, error: socket.errored});
             };
             socket.once('close', closeHandler);

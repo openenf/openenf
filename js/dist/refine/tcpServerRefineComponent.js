@@ -1,13 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TcpServerRefineComponent = void 0;
 const lookupCommand_1 = require("../lookup/lookupCommand");
 const refineComponentUtils_1 = require("./refineComponentUtils");
 const tcpClientUtils_1 = require("../tcpClient/tcpClientUtils");
-const fs_1 = __importDefault(require("fs"));
 class TcpServerRefineComponent {
     async getGridMetaData(lookupResults) {
         const metaData = {};
@@ -24,7 +20,6 @@ class TcpServerRefineComponent {
         const results = [];
         for (const r of peaks) {
             const command = this.buildComprehensiveLookupCommand(lookupFrequencies, r.gridId, 12, r.position);
-            fs_1.default.writeFileSync("command.txt", command);
             const responses = await this.client.request(command).catch(e => {
                 console.error(e);
                 process.exit();

@@ -32,12 +32,16 @@ const filepath = argv._[0];
 if (!fs.existsSync(filepath)) {
     console.error(`Unable to find file at ${filepath}`);
 } else {
-    verifyApplicationData().then(async () => {
+    verifyApplicationData().then(async (grids) => {
         const port = 49170;
         let serverController: TcpLookupServerController | undefined;
         if (!await TcpLookupServerController.ServerRunningOnPort(port)) {
-            serverController = new TcpLookupServerController(49170, getDefaultExecutablePath());
-            await serverController.startWithGrids();
+            console.log("No TCP lookup server found. I'll spin one up.");
+            serverController = new TcpLookupServerController(49170, getDefaultExecutablePath(),grids);
+            await serverController.start().catch(e => {
+                console.error(e);
+                process.exit();
+            })
         }
         const enfProcessor: ENFProcessor = await ENFProcessorFactory.Build()
         const progressBar = new cliProgress.SingleBar({

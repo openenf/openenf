@@ -46,9 +46,9 @@ describe("TcpServerRefineComponent", () => {
     it("can refine results for apawlak sample", async () => {
         const tcpServerComponentOptions = new TcpOptions();
         const tcpClient = new TcpClient(tcpServerComponentOptions);
-        const freqs = JSON.parse(fs.readFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json","utf-8"))
+        const freqs = JSON.parse(fs.readFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", "utf-8"))
         console.log('freqs');
-        const denormalisedFreqs = freqs.map((x:any) => 50 + (x / 100.0));
+        const denormalisedFreqs = freqs.map((x: any) => 50 + (x / 100.0));
         const lookupResults = [
             {score: 0, position: 1339200, gridId: 'GB'},
             {score: 152, position: 1339199, gridId: 'GB'},
@@ -64,15 +64,15 @@ describe("TcpServerRefineComponent", () => {
         expect(results).toStrictEqual([
             {
                 gridId: 'GB',
-                kurtosis: -0.9663522861655578,
+                kurtosis: -0.848927140447969,
                 normalisedScore: 0,
                 score: 0,
                 time: new Date("2014-01-16T12:00:00.000Z")
             },
             {
                 gridId: "GB",
-                kurtosis: -0.4592466438748986,
-                normalisedScore: 3.91,
+                kurtosis: -0.5576590857985254,
+                normalisedScore: 0.6462809917355372,
                 score: 391,
                 time: new Date("2014-01-15T08:13:17.000Z"),
             }

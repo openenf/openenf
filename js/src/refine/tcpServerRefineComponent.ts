@@ -28,7 +28,6 @@ export class TcpServerRefineComponent implements RefineComponent {
         const results: ENFAnalysisResult[] = [];
         for (const r of peaks) {
             const command = this.buildComprehensiveLookupCommand(lookupFrequencies, r.gridId, 12, r.position);
-            fs.writeFileSync("command.txt", command);
             const responses = await this.client.request(command).catch(e => {
                 console.error(e);
                 process.exit();

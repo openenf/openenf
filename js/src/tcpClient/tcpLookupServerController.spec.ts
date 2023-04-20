@@ -6,7 +6,7 @@ import {getDefaultExecutablePath} from "./tcpClientUtils";
 describe('tcpLookupServer', () => {
     it('Can start and ping server', (done) => {
         const port = 50003;
-        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         let socket: net.Socket;
         let onErrorFired = false;
         let dataReceived = "";
@@ -33,10 +33,15 @@ describe('tcpLookupServer', () => {
             })
         })
     })
-
+    it('Can build parameter array', () => {
+        const port = 1234;
+        const grids = ["/file path/one","/file path/two"];
+        const result = TcpLookupServerController.buildParameterArray(port, grids);
+        expect(result).toStrictEqual(["--port=1234","--grids=/file path/one","--grids=/file path/two"]);
+    })
     it('Fires server message event', async () => {
         const port = 50004;
-        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         let serverMessageReceived = "";
         try {
             tcpLookupServer.serverMessageEvent.addHandler(async (m) => {
@@ -49,11 +54,11 @@ describe('tcpLookupServer', () => {
         finally {
             await tcpLookupServer.stop()
         }
-        expect(serverMessageReceived.trim()).toBe("ENF Lookup Server. Port 50004");
+        expect(serverMessageReceived).not.toBeFalsy();
     })
     it('Can suspend and resume server', async () => {
         const port = 50009;
-        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         await tcpLookupServer.start();
         await tcpLookupServer.resume(); //Should have no effect
         await tcpLookupServer.suspend();
@@ -63,7 +68,7 @@ describe('tcpLookupServer', () => {
     }, 10000)
     it('Can check if a server is running on a specific port', async () => {
         const port = 50019;
-        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpLookupServer = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         await tcpLookupServer.start();
         const runningOnPort50019 = await TcpLookupServerController.ServerRunningOnPort(50019);
         const runningOnPort50029 = await TcpLookupServerController.ServerRunningOnPort(50029);

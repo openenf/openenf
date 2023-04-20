@@ -10,18 +10,18 @@ export class TcpLookupServerController {
     private childProcess: ChildProcess | undefined;
     public serverMessageEvent:ENFEventBase<string> = new ENFEventBase<string>();
     private suspended: boolean = false;
+    private grids: string[];
 
-    constructor(port: number, executablePath: string) {
+    constructor(port: number, executablePath: string, grids: string[]) {
         this.port = port;
         this.executablePath = executablePath;
+        this.grids = grids;
     }
 
-    private fireExecutable = (executablePath: string, port:number, withGrids:boolean): Promise<boolean> => {
+    private fireExecutable = (executablePath: string): Promise<boolean> => {
         return new Promise((resolve, reject) => {
-            const args = ["--port", port.toString()];
-            if (!withGrids) {
-                args.push("--nogrids")
-            }
+            const args = TcpLookupServerController.buildParameterArray(this.port, this.grids);
+            console.log('args', JSON.stringify(args));
             this.childProcess = spawn(executablePath, args);
             if (this.childProcess.stdout) {
                 this.childProcess.stdout.on('data', (data) => {
@@ -29,6 +29,9 @@ export class TcpLookupServerController {
                     this.serverMessageEvent.trigger(dataString);
                     if (dataString.indexOf("Server started on port ") > -1) {
                         resolve(true);
+                    }
+                    if (dataString.indexOf("Unhandled exception") > -1) {
+                        reject(new Error(dataString));
                     }
                 });
             }
@@ -39,30 +42,36 @@ export class TcpLookupServerController {
         })
     }
     
-    private startInternal(withGrids:boolean): Promise<void> {
+    private startInternal(): Promise<void> {
         return new Promise(async (resolve, reject) => {
             if (fs.existsSync(this.executablePath)) {
-                const fireExecutableResponse = await this.fireExecutable(this.executablePath, this.port, withGrids).catch(e => {
+                const fireExecutableResponse = await this.fireExecutable(this.executablePath).catch(e => {
                     if (!e) {
-                        reject(new Error(`Cannot reach server at port ${this.port} - no error defined`));
+                        const message = `Cannot reach server at port ${this.port} - no error defined`;
+                        console.error(message)
+                        reject(new Error(message));
                     }
-                    reject(new Error(`Cannot reach server at port ${this.port} because ${e.message || e.toString()}`))
+                    const message = `Cannot reach server at port ${this.port} because ${e.message || e.toString()}. \n Executable path: ${this.executablePath}`;
+                    console.error(message)
+                    reject(new Error(message))
                 });
                 if (fireExecutableResponse) {
                     resolve();
+                } else {
+                    const message = "Unable to launch TCP server executable";
+                    console.error(message);
+                    reject(new Error(message));
                 }
             } else {
-                reject(new Error(`No TCP Lookup executable found at ${this.executablePath}`))
+                const message = `No TCP Lookup executable found at ${this.executablePath}`;
+                console.error(message)
+                reject(new Error(message))
             }
         });
     }
 
     async start() {
-        return this.startInternal(false);
-    }
-
-    async startWithGrids() {
-        return this.startInternal(true);
+        return this.startInternal();
     }
 
     stop():Promise<void> {
@@ -164,12 +173,20 @@ export class TcpLookupServerController {
             });
 
             socket.on('error', (error) => {
-                console.error(`Socket error: ${error}`);
                 socket.destroy();
                 clearTimeout(timeout);
                 resolve(false)
             });
         })
         
+    }
+
+    static buildParameterArray(port: number, grids: string[]) {
+        const parameterArray:string[] = [];
+        parameterArray.push(`--port=${port}`);
+        grids.forEach(g => {
+            parameterArray.push(`--grids=${g}`)
+        })
+        return parameterArray;
     }
 }

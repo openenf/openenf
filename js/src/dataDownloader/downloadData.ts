@@ -2,38 +2,14 @@ import path from "path";
 import * as cliProgress from "cli-progress";
 import fs from "fs";
 import {getENFDataDirectory} from "./ENFDataDirectory";
-import crypto from "crypto";
 
-interface remoteFreqDb {
-    gridId: string;
-    url:string;
-    md5:string
-}
-
-const getMD5 = async (filePath:string):Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const fileHash = crypto.createHash('md5');
-        const stream = fs.createReadStream(filePath);
-
-        stream.on('data', function(data) {
-            fileHash.update(data);
-        });
-
-        stream.on('end', function() {
-            const md5sum = fileHash.digest('hex');
-            resolve(md5sum);
-        });
-
-        stream.on('error', function(err) {
-            reject(err)
-        });
-    })
-}
-
-export const verifyApplicationData = async () => {
+export const verifyApplicationData = async ():Promise<string[]> => {
     const dataDirectory = getENFDataDirectory();
-    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", path.resolve(dataDirectory,"GB.freqdb"));
-    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", path.resolve(dataDirectory, "DE.freqdb"));
+    const gbPath = path.resolve(dataDirectory,"GB.freqdb");
+    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", gbPath);
+    const dePath = path.resolve(dataDirectory, "DE.freqdb");
+    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", dePath);
+    return [gbPath,dePath];
 }
 
 const downloadIfNotExist = async(url:string, filepath:string) => {
@@ -45,12 +21,14 @@ const downloadIfNotExist = async(url:string, filepath:string) => {
 
 const downloadFile = async (fileUrl:string, apiPath:string):Promise<void> => {
     return new Promise((resolve,reject) => {
-        var url = require('url'),
+        const url = require('url'),
             http = require('https'),
             p = url.parse(fileUrl),
             timeout = 10000;
-
-        var file = fs.createWriteStream(apiPath);
+        
+        const dir = path.dirname(apiPath);
+        fs.mkdirSync(dir, {recursive:true});
+        const file = fs.createWriteStream(apiPath);
 
         var timeout_wrapper = function( req:any ) {
             return function() {
