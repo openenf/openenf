@@ -63,7 +63,6 @@ export class TcpLookupServerController {
                     reject(new Error(message));
                 }
             } else {
-                console.log(8);
                 const message = `No TCP Lookup executable found at ${this.executablePath}`;
                 console.error(message)
                 reject(new Error(message))
