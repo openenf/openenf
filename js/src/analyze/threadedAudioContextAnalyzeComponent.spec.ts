@@ -78,6 +78,7 @@ describe('audioContextAnalyzeComponent', () => {
         })
         await analyzeComponent.analyze(filepath, preScanResult);
         expect(progressFiredCount).toBeGreaterThan(145);
+        expect(progressFiredCount).toBeLessThan(150);
         expect(progress).toBeCloseTo(1,1);
     }, 30000);
     it('can extract frequency data from synthesised Jan 2014 Grid Data', async () => {
