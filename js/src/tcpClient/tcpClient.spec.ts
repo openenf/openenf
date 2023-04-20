@@ -2,11 +2,12 @@ import {TcpClient} from "./tcpClient";
 import {TcpOptions} from "../lookup/tcpOptions";
 import {TcpLookupServerController} from "./tcpLookupServerController";
 import {getDefaultExecutablePath} from "./tcpClientUtils";
+import path from "path";
 
 describe('tcpClient', () => {
     it('Can ping server', async () => {
         const port = 50035;
-        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         let serverResponse: any;
         try {
             await tcpServerController.start()
@@ -23,7 +24,7 @@ describe('tcpClient', () => {
     })
     it('Can handle suspended server', async () => {
         const port = 50036;
-        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath());
+        const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath(),[]);
         let error:any;
         await tcpServerController.start();
         console.log('Started server');
@@ -40,13 +41,20 @@ describe('tcpClient', () => {
         expect(error.message).toBe("Timeout after 2000 ms");
     }, 10000)
     it('Can get metadata from grids', async () => {
+        const port = 50037;
+        const testGrid = path.resolve("test/testFreqDbs/GB_50_Jan2014.freqdb");
+        const serverController = new TcpLookupServerController(port, getDefaultExecutablePath(),[testGrid]);
+        await serverController.start();
         const options = new TcpOptions();
+        options.port = port;
         const tcpClient = new TcpClient(options);
         let metadata;
-        metadata = await tcpClient.getMetaData("GB");
+        metadata = await tcpClient.getMetaData("GB").finally(async () => {
+            await serverController.stop();
+        })
         expect(metadata).toStrictEqual({
             "baseFrequency": 50,
-            "endDate": 1669852800,
+            "endDate": 1391212800,
             "gridId": "GB",
             "startDate": 1388534400
         });

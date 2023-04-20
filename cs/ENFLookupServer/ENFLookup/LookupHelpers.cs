@@ -5,10 +5,6 @@ namespace ENFLookup;
 
 public static class LookupHelpers
 {
-    /// <summary>
-    /// Gets the default folder where .freqdb files are stored.
-    /// </summary>
-    /// <returns></returns>
     public static string GetDataFolder()
     {
         string path;

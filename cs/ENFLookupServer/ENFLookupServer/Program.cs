@@ -6,7 +6,7 @@ namespace MyProject;
 
 class Program
 {
-    public static void Main(int port = 49170, bool nogrids = false)
+    public static void Main(string[] grids, int port = 49170)
     {
         ENFLookupServer? server = null;
         Console.WriteLine($"ENF Lookup Server. Port {port}");
@@ -14,14 +14,11 @@ class Program
         var lookupRequestHandler = new LookupRequestHandler();
         try
         {
-            if (!nogrids)
+            Console.WriteLine("Loading frequency data...");
+            foreach (var grid in grids)
             {
-                Console.WriteLine("Loading frequency data...");
-                var freqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/GB.freqdb");
-                var deFreqDbReader = new FsFreqDbReader(LookupHelpers.GetDataFolder() + "/DE.freqdb");
-                Console.WriteLine("Frequency data loaded");
+                var freqDbReader = new FsFreqDbReader(grid);
                 lookupRequestHandler.AddFreqDbReader(freqDbReader);
-                lookupRequestHandler.AddFreqDbReader(deFreqDbReader);
             }
 
             server = new ENFLookupServer(lookupRequestHandler, port);

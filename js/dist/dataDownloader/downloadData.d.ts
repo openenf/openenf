@@ -1,1 +1,1 @@
-export declare const verifyApplicationData: () => Promise<void>;
+export declare const verifyApplicationData: () => Promise<string[]>;

@@ -33,8 +33,11 @@ const fs_1 = __importDefault(require("fs"));
 const ENFDataDirectory_1 = require("./ENFDataDirectory");
 const verifyApplicationData = async () => {
     const dataDirectory = (0, ENFDataDirectory_1.getENFDataDirectory)();
-    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", path_1.default.resolve(dataDirectory, "GB.freqdb"));
-    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", path_1.default.resolve(dataDirectory, "DE.freqdb"));
+    const gbPath = path_1.default.resolve(dataDirectory, "GB.freqdb");
+    await downloadIfNotExist("https://zenodo.org/record/7741427/files/GB_50_2014-2021.freqdb", gbPath);
+    const dePath = path_1.default.resolve(dataDirectory, "DE.freqdb");
+    await downloadIfNotExist("https://zenodo.org/record/7809233/files/DE_50_2010-2021.freq.freqdb?download=1", dePath);
+    return [gbPath, dePath];
 };
 exports.verifyApplicationData = verifyApplicationData;
 const downloadIfNotExist = async (url, filepath) => {
