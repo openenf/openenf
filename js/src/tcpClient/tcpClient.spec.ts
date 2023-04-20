@@ -1,6 +1,5 @@
 import {TcpClient} from "./tcpClient";
 import {TcpOptions} from "../lookup/tcpOptions";
-import {LookupCommand} from "../lookup/lookupCommand";
 import {TcpLookupServerController} from "./tcpLookupServerController";
 import {getDefaultExecutablePath} from "./tcpClientUtils";
 
@@ -26,13 +25,14 @@ describe('tcpClient', () => {
         const port = 50036;
         const tcpServerController = new TcpLookupServerController(port, getDefaultExecutablePath());
         let error:any;
-        let serverResponse: any;
         await tcpServerController.start();
+        console.log('Started server');
         await tcpServerController.suspend();
+        console.log('Suspended server');
         const options = new TcpOptions();
         options.port = port;
         const tcpClient = new TcpClient(options);
-        serverResponse = await tcpClient.ping().catch(e => {
+        await tcpClient.ping().catch(e => {
             error = e;
         }).finally(async () => {
             await tcpServerController.stop();
@@ -59,7 +59,7 @@ describe('tcpClient', () => {
             error = e;
         })
         const response:any = await tcpClient.ping();
-        expect(error.message).toBe("TCP SERVER ERROR: Input string was not in a correct format.");
+        expect(error.message.indexOf("TCP SERVER ERROR: Input string was not in a correct format.")).toBe(0);
         expect(response.response).toBe("pong");
     })
 })

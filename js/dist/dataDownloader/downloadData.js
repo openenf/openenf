@@ -38,7 +38,6 @@ const verifyApplicationData = async () => {
 };
 exports.verifyApplicationData = verifyApplicationData;
 const downloadIfNotExist = async (url, filepath) => {
-    console.log('filepath', filepath);
     if (fs_1.default.existsSync(filepath)) {
         return;
     }

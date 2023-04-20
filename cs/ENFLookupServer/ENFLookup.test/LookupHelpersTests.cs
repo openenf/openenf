@@ -59,10 +59,10 @@ public class LookupHelpersTests
     public void GetDataFolderReturnsCorrectValue()
     {
         var result = LookupHelpers.GetDataFolder();
-        result.Should().EndWith("OpenENF");
+        result.Should().EndWith("openenf");
         if (OperatingSystem.IsMacOS())
         {
-            result.Should().EndWith("Library/Application Support/OpenENF");
+            result.Should().EndWith("Library/Application Support/openenf");
         }
     }
 }

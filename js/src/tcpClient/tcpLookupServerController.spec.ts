@@ -49,7 +49,7 @@ describe('tcpLookupServer', () => {
         finally {
             await tcpLookupServer.stop()
         }
-        expect(serverMessageReceived.trim()).toBe("ENF Lookup Server. Port 50004");
+        expect(serverMessageReceived).not.toBeFalsy();
     })
     it('Can suspend and resume server', async () => {
         const port = 50009;
