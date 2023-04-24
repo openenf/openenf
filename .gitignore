@@ -46,6 +46,6 @@ yarn.lock
 
 js/test/testAudio/large/
 js/test/testAudioWindows/large/
-js/test/serverExecutable
+js/serverExecutable
 
 js/dist
