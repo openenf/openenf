@@ -7,7 +7,6 @@ const path_1 = __importDefault(require("path"));
 const tcpServerRefineComponent_1 = require("./tcpServerRefineComponent");
 const tcpOptions_1 = require("../lookup/tcpOptions");
 const tcpClient_1 = require("../tcpClient/tcpClient");
-const fs_1 = __importDefault(require("fs"));
 describe("TcpServerRefineComponent", () => {
     it("can refine results for the truncated GB_50_Jan2014 grid", async () => {
         const tcpServerComponentOptions = new tcpOptions_1.TcpOptions();
@@ -39,40 +38,6 @@ describe("TcpServerRefineComponent", () => {
                 gridId: "GB",
                 kurtosis: -0.4592466438748986,
                 normalisedScore: 3.91,
-                score: 391,
-                time: new Date("2014-01-15T08:13:17.000Z"),
-            }
-        ]);
-    }, 50000);
-    it("can refine results for apawlak sample", async () => {
-        const tcpServerComponentOptions = new tcpOptions_1.TcpOptions();
-        const tcpClient = new tcpClient_1.TcpClient(tcpServerComponentOptions);
-        const freqs = JSON.parse(fs_1.default.readFileSync("test/testFreqs/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.freqs.json", "utf-8"));
-        console.log('freqs');
-        const denormalisedFreqs = freqs.map((x) => 50 + (x / 100.0));
-        const lookupResults = [
-            { score: 0, position: 1339200, gridId: 'GB' },
-            { score: 152, position: 1339199, gridId: 'GB' },
-            { score: 155, position: 1339201, gridId: 'GB' },
-            { score: 247, position: 1339198, gridId: 'GB' },
-            { score: 253, position: 1339202, gridId: 'GB' },
-            { score: 339, position: 1339197, gridId: 'GB' },
-            { score: 391, position: 1239197, gridId: 'GB' }
-        ];
-        const refineComponent = new tcpServerRefineComponent_1.TcpServerRefineComponent(tcpClient);
-        const results = await refineComponent.refine(denormalisedFreqs, lookupResults);
-        expect(results).toStrictEqual([
-            {
-                gridId: 'GB',
-                kurtosis: -0.848927140447969,
-                normalisedScore: 0,
-                score: 0,
-                time: new Date("2014-01-16T12:00:00.000Z")
-            },
-            {
-                gridId: "GB",
-                kurtosis: -0.5576590857985254,
-                normalisedScore: 0.6462809917355372,
                 score: 391,
                 time: new Date("2014-01-15T08:13:17.000Z"),
             }

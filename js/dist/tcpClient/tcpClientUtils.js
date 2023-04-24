@@ -19,7 +19,7 @@ const toPascalCase = (key, value) => {
 };
 exports.toPascalCase = toPascalCase;
 const getDefaultExecutablePath = () => {
-    let executablePath = path_1.default.join(__filename, "../../../test", "serverExecutable");
+    let executablePath = path_1.default.join(__filename, "../../../", "serverExecutable");
     switch (os_1.default.platform()) {
         case "win32":
             executablePath = path_1.default.join(executablePath, "windows", "ENFLookupServer.exe");

@@ -105,7 +105,7 @@ describe('goertzelReduceComponent', () => {
         ]);
     });
     it('reduces apawlak sample correctly', async () => {
-        const analysisWindowJsonFile = "test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.json";
+        const analysisWindowJsonFile = "test/testAnalysisOutput/404931__alanpawlak__ambientuohstudentunion44-1-24bit.wav.analysis.threaded.json";
         const analysisWindows = JSON.parse(fs_1.default.readFileSync(analysisWindowJsonFile, 'utf-8'));
         const goertzelReduceComponent = new goertzelReduceComponent_1.GoertzelReduceComponent(16);
         const result = await goertzelReduceComponent.reduce(analysisWindows);

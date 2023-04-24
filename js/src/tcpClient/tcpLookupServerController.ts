@@ -21,7 +21,6 @@ export class TcpLookupServerController {
     private fireExecutable = (executablePath: string): Promise<boolean> => {
         return new Promise((resolve, reject) => {
             const args = TcpLookupServerController.buildParameterArray(this.port, this.grids);
-            console.log('args', JSON.stringify(args));
             this.childProcess = spawn(executablePath, args);
             if (this.childProcess.stdout) {
                 this.childProcess.stdout.on('data', (data) => {

@@ -179,6 +179,26 @@ are works in progress but here's bullet-pointed overview of the structure of the
 
 - The tool is an [NPM Command Line tool](https://blog.npmjs.org/post/118810260230/building-a-simple-command-line-tool-with-npm.html)
 - The analysis phase is written in Typescript and uses an adaptive [Goertzel algorithm](https://en.wikipedia.org/wiki/Goertzel_algorithm) to obtain low-frequency audio data
-- The lookup phase is written in .Net Core C# and communicates with the Command Line tool over TCP
+- The lookup phase is written in [.Net Core C#](https://dotnet.microsoft.com/en-us/download) and communicates with the Command Line tool over TCP
 - Unit tests can be run locally with `npm test` for Typescript and an XUnit test runner within C#
 - The integration pipeline runs both the Typescript and C# tests suites for each PR. All tests need to pass before a PR can be considered for approval.
+
+## License
+
+The code for Open ENF is licensed under [GPLv3](https://www.gnu.org/licenses/quick-guide-gplv3.html) . The grid frequency data used for lookups
+is _explicitly excluded from this license_ and is not included in the repository.
+
+## Funding
+
+Open ENF has is free and available for anyone to use. It also represents hundreds of hours 
+of development time. We hope to continue to develop Open ENF so we can more
+accurately authenticate audio for more territories, and we're currently
+seeking funding to help us do that. If ENF is useful to you please 
+consider a regular or a one-off contribution to help move the project
+forward. In exchange for funding we can give you early access to new releases
+and new grid data in all territories as soon as it becomes available.
+If you'd like to help fund this project and help us grow please [get in touch](mailto:hello@openenf.io).
+
+## Contact
+
+Drop us a line: [hello@openenf.io](mailto:hello@openenf.io) 
