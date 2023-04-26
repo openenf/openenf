@@ -210,4 +210,18 @@ public class FsFreqDbReaderTests
         var result = (await freqDbReader.ComprehensiveLookup(lookupFreqs, 0, 2, 2)).ToArray();//Note aroundTs of zero.
         result.Length.Should().Be(3);
     }
+
+    [Fact]
+    public async Task CanGetFreqsAtSpecifiedPosition()
+    {
+        var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
+        var result = await freqDbReader.GetFrequenciesAt(50000, 10);
+        result.Should().BeEquivalentTo(new []{60,59,53,52,45,49,48,50,51,51});
+
+        var freqDbLength = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
+        var resultLeague = new ResultLeague(10);
+        await freqDbReader.Lookup(result.ToArray(), 10000, 0, freqDbLength, 8, resultLeague, CancellationToken.None);
+        resultLeague.Results[0].Score.Should().Be(0);
+        resultLeague.Results[0].Position.Should().Be(50000);
+    }
 }

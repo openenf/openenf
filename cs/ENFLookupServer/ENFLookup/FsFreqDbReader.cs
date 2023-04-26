@@ -293,4 +293,12 @@ public class FsFreqDbReader : IFreqDbReader
             scores.RemoveAt(0);
         }
     }
+
+    /// <summary>
+    /// Returns list of grid frequencies of a specified length from a specified position in the grid.
+    /// </summary>
+    public async Task<IEnumerable<short>> GetFrequenciesAt(int position, int length)
+    {
+        return this._gridArray.Skip(position).Take(length);
+    }
 }
