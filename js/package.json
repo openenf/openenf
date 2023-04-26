@@ -1,6 +1,6 @@
 {
 	"name": "openenf",
-	"version": "0.0.7",
+	"version": "0.0.9",
 	"description": "A Command Line Tool to perform Electrical Network Frequency analysis",
 	"license": "MIT",
 	"repository": {
