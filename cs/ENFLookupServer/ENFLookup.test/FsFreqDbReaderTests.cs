@@ -224,4 +224,36 @@ public class FsFreqDbReaderTests
         resultLeague.Results[0].Score.Should().Be(0);
         resultLeague.Results[0].Position.Should().Be(50000);
     }
+    
+    [Fact]
+    public async Task CanGetStandardDeviationOfGrid()
+    {
+        var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
+        var end = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
+        var result1 = await freqDbReader.StdDev();
+        var result2 = await freqDbReader.StdDev(new Tuple<long, long>(0, end));
+        var result3 = await freqDbReader.StdDev(new Tuple<long, long>(- 100000, end + 100000));
+        result1.Should().BeEquivalentTo(result2);
+        result2.Should().BeEquivalentTo(result3);
+        var result4 = await freqDbReader.StdDev(new Tuple<long, long>(100000, 200000));
+        result4.Should().NotBeEquivalentTo(result1);
+        result4.Mean.Should().Be(0.28664000000000001);
+        result4.StdDev.Should().Be(60.564634709626368);
+    }
+    
+    [Fact]
+    public async Task CanGetStandardDeviationOfGrid1stDerivative()
+    {
+        var freqDbReader = new FsFreqDbReader("TestResources/GB_50_Jan2014.freqdb");
+        var end = freqDbReader.FreqDbMetaData.EndDate - freqDbReader.FreqDbMetaData.StartDate;
+        var result1 = await freqDbReader.StdDevDeriv();
+        var result2 = await freqDbReader.StdDevDeriv(new Tuple<long, long>(0, end));
+        var result3 = await freqDbReader.StdDevDeriv(new Tuple<long, long>(- 100000, end + 100000));
+        result1.Should().BeEquivalentTo(result2);
+        result2.Should().BeEquivalentTo(result3);
+        var result4 = await freqDbReader.StdDevDeriv(new Tuple<long, long>(100000, 200000));
+        result4.Should().NotBeEquivalentTo(result1);
+        result4.Mean.Should().Be(0.00093000930009300088);
+        result4.StdDev.Should().Be(2.123914839449117);
+    }
 }
