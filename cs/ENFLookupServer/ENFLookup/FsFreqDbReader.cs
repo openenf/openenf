@@ -301,4 +301,53 @@ public class FsFreqDbReader : IFreqDbReader
     {
         return this._gridArray.Skip(position).Take(length);
     }
+
+    /// <summary>
+    /// Returns the mean and standard deviation for a specified range of the grid. If the range tuple is omitted, the standard deviation
+    /// of the entire grid is returned.
+    /// </summary>
+    /// <param name="tuple"></param>
+    public async Task<MeanStdDev> StdDev(Tuple<long, long>? tuple = null)
+    {
+        var subset = GetStdDevRange(tuple);
+        var mean = subset.Average();
+        return new MeanStdDev
+        {
+            Mean = mean,
+            StdDev = Math.Sqrt(subset.Average(v=>Math.Pow(v-mean,2)))
+        };
+    }
+
+    private IEnumerable<double> GetStdDevRange(Tuple<long, long>? tuple = null)
+    {
+        var arrayLength = FreqDbMetaData.EndDate - FreqDbMetaData.StartDate;
+        if (tuple == null)
+        {
+            tuple = new Tuple<long, long>(0, arrayLength);
+        }
+        else
+        {
+            tuple = new Tuple<long, long>(Math.Max(tuple.Item1, 0), Math.Min(tuple.Item2, arrayLength));
+        }
+        
+        var subset = _gridArray.Skip((int)tuple.Item1).Take((int)(tuple.Item2 - tuple.Item1)).Select(x => (double)x);
+        return subset;
+    }
+    
+    /// <summary>
+    /// Returns the mean and standard deviation for a specified range of the first derivative of
+    /// the grid. If the range tuple is omitted, the standard deviation of the entire grid is returned.
+    /// </summary>
+    /// <param name="tuple"></param>
+    public async Task<MeanStdDev> StdDevDeriv(Tuple<long, long>? tuple = null)
+    {
+        var subset = GetStdDevRange(tuple).ToArray();
+        var deriv = subset.Skip(1).Select((x, i) =>  subset[i+1] - subset[i]);
+        var mean = deriv.Average();
+        return new MeanStdDev
+        {
+            Mean = mean,
+            StdDev = Math.Sqrt(deriv.Average(v=>Math.Pow(v-mean,2)))
+        };
+    }
 }
